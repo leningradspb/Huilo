@@ -29,17 +29,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
         appearance.backgroundColor = UIColor.clear
-        appearance.titleTextAttributes = [.foregroundColor: UIColor.red]
-        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.red]
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.scarlet]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.scarlet]
         appearance.backgroundEffect = UIBlurEffect(style: .dark)
         
         let scrollingAppearance = UINavigationBarAppearance()
         scrollingAppearance.configureWithTransparentBackground()
         scrollingAppearance.backgroundColor = .black
-        scrollingAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.red]
-        scrollingAppearance.titleTextAttributes = [.foregroundColor: UIColor.red]
+        scrollingAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.scarlet]
+        scrollingAppearance.titleTextAttributes = [.foregroundColor: UIColor.scarlet]
 
-        UINavigationBar.appearance().tintColor = .red
+        UINavigationBar.appearance().tintColor = .scarlet
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = scrollingAppearance
         UINavigationBar.appearance().compactAppearance = scrollingAppearance
