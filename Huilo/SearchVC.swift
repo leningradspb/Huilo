@@ -83,12 +83,27 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
         return 0
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        print(section, sections.count)
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section < sections.count {
-            return sections[section].name
+            let v = UIView()
+            let header = UILabel()
+            header.text = sections[section].name
+            v.addSubview(header)
+            header.textColor = .white
+            header.font = .systemFont(ofSize: 24, weight: .semibold)
+            
+            header.snp.makeConstraints {
+                $0.leading.equalToSuperview().offset(16)
+                $0.trailing.equalToSuperview()
+                $0.centerY.equalToSuperview()
+            }
+            return v
         }
         return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 60
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -122,7 +137,7 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.section == 0 ? 235 : 50
+        return indexPath.section == 0 ? 280 : 50
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -174,7 +189,7 @@ class RecommendationCell: UITableViewCell {
         collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .horizontal
-            flowLayout.minimumLineSpacing = 8
+            flowLayout.minimumLineSpacing = 10
         }
         
         contentView.addSubview(collectionView)
@@ -199,7 +214,7 @@ extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 210, height: 230)
+        return CGSize(width: 260, height: 275)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -221,7 +236,7 @@ class RecommendationCollectionViewCell: UICollectionViewCell {
     
     private func setupUI() {
         contentView.backgroundColor = .grass
-        contentView.layer.cornerRadius = 5
+        contentView.layer.cornerRadius = 20
     }
 }
 
