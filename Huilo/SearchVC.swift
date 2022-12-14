@@ -124,20 +124,15 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
             if indexPath.section < sections.count {
                 let section = sections[indexPath.section]
                 if let cells = section.cells, indexPath.row < cells.count {
-                    print(section.name)
-                    cell.textLabel?.textColor = .green
-                    cell.textLabel?.text = cells[indexPath.row].cellName
-                    cell.contentView.backgroundColor = .orange
+                    cell.photos = cells[indexPath.row].cellPhotos ?? []
                 }
-                //                let model = conversations[indexPath.row]
-                //                cell.updateConversationCell(with: model)
             }
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.section == 0 ? 280 : 50
+        return indexPath.section == 0 ? 280 : 245
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -148,11 +143,16 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
 
 
 class CategoryCell: UITableViewCell {
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var photos: [String] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .black
-        contentView.backgroundColor = .black
-        selectionStyle = .none
+        
         setupUI()
     }
     
@@ -161,7 +161,53 @@ class CategoryCell: UITableViewCell {
     }
     
     private func setupUI() {
+        backgroundColor = .black
+        contentView.backgroundColor = .black
+        selectionStyle = .none
+        collectionView.backgroundColor = .black
+        collectionView.register(RecommendationCollectionViewCell.self, forCellWithReuseIdentifier: RecommendationCollectionViewCell.identifier)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.scrollDirection = .horizontal
+            flowLayout.minimumLineSpacing = 10
+        }
         
+        contentView.addSubview(collectionView)
+        collectionView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+    }
+}
+
+extension CategoryCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        photos.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationCollectionViewCell.identifier, for: indexPath) as! RecommendationCollectionViewCell
+        if indexPath.row < photos.count {
+            let photo = photos[indexPath.row]
+            if let url = URL(string: photo) {
+                cell.setImage(url: url)
+            }
+        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 140, height: 240)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("SLOT TAPPED IN collectionView")
     }
 }
 
