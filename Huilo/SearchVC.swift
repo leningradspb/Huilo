@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 class SearchVC: UIViewController {
-    private let tableView = UITableView()
+    private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections: [MainScreenModel.Section] = []
     
     override func viewDidLoad() {
@@ -71,9 +71,16 @@ class SearchVC: UIViewController {
 }
 
 extension SearchVC: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        sections.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print(sections.count)
-        return sections.count
+        if section < sections.count {
+            let category = sections[section]
+            return category.cells?.count ?? 0
+        }
+        return 0
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -92,6 +99,9 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
                 let section = sections[indexPath.section]
                 if let cells = section.cells, indexPath.row < cells.count {
                     print(section.name)
+                    cell.textLabel?.textColor = .green
+                    cell.textLabel?.text = cells[indexPath.row].cellName
+                    cell.contentView.backgroundColor = .blue
                 }
 //                let model = conversations[indexPath.row]
 //                cell.updateConversationCell(with: model)
@@ -104,6 +114,9 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
                 let section = sections[indexPath.section]
                 if let cells = section.cells, indexPath.row < cells.count {
                     print(section.name)
+                    cell.textLabel?.textColor = .green
+                    cell.textLabel?.text = cells[indexPath.row].cellName
+                    cell.contentView.backgroundColor = .orange
                 }
                 //                let model = conversations[indexPath.row]
                 //                cell.updateConversationCell(with: model)
