@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,7 +14,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        FirebaseApp.configure()
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithTransparentBackground()
+        tabBarAppearance.backgroundColor = UIColor.clear
+        tabBarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
+//        UITabBar.appearance().barTintColor = .black
+//        UITabBar.appearance().isTranslucent = false
+        UITabBar.appearance().unselectedItemTintColor = .gray
+        UITabBar.appearance().tintColor = .red
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+        
+//        UINavigationBar.appearance().backgroundColor = .red
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = UIColor.clear
+        appearance.titleTextAttributes = [.foregroundColor: UIColor.red]
+        appearance.largeTitleTextAttributes = [.foregroundColor: UIColor.red]
+        appearance.backgroundEffect = UIBlurEffect(style: .dark)
+        
+        let scrollingAppearance = UINavigationBarAppearance()
+        scrollingAppearance.configureWithTransparentBackground()
+        scrollingAppearance.backgroundColor = .black
+        scrollingAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.red]
+        scrollingAppearance.titleTextAttributes = [.foregroundColor: UIColor.red]
+
+        UINavigationBar.appearance().tintColor = .red
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = scrollingAppearance
+        UINavigationBar.appearance().compactAppearance = scrollingAppearance
         return true
     }
 

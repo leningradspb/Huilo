@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>674589761204-vnv5s4btn6bdafnklrv17lf9h8ve3eij.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.674589761204-vnv5s4btn6bdafnklrv17lf9h8ve3eij</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAUGiftF7nCIrU0rj6mJnzob496Hy4zjD0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>674589761204</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>ai.Huilo</string>
+	<key>PROJECT_ID</key>
+	<string>huilo-fb4b1</string>
+	<key>STORAGE_BUCKET</key>
+	<string>huilo-fb4b1.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:674589761204:ios:813ad746fd10cea78c41e1</string>
+</dict>
+</plist>

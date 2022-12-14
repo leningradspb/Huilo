@@ -14,6 +14,8 @@
 		264A1B00294A4A8000EA9092 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 264A1AFE294A4A8000EA9092 /* LaunchScreen.storyboard */; };
 		264A1B08294A4B1A00EA9092 /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264A1B07294A4B1A00EA9092 /* TabBarVC.swift */; };
 		264A1B0A294A4B3300EA9092 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264A1B09294A4B3200EA9092 /* SearchVC.swift */; };
+		264A1B0C294A4F1300EA9092 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 264A1B0B294A4F1300EA9092 /* GoogleService-Info.plist */; };
+		884476C030F30B17E54D3780 /* Pods_Huilo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB21BDDDD55D83FB3F5E54AE /* Pods_Huilo.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,10 @@
 		264A1B01294A4A8000EA9092 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		264A1B07294A4B1A00EA9092 /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
 		264A1B09294A4B3200EA9092 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
+		264A1B0B294A4F1300EA9092 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		6DBEDE4D450BED5BFDC4D0B8 /* Pods-Huilo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Huilo.release.xcconfig"; path = "Target Support Files/Pods-Huilo/Pods-Huilo.release.xcconfig"; sourceTree = "<group>"; };
+		DB21BDDDD55D83FB3F5E54AE /* Pods_Huilo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Huilo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F78667FB2A71BB7EC6194722 /* Pods-Huilo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Huilo.debug.xcconfig"; path = "Target Support Files/Pods-Huilo/Pods-Huilo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +39,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				884476C030F30B17E54D3780 /* Pods_Huilo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1FC6AB4C91BF6C3F56DA6C4F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F78667FB2A71BB7EC6194722 /* Pods-Huilo.debug.xcconfig */,
+				6DBEDE4D450BED5BFDC4D0B8 /* Pods-Huilo.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		264A1AE7294A4A7E00EA9092 = {
 			isa = PBXGroup;
 			children = (
 				264A1AF2294A4A7E00EA9092 /* Huilo */,
 				264A1AF1294A4A7E00EA9092 /* Products */,
+				1FC6AB4C91BF6C3F56DA6C4F /* Pods */,
+				6525874D6084BAC3FD5C3455 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,8 +84,17 @@
 				264A1AFC294A4A8000EA9092 /* Assets.xcassets */,
 				264A1AFE294A4A8000EA9092 /* LaunchScreen.storyboard */,
 				264A1B01294A4A8000EA9092 /* Info.plist */,
+				264A1B0B294A4F1300EA9092 /* GoogleService-Info.plist */,
 			);
 			path = Huilo;
+			sourceTree = "<group>";
+		};
+		6525874D6084BAC3FD5C3455 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DB21BDDDD55D83FB3F5E54AE /* Pods_Huilo.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,9 +104,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 264A1B04294A4A8000EA9092 /* Build configuration list for PBXNativeTarget "Huilo" */;
 			buildPhases = (
+				CFDF5EFB494272071B2D0271 /* [CP] Check Pods Manifest.lock */,
 				264A1AEC294A4A7E00EA9092 /* Sources */,
 				264A1AED294A4A7E00EA9092 /* Frameworks */,
 				264A1AEE294A4A7E00EA9092 /* Resources */,
+				1BF9E721E238156E6A9B83EA /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -130,10 +159,53 @@
 			files = (
 				264A1B00294A4A8000EA9092 /* LaunchScreen.storyboard in Resources */,
 				264A1AFD294A4A8000EA9092 /* Assets.xcassets in Resources */,
+				264A1B0C294A4F1300EA9092 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1BF9E721E238156E6A9B83EA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Huilo/Pods-Huilo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Huilo/Pods-Huilo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Huilo/Pods-Huilo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CFDF5EFB494272071B2D0271 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Huilo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		264A1AEC294A4A7E00EA9092 /* Sources */ = {
@@ -280,6 +352,7 @@
 		};
 		264A1B05294A4A8000EA9092 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F78667FB2A71BB7EC6194722 /* Pods-Huilo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -309,6 +382,7 @@
 		};
 		264A1B06294A4A8000EA9092 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6DBEDE4D450BED5BFDC4D0B8 /* Pods-Huilo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
