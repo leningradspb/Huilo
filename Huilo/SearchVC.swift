@@ -93,22 +93,18 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: CategoryCell.identifier, for: indexPath) as! CategoryCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: RecommendationCell.identifier, for: indexPath) as! RecommendationCell
             
             if indexPath.section < sections.count {
                 let section = sections[indexPath.section]
                 if let cells = section.cells, indexPath.row < cells.count {
-                    print(section.name)
-                    cell.textLabel?.textColor = .green
-                    cell.textLabel?.text = cells[indexPath.row].cellName
-                    cell.contentView.backgroundColor = .blue
                 }
 //                let model = conversations[indexPath.row]
 //                cell.updateConversationCell(with: model)
             }
             return cell
         } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: RecommendationCell.identifier, for: indexPath) as! RecommendationCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: CategoryCell.identifier, for: indexPath) as! CategoryCell
             
             if indexPath.section < sections.count {
                 let section = sections[indexPath.section]
@@ -126,8 +122,7 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-//        return conversations.count > 0 ? 100 : view.safeAreaLayoutGuide.layoutFrame.height
-        return 50
+        return indexPath.section == 0 ? 235 : 50
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -156,11 +151,10 @@ class CategoryCell: UITableViewCell {
 }
 
 class RecommendationCell: UITableViewCell {
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .red
-        contentView.backgroundColor = .black
-        selectionStyle = .none
+        
         setupUI()
     }
     
@@ -169,7 +163,65 @@ class RecommendationCell: UITableViewCell {
     }
     
     private func setupUI() {
+        backgroundColor = .black
+        contentView.backgroundColor = .black
+        selectionStyle = .none
+        collectionView.backgroundColor = .black
+        collectionView.register(RecommendationCollectionViewCell.self, forCellWithReuseIdentifier: RecommendationCollectionViewCell.identifier)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.scrollDirection = .horizontal
+            flowLayout.minimumLineSpacing = 8
+        }
         
+        contentView.addSubview(collectionView)
+        collectionView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
+    }
+}
+
+extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        5
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationCollectionViewCell.identifier, for: indexPath) as! RecommendationCollectionViewCell
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 210, height: 230)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("SLOT TAPPED IN collectionView")
+    }
+}
+
+
+class RecommendationCollectionViewCell: UICollectionViewCell {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    private func setupUI() {
+        contentView.backgroundColor = .grass
+        contentView.layer.cornerRadius = 5
     }
 }
 
