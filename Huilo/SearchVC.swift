@@ -10,11 +10,14 @@ import SnapKit
 
 class SearchVC: UIViewController {
     private let tableView = UITableView()
+    private var sections: [MainScreenModel.Section] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupNavigationBar()
+        setupTableView()
+        loadData()
     }
 
     private func setupNavigationBar() {
@@ -40,37 +43,79 @@ class SearchVC: UIViewController {
             $0.edges.equalToSuperview()
         }
     }
+    
+    private func loadData() {
+        FirebaseManager.shared.firestore.collection("Main").document("m").getDocument { [weak self] snapshot, error in
+            guard let self = self else { return }
+//            print(snapshot?.data(), error)
+//            snapshot?.data()
+            
+            guard let snapshotData = snapshot?.data() else { return }
+            guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+            
+            do {
+                let model = try JSONDecoder().decode(MainScreenModel.self, from: data)
+                print(model)
+                
+                DispatchQueue.main.async {
+                    self.sections = model.sections ?? []
+                    self.tableView.reloadData()
+                }
+            } catch let error {
+                print(error)
+            }
+            
+        }
+    }
 
 }
 
 extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        print(sections.count)
+        return sections.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        print(section, sections.count)
+        if section < sections.count {
+            return sections[section].name
+        }
+        return nil
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: CategoryCell.identifier, for: indexPath) as! CategoryCell
             
-    //        if indexPath.row < conversations.count {
-    //            let model = conversations[indexPath.row]
-    //            cell.updateConversationCell(with: model)
-    //        }
+            if indexPath.section < sections.count {
+                let section = sections[indexPath.section]
+                if let cells = section.cells, indexPath.row < cells.count {
+                    print(section.name)
+                }
+//                let model = conversations[indexPath.row]
+//                cell.updateConversationCell(with: model)
+            }
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: RecommendationCell.identifier, for: indexPath) as! RecommendationCell
             
-    //        if indexPath.row < conversations.count {
-    //            let model = conversations[indexPath.row]
-    //            cell.updateConversationCell(with: model)
-    //        }
+            if indexPath.section < sections.count {
+                let section = sections[indexPath.section]
+                if let cells = section.cells, indexPath.row < cells.count {
+                    print(section.name)
+                }
+                //                let model = conversations[indexPath.row]
+                //                cell.updateConversationCell(with: model)
+            }
             return cell
         }
     }
     
-//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 //        return conversations.count > 0 ? 100 : view.safeAreaLayoutGuide.layoutFrame.height
-//    }
+        return 50
+    }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        guard conversations.count > 0 else { return }
@@ -112,5 +157,20 @@ class RecommendationCell: UITableViewCell {
     
     private func setupUI() {
         
+    }
+}
+
+//
+struct MainScreenModel: Codable {
+    let sections: [Section]?
+
+    struct Section: Codable {
+        let name: String?
+        let cells: [Cell]?
+        
+        struct Cell: Codable {
+            let cellName: String?
+            let cellPhotos: [String]?
+        }
     }
 }
