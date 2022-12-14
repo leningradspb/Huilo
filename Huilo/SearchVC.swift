@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 
 class SearchVC: UIViewController {
     private let tableView = UITableView(frame: .zero, style: .grouped)
@@ -113,9 +114,8 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
             if indexPath.section < sections.count {
                 let section = sections[indexPath.section]
                 if let cells = section.cells, indexPath.row < cells.count {
+                    cell.photos = cells[indexPath.row].cellPhotos ?? []
                 }
-//                let model = conversations[indexPath.row]
-//                cell.updateConversationCell(with: model)
             }
             return cell
         } else {
@@ -167,6 +167,12 @@ class CategoryCell: UITableViewCell {
 
 class RecommendationCell: UITableViewCell {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var photos: [String] = [] {
+        didSet {
+            collectionView.reloadData()
+        }
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -204,11 +210,17 @@ class RecommendationCell: UITableViewCell {
 
 extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        5
+        photos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationCollectionViewCell.identifier, for: indexPath) as! RecommendationCollectionViewCell
+        if indexPath.row < photos.count {
+            let photo = photos[indexPath.row]
+            if let url = URL(string: photo) {
+                cell.setImage(url: url)
+            }
+        }
         
         return cell
     }
@@ -224,7 +236,8 @@ extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSour
 
 
 class RecommendationCollectionViewCell: UICollectionViewCell {
-    
+    private let recommendationImageView = UIImageView()
+    private let cornerRadius: CGFloat = 20
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -234,9 +247,26 @@ class RecommendationCollectionViewCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
+    func setImage(url: URL) {
+        recommendationImageView.kf.indicatorType = .activity
+        recommendationImageView.kf.setImage(with: url, options: [.transition(.fade(0.2))])
+    }
+    
     private func setupUI() {
-        contentView.backgroundColor = .grass
-        contentView.layer.cornerRadius = 20
+        contentView.backgroundColor = .black
+        contentView.layer.cornerRadius = cornerRadius
+        recommendationImageView.layer.cornerRadius = cornerRadius
+        recommendationImageView.clipsToBounds = true
+        recommendationImageView.contentMode = .scaleAspectFill
+        
+        contentView.addSubview(recommendationImageView)
+        
+        recommendationImageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.bottom.equalToSuperview()
+        }
     }
 }
 
