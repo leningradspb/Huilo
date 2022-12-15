@@ -19,13 +19,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         tabBarAppearance.configureWithTransparentBackground()
         tabBarAppearance.backgroundColor = UIColor.clear
         tabBarAppearance.backgroundEffect = UIBlurEffect(style: .dark)
-//        UITabBar.appearance().barTintColor = .black
-//        UITabBar.appearance().isTranslucent = false
-        UITabBar.appearance().unselectedItemTintColor = .gray
+        tabBarAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.white]
+        tabBarAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
+        tabBarAppearance.stackedLayoutAppearance.normal.iconColor = UIColor.white
+        tabBarAppearance.stackedLayoutAppearance.selected.iconColor = UIColor.white
+
         UITabBar.appearance().tintColor = .white
         UITabBar.appearance().standardAppearance = tabBarAppearance
-        UITabBarItem.appearance().setTitleTextAttributes([.font: UIFont.futura(withSize: 10)], for: .normal)
-        UITabBarItem.appearance().setTitleTextAttributes([.font: UIFont.futura(withSize: 10)], for: .selected)
+        UITabBarItem.appearance().setTitleTextAttributes([.font: UIFont.futura(withSize: 14)], for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([.font: UIFont.futura(withSize: 14)], for: .selected)
         
 //        UINavigationBar.appearance().backgroundColor = .red
         let appearance = UINavigationBarAppearance()

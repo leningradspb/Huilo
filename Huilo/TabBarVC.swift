@@ -33,9 +33,11 @@ class TabBarVC: UITabBarController {
         let generatorNC = UINavigationController()
         let generatorVC = GeneratorVC()
         generatorNC.viewControllers = [generatorVC]
-        let generatorIcon = UIImage(systemName: "flame.fill", withConfiguration: iconConfig)
-        generatorVC.tabBarItem.title = "ai genaretor"
-        generatorVC.tabBarItem.image = generatorIcon
+        let generate = UIImage(systemName: "paintbrush.pointed", withConfiguration: iconConfig)
+        let generatSelected = UIImage(systemName: "paintbrush.pointed.fill", withConfiguration: iconConfig)
+        generatorVC.tabBarItem.title = "ai generator"
+        generatorVC.tabBarItem.image = generate
+        generatorVC.tabBarItem.selectedImage = generatSelected
         generatorVC.tabBarItem.tag = 1
         
         tabBarList = [mainNC, generatorNC]
