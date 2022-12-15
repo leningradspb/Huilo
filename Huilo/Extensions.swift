@@ -66,6 +66,8 @@ extension UIColor {
     static let grass = UIColor(hex: "#30BA8F")
     /// UIColor.white.withAlphaComponent(0.1)
     static let commonGrey = UIColor.white.withAlphaComponent(0.1)
+    /// 370258
+    static let violet = UIColor(hex: "#370258")
 }
 
 extension String {

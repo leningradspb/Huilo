@@ -41,10 +41,11 @@ class SearchVC: UIViewController {
         
         view.addSubview(gradientContentView)
         gradientContentView.addSubview(tableView)
-        gradientContentView.startLocation = 0.1
-        gradientContentView.endLocation = 0.4
-        gradientContentView.startColor = UIColor(hex: "#7F00FF")
-        gradientContentView.endColor = UIColor(hex: "#89CFF0")
+        gradientContentView.startLocation = 0
+        gradientContentView.endLocation = 0.2
+        
+        gradientContentView.startColor = .violet
+        gradientContentView.endColor = .black
         gradientContentView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
