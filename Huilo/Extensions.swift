@@ -58,6 +58,16 @@ extension UIColor {
     }
 }
 
+extension UIFont {
+    static func futura(withSize size: CGFloat) -> UIFont {
+        return UIFont(name: "Futura", size: size)!
+    }
+}
+
+struct Layout {
+    static let leading: CGFloat = 20
+}
+
 
 extension UIColor {
     /// FF4364

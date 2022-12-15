@@ -23,7 +23,7 @@ class SearchVC: UIViewController {
     }
 
     private func setupNavigationBar() {
-        navigationItem.title = "Recommendations"
+        navigationItem.title = "main"
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
     }
@@ -38,6 +38,10 @@ class SearchVC: UIViewController {
         tableView.dataSource = self
         tableView.register(CategoryCell.self, forCellReuseIdentifier: CategoryCell.identifier)
         tableView.register(RecommendationCell.self, forCellReuseIdentifier: RecommendationCell.identifier)
+        tableView.estimatedSectionFooterHeight = 0
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0
+        }
         
         view.addSubview(gradientContentView)
         gradientContentView.addSubview(tableView)
@@ -142,12 +146,20 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.section == 0 ? 300 : 280
+        return indexPath.section == 0 ? 306 : 286
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 //        guard conversations.count > 0 else { return }
 //        showChat(by: indexPath.row)
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return UIView()
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        .leastNormalMagnitude
     }
 }
 
@@ -181,7 +193,7 @@ class CategoryCell: UITableViewCell {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: Layout.leading, bottom: 0, right: Layout.leading)
         if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .horizontal
             flowLayout.minimumLineSpacing = 10
@@ -189,11 +201,11 @@ class CategoryCell: UITableViewCell {
         
         contentView.addSubviews([collectionViewHeader, collectionView])
         collectionViewHeader.textColor = .white
-        collectionViewHeader.font = .systemFont(ofSize: 16, weight: .heavy)
+        collectionViewHeader.font = .futura(withSize: 18)
         
         collectionViewHeader.snp.makeConstraints {
             $0.top.equalToSuperview().offset(10)
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(Layout.leading)
             $0.trailing.equalToSuperview()
         }
         
@@ -262,7 +274,7 @@ class RecommendationCell: UITableViewCell {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: Layout.leading, bottom: 0, right: Layout.leading)
         if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .horizontal
             flowLayout.minimumLineSpacing = 10
@@ -270,11 +282,11 @@ class RecommendationCell: UITableViewCell {
         
         contentView.addSubviews([collectionViewHeader, collectionView])
         collectionViewHeader.textColor = .white
-        collectionViewHeader.font = .systemFont(ofSize: 16, weight: .heavy)
+        collectionViewHeader.font = .futura(withSize: 18)
         
         collectionViewHeader.snp.makeConstraints {
             $0.top.equalToSuperview()
-            $0.leading.equalToSuperview().offset(16)
+            $0.leading.equalToSuperview().offset(Layout.leading)
             $0.trailing.equalToSuperview()
         }
         
