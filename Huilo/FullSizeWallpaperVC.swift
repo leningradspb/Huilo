@@ -75,9 +75,9 @@ class FullSizeWallpaperVC: UIViewController {
         
         let textMaxSize = CGSize(width: UIScreen.main.bounds.width - 64 - 12 - 8, height: CGFloat.greatestFiniteMagnitude)
         let textSize = textLabel.systemLayoutSizeFitting(textMaxSize)
-        textLabel.frame = CGRect(origin: .zero, size: textSize)
+        textLabel.frame = CGRect(origin: CGPoint(x: 34, y: 0), size: textSize)  //CGRect(origin: .zero, size: textSize)
         
-        let closeButton = UIButton(frame: CGRect(x: textSize.width + 15, y: -6, width: 30, height: 30))
+        let closeButton = UIButton(frame: CGRect(x: 0, y: -2, width: 24, height: 24))
         closeButton.setImage(UIImage(named: "libraryIcon"), for: .normal)
         
         let contentView = UIView()
@@ -93,8 +93,8 @@ class FullSizeWallpaperVC: UIViewController {
         preferences.drawing.arrowWidth = 16
         preferences.drawing.arrowHeight = 8
         preferences.drawing.cornerRadius = 14
-        preferences.positioning.bubbleInsets = UIEdgeInsets(top: 0, left: 16, bottom: 4, right: 16)
-        preferences.positioning.contentInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        preferences.positioning.bubbleInsets = UIEdgeInsets(top: 5, left: 16, bottom: 5, right: 12)
+        preferences.positioning.contentInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 12)
         preferences.positioning.maxWidth = UIScreen.main.bounds.width - 64
         preferences.animating.dismissOnTap = true
         
