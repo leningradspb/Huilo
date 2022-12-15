@@ -132,7 +132,7 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.section == 0 ? 300 : 245
+        return indexPath.section == 0 ? 300 : 280
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -143,9 +143,11 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: - Ячейка категории, содержащая коллекцию
 class CategoryCell: UITableViewCell {
+    private let collectionViewHeader = UILabel()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     var sectionCell: MainScreenModel.Section.Cell? {
         didSet {
+            collectionViewHeader.text = sectionCell?.cellName
             collectionView.reloadData()
         }
     }
@@ -175,9 +177,18 @@ class CategoryCell: UITableViewCell {
             flowLayout.minimumLineSpacing = 10
         }
         
-        contentView.addSubview(collectionView)
+        contentView.addSubviews([collectionViewHeader, collectionView])
+        collectionViewHeader.textColor = .white
+        collectionViewHeader.font = .systemFont(ofSize: 16, weight: .heavy)
+        
+        collectionViewHeader.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(10)
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview()
+        }
+        
         collectionView.snp.makeConstraints {
-            $0.top.equalToSuperview()
+            $0.top.equalTo(collectionViewHeader.snp.bottom).offset(10)
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
