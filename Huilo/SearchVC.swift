@@ -114,7 +114,7 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
             if indexPath.section < sections.count {
                 let section = sections[indexPath.section]
                 if let cells = section.cells, indexPath.row < cells.count {
-                    cell.photos = cells[indexPath.row].cellPhotos ?? []
+                    cell.sectionCell = cells[indexPath.row]
                 }
             }
             return cell
@@ -124,7 +124,7 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
             if indexPath.section < sections.count {
                 let section = sections[indexPath.section]
                 if let cells = section.cells, indexPath.row < cells.count {
-                    cell.photos = cells[indexPath.row].cellPhotos ?? []
+                    cell.sectionCell = cells[indexPath.row]
                 }
             }
             return cell
@@ -144,7 +144,7 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
 
 class CategoryCell: UITableViewCell {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    var photos: [String] = [] {
+    var sectionCell: MainScreenModel.Section.Cell? {
         didSet {
             collectionView.reloadData()
         }
@@ -187,12 +187,12 @@ class CategoryCell: UITableViewCell {
 
 extension CategoryCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        photos.count
+        sectionCell?.cellPhotos?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationCollectionViewCell.identifier, for: indexPath) as! RecommendationCollectionViewCell
-        if indexPath.row < photos.count {
+        if let photos = sectionCell?.cellPhotos, indexPath.row < photos.count {
             let photo = photos[indexPath.row]
             if let url = URL(string: photo) {
                 cell.setImage(url: url)
@@ -213,7 +213,7 @@ extension CategoryCell: UICollectionViewDelegate, UICollectionViewDataSource, UI
 
 class RecommendationCell: UITableViewCell {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    var photos: [String] = [] {
+    var sectionCell: MainScreenModel.Section.Cell? {
         didSet {
             collectionView.reloadData()
         }
@@ -256,12 +256,12 @@ class RecommendationCell: UITableViewCell {
 
 extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        photos.count
+        sectionCell?.cellPhotos?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationCollectionViewCell.identifier, for: indexPath) as! RecommendationCollectionViewCell
-        if indexPath.row < photos.count {
+        if let photos = sectionCell?.cellPhotos, indexPath.row < photos.count {
             let photo = photos[indexPath.row]
             if let url = URL(string: photo) {
                 cell.setImage(url: url)
