@@ -94,28 +94,28 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
         return 0
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if section < sections.count {
-            let v = UIView()
-            let header = UILabel()
-            header.text = sections[section].name
-            v.addSubview(header)
-            header.textColor = .white
-            header.font = .systemFont(ofSize: 24, weight: .semibold)
-            
-            header.snp.makeConstraints {
-                $0.leading.equalToSuperview().offset(16)
-                $0.trailing.equalToSuperview()
-                $0.centerY.equalToSuperview()
-            }
-            return v
-        }
-        return nil
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 60
-    }
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//        if section < sections.count {
+//            let v = UIView()
+//            let header = UILabel()
+//            header.text = sections[section].name
+//            v.addSubview(header)
+//            header.textColor = .white
+//            header.font = .systemFont(ofSize: 24, weight: .semibold)
+//            
+//            header.snp.makeConstraints {
+//                $0.leading.equalToSuperview().offset(16)
+//                $0.trailing.equalToSuperview()
+//                $0.centerY.equalToSuperview()
+//            }
+//            return v
+//        }
+//        return nil
+//    }
+//    
+//    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return 60
+//    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
