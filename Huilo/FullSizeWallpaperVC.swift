@@ -50,16 +50,18 @@ class FullSizeWallpaperVC: UIViewController {
             $0.height.equalTo(35)
         }
         
-        let saveImage = UIImage(systemName: "arrow.down.circle", withConfiguration: iconConfig)
+        let saveImage = UIImage(systemName: "arrow.down.circle.fill", withConfiguration: iconConfig)
         saveButton.image = saveImage
-        saveButton.tintColor = .commonGrey
+        saveButton.tintColor = .black
+        saveButton.backgroundColor = .white.withAlphaComponent(0.5)
+        saveButton.layer.cornerRadius = 24
         saveButton.addTapGesture(target: self, action: #selector(saveImageTapped))
         
         saveButton.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(Layout.leading)
-            $0.trailing.equalToSuperview().offset(-Layout.leading)
-            $0.width.equalTo(40)
-            $0.height.equalTo(35)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-5)
+            $0.trailing.equalToSuperview().offset(-30)
+            $0.width.equalTo(46)
+            $0.height.equalTo(40)
         }
     }
     
