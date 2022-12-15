@@ -131,9 +131,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
                     cell.sectionCell = cells[indexPath.row]
                     cell.showFullScreenWallpaperVC = { [weak self] image in
                         guard let self = self else { return }
-                        let vc = UIViewController()
-                        vc.modalPresentationStyle = .fullScreen
-                        vc.view.backgroundColor = .systemMint
+                        let vc = FullSizeWallpaperVC(image: image)
                         self.present(vc, animated: true)
                     }
                 }

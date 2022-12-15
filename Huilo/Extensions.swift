@@ -76,6 +76,7 @@ extension UIFont {
 }
 
 struct Layout {
+    /// 20
     static let leading: CGFloat = 20
 }
 
@@ -85,8 +86,8 @@ extension UIColor {
     static let scarlet = UIColor(hex: "#FF4364")
     /// 30BA8F
     static let grass = UIColor(hex: "#30BA8F")
-    /// UIColor.white.withAlphaComponent(0.1)
-    static let commonGrey = UIColor.white.withAlphaComponent(0.1)
+    /// #5b5b5b
+    static let commonGrey = UIColor(hex: "#5b5b5b")
     /// 370258
     static let violet = UIColor(hex: "#370258")
 }
