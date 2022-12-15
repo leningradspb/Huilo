@@ -11,6 +11,8 @@ class FullSizeWallpaperVC: UIViewController {
     private let wallpaperImageView = UIImageView()
     private let iconConfig = UIImage.SymbolConfiguration(scale: .large)
     private let closeButton = UIImageView()
+    private let saveButton = UIImageView()
+    
     private let image: UIImage
     init(image: UIImage) {
         self.image = image
@@ -34,8 +36,8 @@ class FullSizeWallpaperVC: UIViewController {
             $0.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
-        
-        view.addSubviews([closeButton])
+
+        view.addSubviews([closeButton, saveButton])
         let closeImage = UIImage(systemName: "chevron.backward.circle.fill", withConfiguration: iconConfig)
         closeButton.image = closeImage
         closeButton.tintColor = .commonGrey
@@ -47,10 +49,39 @@ class FullSizeWallpaperVC: UIViewController {
             $0.width.equalTo(40)
             $0.height.equalTo(35)
         }
+        
+        let saveImage = UIImage(systemName: "arrow.down.circle", withConfiguration: iconConfig)
+        saveButton.image = saveImage
+        saveButton.tintColor = .commonGrey
+        saveButton.addTapGesture(target: self, action: #selector(saveImageTapped))
+        
+        saveButton.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(Layout.leading)
+            $0.trailing.equalToSuperview().offset(-Layout.leading)
+            $0.width.equalTo(40)
+            $0.height.equalTo(35)
+        }
     }
     
     @objc private func closeTapped() {
         self.dismiss(animated: true)
     }
     
+    @objc private func saveImageTapped() {
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+
+    //MARK: - Save Image callback
+
+    @objc private func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+
+        if let error = error {
+
+            print(error.localizedDescription)
+
+        } else {
+
+            print("Success")
+        }
+    }
 }
