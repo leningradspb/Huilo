@@ -102,6 +102,10 @@ class FullSizeWallpaperVC: UIViewController {
         
         DispatchQueue.main.async {
             tooltip.show(animated: true, forView: forView, withinSuperview: nil)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                tooltip.dismiss()
+            }
         }
     }
     
@@ -121,6 +125,9 @@ class FullSizeWallpaperVC: UIViewController {
         if let error = error {
 
             print(error.localizedDescription)
+            self.createEasyTipView(forView: self.saveButton, text: error.localizedDescription) {
+                print("Tapped")
+            }
 
         } else {
 
