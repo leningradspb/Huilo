@@ -10,6 +10,7 @@ import SnapKit
 import Kingfisher
 
 class SearchVC: UIViewController {
+    private let gradientContentView = GradientView()
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections: [MainScreenModel.Section] = []
     
@@ -29,7 +30,7 @@ class SearchVC: UIViewController {
     
     private func setupTableView() {
         view.backgroundColor = .black
-        tableView.backgroundColor = .black
+        tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
         tableView.separatorColor = UIColor.white.withAlphaComponent(0.4)
@@ -38,7 +39,15 @@ class SearchVC: UIViewController {
         tableView.register(CategoryCell.self, forCellReuseIdentifier: CategoryCell.identifier)
         tableView.register(RecommendationCell.self, forCellReuseIdentifier: RecommendationCell.identifier)
         
-        view.addSubview(tableView)
+        view.addSubview(gradientContentView)
+        gradientContentView.addSubview(tableView)
+        gradientContentView.startLocation = 0.1
+        gradientContentView.endLocation = 0.4
+        gradientContentView.startColor = UIColor(hex: "#7F00FF")
+        gradientContentView.endColor = UIColor(hex: "#89CFF0")
+        gradientContentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
         
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
@@ -163,10 +172,10 @@ class CategoryCell: UITableViewCell {
     }
     
     private func setupUI() {
-        backgroundColor = .black
-        contentView.backgroundColor = .black
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
         selectionStyle = .none
-        collectionView.backgroundColor = .black
+        collectionView.backgroundColor = .clear
         collectionView.register(FullContentViewImageCollectionViewCell.self, forCellWithReuseIdentifier: FullContentViewImageCollectionViewCell.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -244,10 +253,10 @@ class RecommendationCell: UITableViewCell {
     }
     
     private func setupUI() {
-        backgroundColor = .black
-        contentView.backgroundColor = .black
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
         selectionStyle = .none
-        collectionView.backgroundColor = .black
+        collectionView.backgroundColor = .clear
         collectionView.register(FullContentViewImageCollectionViewCell.self, forCellWithReuseIdentifier: FullContentViewImageCollectionViewCell.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -323,7 +332,7 @@ class FullContentViewImageCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        contentView.backgroundColor = .black
+        contentView.backgroundColor = .clear
         contentView.layer.cornerRadius = cornerRadius
         recommendationImageView.layer.cornerRadius = cornerRadius
         recommendationImageView.clipsToBounds = true

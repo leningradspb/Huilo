@@ -35,7 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         let scrollingAppearance = UINavigationBarAppearance()
         scrollingAppearance.configureWithTransparentBackground()
-        scrollingAppearance.backgroundColor = .black
+        scrollingAppearance.backgroundColor = .clear
         scrollingAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.scarlet]
         scrollingAppearance.titleTextAttributes = [.foregroundColor: UIColor.scarlet]
 
