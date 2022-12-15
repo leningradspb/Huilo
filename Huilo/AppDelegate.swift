@@ -22,8 +22,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        UITabBar.appearance().barTintColor = .black
 //        UITabBar.appearance().isTranslucent = false
         UITabBar.appearance().unselectedItemTintColor = .gray
-        UITabBar.appearance().tintColor = .red
+        UITabBar.appearance().tintColor = .white
         UITabBar.appearance().standardAppearance = tabBarAppearance
+        UITabBarItem.appearance().setTitleTextAttributes([.font: UIFont.futura(withSize: 10)], for: .normal)
+        UITabBarItem.appearance().setTitleTextAttributes([.font: UIFont.futura(withSize: 10)], for: .selected)
         
 //        UINavigationBar.appearance().backgroundColor = .red
         let appearance = UINavigationBarAppearance()
@@ -39,7 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         scrollingAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.futura(withSize: 40)]
         scrollingAppearance.titleTextAttributes = [.foregroundColor: UIColor.white, .font: UIFont.futura(withSize: 30)]
 
-        UINavigationBar.appearance().tintColor = .scarlet
+        UINavigationBar.appearance().tintColor = .white
         UINavigationBar.appearance().standardAppearance = appearance
         UINavigationBar.appearance().scrollEdgeAppearance = scrollingAppearance
         UINavigationBar.appearance().compactAppearance = scrollingAppearance

@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class SearchVC: UIViewController {
+class MainVC: UIViewController {
     private let gradientContentView = GradientView()
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections: [MainScreenModel.Section] = []
@@ -85,7 +85,7 @@ class SearchVC: UIViewController {
 
 }
 
-extension SearchVC: UITableViewDelegate, UITableViewDataSource {
+extension MainVC: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         sections.count
     }

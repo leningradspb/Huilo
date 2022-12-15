@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class GeneratorVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

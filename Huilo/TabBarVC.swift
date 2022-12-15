@@ -18,17 +18,25 @@ class TabBarVC: UITabBarController {
     private func setupTabBar() {
         var tabBarList: [UIViewController]!
         
-        let searchNC = UINavigationController()
-        let searchVC = SearchVC()
-        searchNC.viewControllers = [searchVC]
+        let mainNC = UINavigationController()
+        let mainVC = MainVC()
+        mainNC.viewControllers = [mainVC]
         let iconConfig = UIImage.SymbolConfiguration(scale: .large)
         let bubbleIcon = UIImage(systemName: "flame.fill", withConfiguration: iconConfig)
         
-        searchVC.tabBarItem.title = nil
-        searchVC.tabBarItem.image = bubbleIcon
-        searchVC.tabBarItem.tag = 0
+        mainVC.tabBarItem.title = "main"
+        mainVC.tabBarItem.image = bubbleIcon
+        mainVC.tabBarItem.tag = 0
         
-        tabBarList = [searchNC]
+        let generatorNC = UINavigationController()
+        let generatorVC = GeneratorVC()
+        generatorNC.viewControllers = [generatorVC]
+        let generatorIcon = UIImage(systemName: "flame.fill", withConfiguration: iconConfig)
+        generatorVC.tabBarItem.title = "ai genaretor"
+        generatorVC.tabBarItem.image = generatorIcon
+        generatorVC.tabBarItem.tag = 1
+        
+        tabBarList = [mainNC, generatorNC]
         viewControllers = tabBarList
     }
 }
