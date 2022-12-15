@@ -129,6 +129,13 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
                 let section = sections[indexPath.section]
                 if let cells = section.cells, indexPath.row < cells.count {
                     cell.sectionCell = cells[indexPath.row]
+                    cell.showFullScreenWallpaperVC = { [weak self] image in
+                        guard let self = self else { return }
+                        let vc = UIViewController()
+                        vc.modalPresentationStyle = .fullScreen
+                        vc.view.backgroundColor = .systemMint
+                        self.present(vc, animated: true)
+                    }
                 }
             }
             return cell
@@ -248,6 +255,8 @@ extension CategoryCell: UICollectionViewDelegate, UICollectionViewDataSource, UI
 class RecommendationCell: UITableViewCell {
     private let collectionViewHeader = UILabel()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var showFullScreenWallpaperVC: ((UIImage)->())?
+    
     var sectionCell: MainScreenModel.Section.Cell? {
         didSet {
             collectionViewHeader.text = sectionCell?.cellName
@@ -311,6 +320,10 @@ extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSour
             let photo = photos[indexPath.row]
             if let url = URL(string: photo) {
                 cell.setImage(url: url)
+                cell.showFullScreenWallpaperVC = { [weak self] image in
+                    guard let self = self else { return }
+                    self.showFullScreenWallpaperVC?(image)
+                }
             }
         }
         
@@ -330,6 +343,8 @@ extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSour
 class FullContentViewImageCollectionViewCell: UICollectionViewCell {
     private let recommendationImageView = UIImageView()
     private let cornerRadius: CGFloat = 20
+    var showFullScreenWallpaperVC: ((UIImage)->())?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -358,6 +373,14 @@ class FullContentViewImageCollectionViewCell: UICollectionViewCell {
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
+        }
+        
+        addTapGesture(target: self, action: #selector(viewTapped))
+    }
+    
+    @objc private func viewTapped() {
+        if let image = recommendationImageView.image {
+            showFullScreenWallpaperVC?(image)
         }
     }
 }

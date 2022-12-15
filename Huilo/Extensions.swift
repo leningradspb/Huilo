@@ -27,6 +27,17 @@ extension UIView {
     func addSubviews(_ subviews: [UIView]) {
         subviews.forEach { self.addSubview($0) }
     }
+    
+    func addTapGesture(target: Any?, action: Selector?) {
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: target, action: action)
+        
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        
+        self.isUserInteractionEnabled = true
+        self.addGestureRecognizer(singleTapGestureRecognizer)
+    }
 }
 
 extension UIStackView {
