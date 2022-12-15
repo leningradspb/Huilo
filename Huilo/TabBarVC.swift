@@ -22,10 +22,12 @@ class TabBarVC: UITabBarController {
         let mainVC = MainVC()
         mainNC.viewControllers = [mainVC]
         let iconConfig = UIImage.SymbolConfiguration(scale: .large)
-        let bubbleIcon = UIImage(systemName: "flame.fill", withConfiguration: iconConfig)
+        let flame = UIImage(systemName: "flame", withConfiguration: iconConfig)
+        let flameSelected = UIImage(systemName: "flame.fill", withConfiguration: iconConfig)
         
         mainVC.tabBarItem.title = "main"
-        mainVC.tabBarItem.image = bubbleIcon
+        mainVC.tabBarItem.image = flame
+        mainVC.tabBarItem.selectedImage = flameSelected
         mainVC.tabBarItem.tag = 0
         
         let generatorNC = UINavigationController()
