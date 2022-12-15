@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import EasyTipView
 
 class FullSizeWallpaperVC: UIViewController {
     private let wallpaperImageView = UIImageView()
@@ -65,6 +66,45 @@ class FullSizeWallpaperVC: UIViewController {
         }
     }
     
+    private func createEasyTipView(forView: UIView, text: String, onTap: (()->Void)?) {
+        let textLabel = UILabel()
+        textLabel.font = .futura(withSize: 16)
+        textLabel.textColor = .white
+        textLabel.numberOfLines = 0
+        textLabel.text = text
+        
+        let textMaxSize = CGSize(width: UIScreen.main.bounds.width - 64 - 12 - 8, height: CGFloat.greatestFiniteMagnitude)
+        let textSize = textLabel.systemLayoutSizeFitting(textMaxSize)
+        textLabel.frame = CGRect(origin: .zero, size: textSize)
+        
+        let closeButton = UIButton(frame: CGRect(x: textSize.width + 15, y: -6, width: 30, height: 30))
+        closeButton.setImage(UIImage(named: "libraryIcon"), for: .normal)
+        
+        let contentView = UIView()
+        contentView.addSubview(textLabel)
+        contentView.addSubview(closeButton)
+        
+        let contentSize = CGSize(width: textSize.width + 16 + closeButton.frame.width, height: textSize.height)
+        contentView.frame = CGRect(origin: .zero, size: contentSize)
+        
+        var preferences = EasyTipView.Preferences()
+        preferences.drawing.backgroundColor = .black.withAlphaComponent(0.5)
+        preferences.drawing.arrowPosition = .bottom
+        preferences.drawing.arrowWidth = 16
+        preferences.drawing.arrowHeight = 8
+        preferences.drawing.cornerRadius = 14
+        preferences.positioning.bubbleInsets = UIEdgeInsets(top: 0, left: 16, bottom: 4, right: 16)
+        preferences.positioning.contentInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+        preferences.positioning.maxWidth = UIScreen.main.bounds.width - 64
+        preferences.animating.dismissOnTap = true
+        
+        let tooltip = EasyTipView(contentView: contentView, preferences: preferences)
+        
+        DispatchQueue.main.async {
+            tooltip.show(animated: true, forView: forView, withinSuperview: nil)
+        }
+    }
+    
     @objc private func closeTapped() {
         self.dismiss(animated: true)
     }
@@ -85,6 +125,9 @@ class FullSizeWallpaperVC: UIViewController {
         } else {
 
             print("Success")
+            self.createEasyTipView(forView: self.saveButton, text: "saved in photo") {
+                print("Tapped")
+            }
         }
     }
 }

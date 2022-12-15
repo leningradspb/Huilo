@@ -13,5 +13,6 @@ pod 'Firebase/Crashlytics'
   pod 'Kingfisher'
   pod 'SnapKit'
 pod 'lottie-ios'
+pod 'EasyTipView'
 
 end

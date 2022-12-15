@@ -602,6 +602,7 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.24):
     - BoringSSL-GRPC/Interface (= 0.0.24)
   - BoringSSL-GRPC/Interface (0.0.24)
+  - EasyTipView (2.1.0)
   - Firebase/Analytics (9.4.0):
     - Firebase/Core
   - Firebase/Auth (9.4.0):
@@ -807,6 +808,7 @@ PODS:
   - SnapKit (5.6.0)
 
 DEPENDENCIES:
+  - EasyTipView
   - Firebase/Analytics
   - Firebase/Auth
   - Firebase/Crashlytics
@@ -820,6 +822,7 @@ SPEC REPOS:
   trunk:
     - abseil
     - BoringSSL-GRPC
+    - EasyTipView
     - Firebase
     - FirebaseAnalytics
     - FirebaseAppCheckInterop
@@ -851,6 +854,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   abseil: ebe5b5529fb05d93a8bdb7951607be08b7fa71bc
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
+  EasyTipView: a92b6edc377b81c5ac18e9fd35d5ee78e9409488
   Firebase: 7703fc4022824b6d6db1bf7bea58d13b8e17ec46
   FirebaseAnalytics: a1a24e72b7ba7f47045a4633f1abb545c07bd29c
   FirebaseAppCheckInterop: 63119cdfc94b16c3e9421513c17f597aee2ea225
@@ -879,6 +883,6 @@ SPEC CHECKSUMS:
   PromisesObjC: ab77feca74fa2823e7af4249b8326368e61014cb
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
-PODFILE CHECKSUM: 3d14f9795260d17891ddfba23d08eb1c8ea12ac2
+PODFILE CHECKSUM: a6454891a4b7d79f3870158356d6e924adc43d76
 
 COCOAPODS: 1.11.3
