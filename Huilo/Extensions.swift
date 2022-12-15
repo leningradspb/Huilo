@@ -9,6 +9,7 @@ import UIKit
 import Kingfisher
 import FirebaseStorage
 import Lottie
+import AVFoundation
 
 extension UITableViewCell {
     static var identifier: String {
@@ -166,5 +167,11 @@ final class GradientView: UIView {
         updatePoints()
         updateLocations()
         updateColors()
+    }
+}
+
+extension UIViewController {
+    func shortVibrate() {
+        AudioServicesPlaySystemSound(1519)
     }
 }

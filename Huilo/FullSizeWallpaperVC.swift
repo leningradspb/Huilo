@@ -70,6 +70,7 @@ class FullSizeWallpaperVC: UIViewController {
     }
     
     @objc private func saveImageTapped() {
+        self.shortVibrate()
         UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
 
