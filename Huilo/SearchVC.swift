@@ -141,7 +141,7 @@ extension SearchVC: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-
+// MARK: - Ячейка категории, содержащая коллекцию
 class CategoryCell: UITableViewCell {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     var sectionCell: MainScreenModel.Section.Cell? {
@@ -165,7 +165,7 @@ class CategoryCell: UITableViewCell {
         contentView.backgroundColor = .black
         selectionStyle = .none
         collectionView.backgroundColor = .black
-        collectionView.register(RecommendationCollectionViewCell.self, forCellWithReuseIdentifier: RecommendationCollectionViewCell.identifier)
+        collectionView.register(FullContentViewImageCollectionViewCell.self, forCellWithReuseIdentifier: FullContentViewImageCollectionViewCell.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
@@ -184,14 +184,14 @@ class CategoryCell: UITableViewCell {
         }
     }
 }
-
+// MARK: - Настойка коллекции для категории
 extension CategoryCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         sectionCell?.cellPhotos?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationCollectionViewCell.identifier, for: indexPath) as! RecommendationCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FullContentViewImageCollectionViewCell.identifier, for: indexPath) as! FullContentViewImageCollectionViewCell
         if let photos = sectionCell?.cellPhotos, indexPath.row < photos.count {
             let photo = photos[indexPath.row]
             if let url = URL(string: photo) {
@@ -211,6 +211,7 @@ extension CategoryCell: UICollectionViewDelegate, UICollectionViewDataSource, UI
     }
 }
 
+// MARK: - Ячейка рекомендаций, содержащая коллекцию
 class RecommendationCell: UITableViewCell {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     var sectionCell: MainScreenModel.Section.Cell? {
@@ -234,7 +235,7 @@ class RecommendationCell: UITableViewCell {
         contentView.backgroundColor = .black
         selectionStyle = .none
         collectionView.backgroundColor = .black
-        collectionView.register(RecommendationCollectionViewCell.self, forCellWithReuseIdentifier: RecommendationCollectionViewCell.identifier)
+        collectionView.register(FullContentViewImageCollectionViewCell.self, forCellWithReuseIdentifier: FullContentViewImageCollectionViewCell.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.showsHorizontalScrollIndicator = false
@@ -254,13 +255,14 @@ class RecommendationCell: UITableViewCell {
     }
 }
 
+// MARK: - Настойка коллекции для рекомендации
 extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         sectionCell?.cellPhotos?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendationCollectionViewCell.identifier, for: indexPath) as! RecommendationCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FullContentViewImageCollectionViewCell.identifier, for: indexPath) as! FullContentViewImageCollectionViewCell
         if let photos = sectionCell?.cellPhotos, indexPath.row < photos.count {
             let photo = photos[indexPath.row]
             if let url = URL(string: photo) {
@@ -281,7 +283,7 @@ extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSour
 }
 
 
-class RecommendationCollectionViewCell: UICollectionViewCell {
+class FullContentViewImageCollectionViewCell: UICollectionViewCell {
     private let recommendationImageView = UIImageView()
     private let cornerRadius: CGFloat = 20
     override init(frame: CGRect) {
