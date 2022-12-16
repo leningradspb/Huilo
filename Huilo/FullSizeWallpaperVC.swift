@@ -13,6 +13,7 @@ class FullSizeWallpaperVC: UIViewController {
     private let iconConfig = UIImage.SymbolConfiguration(scale: .large)
     private let closeButton = UIImageView()
     private let saveButton = UIImageView()
+    private let timeLabel = UILabel()
     
     private let image: UIImage
     init(image: UIImage) {
@@ -38,7 +39,7 @@ class FullSizeWallpaperVC: UIViewController {
             $0.bottom.equalToSuperview()
         }
 
-        view.addSubviews([closeButton, saveButton])
+        view.addSubviews([closeButton, saveButton, timeLabel])
         let closeImage = UIImage(systemName: "chevron.backward.circle.fill", withConfiguration: iconConfig)
         closeButton.image = closeImage
         closeButton.tintColor = .commonGrey
@@ -64,6 +65,13 @@ class FullSizeWallpaperVC: UIViewController {
             $0.width.equalTo(46)
             $0.height.equalTo(40)
         }
+        timeLabel.text = "09:41"
+        timeLabel.font = UIFont(name: "SFProRailsRegular", size: 90)
+        timeLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(170)
+            $0.centerX.equalToSuperview()
+        }
+//        timeLabel.textColor = .white
     }
     
     private func createEasyTipView(forView: UIView, text: String, onTap: (()->Void)?) {

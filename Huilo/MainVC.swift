@@ -20,6 +20,15 @@ class MainVC: UIViewController {
         setupNavigationBar()
         setupTableView()
         loadData()
+        
+        for family in UIFont.familyNames {
+                  print("Family name " + family)
+                  let fontNames = UIFont.fontNames(forFamilyName: family)
+
+                  for font in fontNames {
+                      print("    Font name: " + font)
+                  }
+              }
     }
 
     private func setupNavigationBar() {

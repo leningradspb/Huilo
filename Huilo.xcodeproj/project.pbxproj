@@ -18,6 +18,7 @@
 		264A1B0C294A4F1300EA9092 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 264A1B0B294A4F1300EA9092 /* GoogleService-Info.plist */; };
 		264A1B0E294A54D100EA9092 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264A1B0D294A54D100EA9092 /* Extensions.swift */; };
 		264A1B10294A59C300EA9092 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264A1B0F294A59C300EA9092 /* FirebaseManager.swift */; };
+		26E1B901294C497A00DB62CB /* SF Pro - Semibold Rails.otf in Resources */ = {isa = PBXBuildFile; fileRef = 26E1B900294C497A00DB62CB /* SF Pro - Semibold Rails.otf */; };
 		884476C030F30B17E54D3780 /* Pods_Huilo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB21BDDDD55D83FB3F5E54AE /* Pods_Huilo.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		264A1B0B294A4F1300EA9092 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		264A1B0D294A54D100EA9092 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		264A1B0F294A59C300EA9092 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
+		26E1B900294C497A00DB62CB /* SF Pro - Semibold Rails.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF Pro - Semibold Rails.otf"; sourceTree = "<group>"; };
 		6DBEDE4D450BED5BFDC4D0B8 /* Pods-Huilo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Huilo.release.xcconfig"; path = "Target Support Files/Pods-Huilo/Pods-Huilo.release.xcconfig"; sourceTree = "<group>"; };
 		DB21BDDDD55D83FB3F5E54AE /* Pods_Huilo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Huilo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F78667FB2A71BB7EC6194722 /* Pods-Huilo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Huilo.debug.xcconfig"; path = "Target Support Files/Pods-Huilo/Pods-Huilo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				264A1AFE294A4A8000EA9092 /* LaunchScreen.storyboard */,
 				264A1B01294A4A8000EA9092 /* Info.plist */,
 				264A1B0B294A4F1300EA9092 /* GoogleService-Info.plist */,
+				26E1B900294C497A00DB62CB /* SF Pro - Semibold Rails.otf */,
 			);
 			path = Huilo;
 			sourceTree = "<group>";
@@ -169,6 +172,7 @@
 				264A1B00294A4A8000EA9092 /* LaunchScreen.storyboard in Resources */,
 				264A1AFD294A4A8000EA9092 /* Assets.xcassets in Resources */,
 				264A1B0C294A4F1300EA9092 /* GoogleService-Info.plist in Resources */,
+				26E1B901294C497A00DB62CB /* SF Pro - Semibold Rails.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
