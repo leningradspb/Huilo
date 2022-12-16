@@ -9,36 +9,30 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class MainVC: UIViewController {
-    private let gradientContentView = GradientView()
+class MainVC: GradientVC {
     private let tableView = UITableView(frame: .zero, style: .grouped)
     private var sections: [MainScreenModel.Section] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupNavigationBar()
+        setupNavigationBar(with: "main")
         setupTableView()
         loadData()
         
         for family in UIFont.familyNames {
-                  print("Family name " + family)
-                  let fontNames = UIFont.fontNames(forFamilyName: family)
-
-                  for font in fontNames {
-                      print("    Font name: " + font)
-                  }
-              }
-    }
-
-    private func setupNavigationBar() {
-        navigationItem.title = "main"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
+            print("Family name " + family)
+            let fontNames = UIFont.fontNames(forFamilyName: family)
+            
+            for font in fontNames {
+                print("    Font name: " + font)
+            }
+        }
     }
     
     private func setupTableView() {
         view.backgroundColor = .black
+        gradientContentView.addSubview(tableView)
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
@@ -50,17 +44,6 @@ class MainVC: UIViewController {
         tableView.estimatedSectionFooterHeight = 0
         if #available(iOS 15.0, *) {
             tableView.sectionHeaderTopPadding = 0
-        }
-        
-        view.addSubview(gradientContentView)
-        gradientContentView.addSubview(tableView)
-        gradientContentView.startLocation = 0
-        gradientContentView.endLocation = 0.2
-        
-        gradientContentView.startColor = .violet
-        gradientContentView.endColor = .black
-        gradientContentView.snp.makeConstraints {
-            $0.edges.equalToSuperview()
         }
         
         tableView.snp.makeConstraints {
@@ -406,3 +389,4 @@ struct MainScreenModel: Codable {
         }
     }
 }
+

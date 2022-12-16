@@ -7,13 +7,12 @@
 
 import UIKit
 
-class GeneratorVC: UIViewController {
+class GeneratorVC: GradientVC {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        setupNavigationBar(with: "generator")
     }
-
 
 }
 

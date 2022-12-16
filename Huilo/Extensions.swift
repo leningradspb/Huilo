@@ -175,3 +175,26 @@ extension UIViewController {
         AudioServicesPlaySystemSound(1519)
     }
 }
+
+class GradientVC: UIViewController {
+    let gradientContentView = GradientView()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.addSubview(gradientContentView)
+        gradientContentView.startLocation = 0
+        gradientContentView.endLocation = 0.2
+        
+        gradientContentView.startColor = .violet
+        gradientContentView.endColor = .black
+        gradientContentView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
+    
+    func setupNavigationBar(with title: String) {
+        navigationItem.title = title
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
+    }
+}
