@@ -5,6 +5,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>SF Pro - Semibold Rails.otf</string>
+		<string>SF-Pro-Display-Semibold.ttf</string>
 	</array>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>Our application needs permission to write wallpaper in your iPhone</string>

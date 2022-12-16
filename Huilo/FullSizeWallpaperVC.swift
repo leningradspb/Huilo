@@ -14,6 +14,7 @@ class FullSizeWallpaperVC: UIViewController {
     private let closeButton = UIImageView()
     private let saveButton = UIImageView()
     private let timeLabel = UILabel()
+    private let dateLabel = UILabel()
     
     private let image: UIImage
     init(image: UIImage) {
@@ -39,10 +40,12 @@ class FullSizeWallpaperVC: UIViewController {
             $0.bottom.equalToSuperview()
         }
 
-        view.addSubviews([closeButton, saveButton, timeLabel])
+        view.addSubviews([closeButton, saveButton, timeLabel, dateLabel])
         let closeImage = UIImage(systemName: "chevron.backward.circle.fill", withConfiguration: iconConfig)
         closeButton.image = closeImage
-        closeButton.tintColor = .commonGrey
+        closeButton.tintColor = .black
+        closeButton.backgroundColor = .white.withAlphaComponent(0.5)
+        closeButton.layer.cornerRadius = 20
         closeButton.addTapGesture(target: self, action: #selector(closeTapped))
         
         closeButton.snp.makeConstraints {
@@ -65,13 +68,23 @@ class FullSizeWallpaperVC: UIViewController {
             $0.width.equalTo(46)
             $0.height.equalTo(40)
         }
-        timeLabel.text = "09:41"
-        timeLabel.font = UIFont(name: "SFProRailsRegular", size: 90)
+        
+        timeLabel.textColor = .white
+        timeLabel.text = "9:41"
+        //SFProRailsRegular
+        timeLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 105)
         timeLabel.snp.makeConstraints {
-            $0.top.equalToSuperview().offset(170)
+            $0.top.equalToSuperview().offset(130)
             $0.centerX.equalToSuperview()
         }
-//        timeLabel.textColor = .white
+        
+        dateLabel.textColor = .white
+        dateLabel.text = "Friday, December 16"
+        dateLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 22)
+        dateLabel.snp.makeConstraints {
+            $0.centerX.equalToSuperview()
+            $0.bottom.equalTo(timeLabel.snp.top).offset(12)
+        }
     }
     
     private func createEasyTipView(forView: UIView, text: String, onTap: (()->Void)?) {
