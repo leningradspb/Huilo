@@ -57,6 +57,8 @@ class GeneratorVC: GradientVC {
         let sendImage = UIImage(systemName: "arrow.up.circle.fill", withConfiguration: iconConfig)
         sendMessageButton.setImage(sendImage, for: .normal)
         sendMessageButton.tintColor = .violet
+        sendMessageButton.backgroundColor = .white
+        sendMessageButton.layer.cornerRadius = 15
         sendMessageButton.addTarget(self, action: #selector(sendTapped), for: .touchUpInside)
         
         messageTextView.delegate = self
