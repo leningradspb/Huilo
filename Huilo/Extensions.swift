@@ -39,6 +39,12 @@ extension UIView {
         self.isUserInteractionEnabled = true
         self.addGestureRecognizer(singleTapGestureRecognizer)
     }
+    
+    func roundOnlyTopCorners(radius: CGFloat = 20) {
+        self.clipsToBounds = true
+        self.layer.cornerRadius = radius
+        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    }
 }
 
 extension UIStackView {

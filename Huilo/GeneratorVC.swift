@@ -135,7 +135,7 @@ extension GeneratorVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (view.bounds.width - (Layout.leading * 2) - minimumInteritemSpacingForSection) / numberOfCollectionViewColumns, height: view.bounds.height / 4)
+        return CGSize(width: (view.bounds.width - (Layout.leading * 2) - minimumInteritemSpacingForSection) / numberOfCollectionViewColumns, height: view.bounds.height / 8)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -210,9 +210,9 @@ class GeneratorFiltersCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        contentView.backgroundColor = .clear
+        contentView.backgroundColor = .violet
         contentView.layer.cornerRadius = cornerRadius
-        filterImageView.layer.cornerRadius = cornerRadius
+        filterImageView.roundOnlyTopCorners(radius: cornerRadius)
         filterImageView.clipsToBounds = true
         filterImageView.contentMode = .scaleAspectFill
         
