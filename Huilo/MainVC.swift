@@ -37,6 +37,7 @@ class MainVC: GradientVC {
         tableView.separatorStyle = .none
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 40, bottom: 0, right: 40)
         tableView.separatorColor = UIColor.white.withAlphaComponent(0.4)
+        tableView.showsVerticalScrollIndicator = false
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(CategoryCell.self, forCellReuseIdentifier: CategoryCell.identifier)
