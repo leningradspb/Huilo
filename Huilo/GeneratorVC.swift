@@ -56,20 +56,21 @@ class GeneratorVC: GradientVC {
         }
         let sendImage = UIImage(systemName: "arrow.up.circle.fill", withConfiguration: iconConfig)
         sendMessageButton.setImage(sendImage, for: .normal)
-        sendMessageButton.tintColor = .scarlet
+        sendMessageButton.tintColor = .violet
         sendMessageButton.addTarget(self, action: #selector(sendTapped), for: .touchUpInside)
         
         messageTextView.delegate = self
         messageTextView.backgroundColor = .black
         messageTextView.layer.cornerRadius = 10
-        messageTextView.layer.borderWidth = 1
-        messageTextView.layer.borderColor = UIColor.darkGray.cgColor
+        messageTextView.layer.borderWidth = 2
+        messageTextView.layer.borderColor = UIColor.white.cgColor
         messageTextView.text = placeholder
-        messageTextView.textColor = .darkGray
+        messageTextView.textColor = .white
         messageTextView.autocorrectionType = .no
         messageTextView.keyboardAppearance = .dark
         messageTextView.isScrollEnabled = false
-        messageTextView.font = UIFont.systemFont(ofSize: 14)
+        messageTextView.font = UIFont.systemFont(ofSize: 16)
+        messageTextView.returnKeyType = .search
         messageTextView.textContainerInset = UIEdgeInsets(top: 13, left: 10, bottom: 10, right: 40)
     }
     
@@ -118,6 +119,14 @@ extension GeneratorVC: UITextViewDelegate {
             messageTextView.text = placeholder
             messageTextView.textColor = .darkGray
         }
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if (text == "\n") {
+            textView.resignFirstResponder()
+            sendTapped()
+        }
+        return true
     }
 }
 
