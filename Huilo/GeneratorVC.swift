@@ -35,13 +35,13 @@ class GeneratorVC: GradientVC {
     }
     
     private func setupUI() {
-        setupTapRecognizer(for: view, action: #selector(hideKeyboard))
         view.addSubviews([collectionView, messageTextView, sendMessageButton])
   
         collectionView.backgroundColor = .clear
         collectionView.register(GeneratorFiltersCollectionViewCell.self, forCellWithReuseIdentifier: GeneratorFiltersCollectionViewCell.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.keyboardDismissMode = .onDrag
         collectionView.showsVerticalScrollIndicator = false
         collectionView.contentInset = UIEdgeInsets(top: 0, left: Layout.leading, bottom: 0, right: Layout.leading)
         if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
@@ -128,7 +128,7 @@ extension GeneratorVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GeneratorFiltersCollectionViewCell.identifier, for: indexPath) as! GeneratorFiltersCollectionViewCell
         if indexPath.row < filters.count {
             let filter = filters[indexPath.row]
-            cell.updateWith(generatorFilterModel: filter)
+            cell.updateWith(generatorFilterModel: filter, isSelected: userSelectedFilters.contains(where: {$0.name == filter.name}))
         }
         
         return cell
@@ -147,7 +147,16 @@ extension GeneratorVC: UICollectionViewDelegate, UICollectionViewDataSource, UIC
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("SLOT TAPPED IN collectionView")
+        if indexPath.row < filters.count {
+            let filter = filters[indexPath.row]
+            if userSelectedFilters.contains(where: { $0.name == filter.name }) {
+                userSelectedFilters.removeAll(where: { $0.name == filter.name })
+            } else {
+                userSelectedFilters.append(filter)
+            }
+            collectionView.reloadItems(at: [indexPath])
+        }
+        
     }
 }
 
@@ -201,7 +210,8 @@ class GeneratorFiltersCollectionViewCell: UICollectionViewCell {
         super.init(coder: aDecoder)
     }
     
-    func updateWith(generatorFilterModel: GeneratorFilterModel.Filter) {
+    func updateWith(generatorFilterModel: GeneratorFilterModel.Filter, isSelected: Bool) {
+        contentView.backgroundColor = isSelected ? .violet : .clear
         filterImageView.kf.indicatorType = .activity
         if let urlString = generatorFilterModel.imageURL, let url = URL(string: urlString) {
             filterImageView.kf.setImage(with: url, options: [.transition(.fade(0.2))])
@@ -210,7 +220,7 @@ class GeneratorFiltersCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupUI() {
-        contentView.backgroundColor = .violet
+        contentView.backgroundColor = .clear
         contentView.layer.cornerRadius = cornerRadius
         filterImageView.roundOnlyTopCorners(radius: cornerRadius)
         filterImageView.clipsToBounds = true
