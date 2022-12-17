@@ -14,6 +14,8 @@ class GeneratorVC: GradientVC {
     private var filters: [GeneratorFilterModel.Filter] = []
     private var userSelectedFilters: [GeneratorFilterModel.Filter] = []
     private let placeholder = "Enter your prompt"
+    private let minimumInteritemSpacingForSection: CGFloat = 12
+    private let numberOfCollectionViewColumns: CGFloat = 2
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,6 +38,16 @@ class GeneratorVC: GradientVC {
         setupTapRecognizer(for: view, action: #selector(hideKeyboard))
         view.addSubviews([collectionView, messageTextView, sendMessageButton])
   
+        collectionView.backgroundColor = .clear
+        collectionView.register(GeneratorFiltersCollectionViewCell.self, forCellWithReuseIdentifier: GeneratorFiltersCollectionViewCell.identifier)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: Layout.leading, bottom: 0, right: Layout.leading)
+        if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.scrollDirection = .vertical
+            flowLayout.minimumLineSpacing = 10
+        }
         collectionView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             $0.leading.equalToSuperview()
@@ -88,7 +100,7 @@ class GeneratorVC: GradientVC {
                 
                 DispatchQueue.main.async {
                     self.filters = model.filters
-//                    self.tableView.reloadData()
+                    self.collectionView.reloadData()
                 }
             } catch let error {
                 print(error)
@@ -105,7 +117,38 @@ class GeneratorVC: GradientVC {
     @objc private func sendTapped() {
         print("sendMessage()")
     }
+}
 
+extension GeneratorVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        filters.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GeneratorFiltersCollectionViewCell.identifier, for: indexPath) as! GeneratorFiltersCollectionViewCell
+        if indexPath.row < filters.count {
+            let filter = filters[indexPath.row]
+            cell.updateWith(generatorFilterModel: filter)
+        }
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: (view.bounds.width - (Layout.leading * 2) - minimumInteritemSpacingForSection) / numberOfCollectionViewColumns, height: view.bounds.height / 4)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        minimumInteritemSpacingForSection
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        minimumInteritemSpacingForSection
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("SLOT TAPPED IN collectionView")
+    }
 }
 
 extension GeneratorVC: UITextViewDelegate {
@@ -141,5 +184,55 @@ struct GeneratorFilterModel: Codable {
         let imageURL: String?
         let prompt: String?
         let negativePrompt: String?
+    }
+}
+
+class GeneratorFiltersCollectionViewCell: UICollectionViewCell {
+    private let filterImageView = UIImageView()
+    private let filterNameLabel = UILabel()
+    private let cornerRadius: CGFloat = 20
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    func updateWith(generatorFilterModel: GeneratorFilterModel.Filter) {
+        filterImageView.kf.indicatorType = .activity
+        if let urlString = generatorFilterModel.imageURL, let url = URL(string: urlString) {
+            filterImageView.kf.setImage(with: url, options: [.transition(.fade(0.2))])
+        }
+        filterNameLabel.text = generatorFilterModel.name
+    }
+    
+    private func setupUI() {
+        contentView.backgroundColor = .clear
+        contentView.layer.cornerRadius = cornerRadius
+        filterImageView.layer.cornerRadius = cornerRadius
+        filterImageView.clipsToBounds = true
+        filterImageView.contentMode = .scaleAspectFill
+        
+        contentView.addSubviews([filterImageView, filterNameLabel])
+        
+        filterImageView.snp.makeConstraints {
+            $0.top.equalToSuperview()
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+            $0.height.equalTo(contentView.bounds.height * 0.6)
+        }
+        
+        filterNameLabel.textAlignment = .center
+        filterNameLabel.numberOfLines = 2
+        filterNameLabel.textColor = .white
+        filterNameLabel.font = .futura(withSize: 16)
+        filterNameLabel.snp.makeConstraints {
+            $0.top.equalTo(filterImageView.snp.bottom).offset(12)
+            $0.leading.equalToSuperview().offset(4)
+            $0.trailing.equalToSuperview().offset(-4)
+        }
     }
 }
