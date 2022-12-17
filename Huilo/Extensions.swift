@@ -111,6 +111,52 @@ extension String {
     }
 }
 
+class VerticalStackView: UIStackView {
+    init(distribution: UIStackView.Distribution = .fill, spacing: CGFloat, alignment: UIStackView.Alignment = .fill) {
+        super.init(frame: .zero)
+        axis = .vertical
+        self.distribution = distribution
+        self.alignment = alignment
+        self.spacing = spacing
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class HorizontalStackView: UIStackView {
+    init(distribution: UIStackView.Distribution = .fill, spacing: CGFloat, alignment: UIStackView.Alignment = .fill) {
+        super.init(frame: .zero)
+        axis = .horizontal
+        self.distribution = distribution
+        self.alignment = alignment
+        self.spacing = spacing
+    }
+    
+    required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+
+class InsetTextField: UITextField {
+
+    let padding = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+
+    override open func textRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+
+    override open func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+
+    override open func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: padding)
+    }
+}
+
 
 class ScarletButton: UIButton {
     override var isEnabled: Bool {
@@ -177,6 +223,7 @@ extension UIViewController {
 }
 
 class GradientVC: UIViewController {
+    let iconConfig = UIImage.SymbolConfiguration(scale: .large)
     let gradientContentView = GradientView()
     
     override func viewDidLoad() {
@@ -196,5 +243,59 @@ class GradientVC: UIViewController {
         navigationItem.title = title
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
+    }
+}
+
+
+extension UIViewController {
+    func setupTapRecognizer(for view: UIView, action: Selector?) {
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: action)
+
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(singleTapGestureRecognizer)
+    }
+}
+
+extension UIViewController
+{
+    func startAvoidingKeyboard()
+    {
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(_onKeyboardFrameWillChangeNotificationReceived(_:)),
+                                               name: UIResponder.keyboardWillChangeFrameNotification,
+                                               object: nil)
+    }
+
+    func stopAvoidingKeyboard()
+    {
+        NotificationCenter.default.removeObserver(self,
+                                                  name: UIResponder.keyboardWillChangeFrameNotification,
+                                                  object: nil)
+    }
+
+    @objc private func _onKeyboardFrameWillChangeNotificationReceived(_ notification: Notification)
+    {
+        guard let userInfo = notification.userInfo else { return }
+        guard let keyboardFrame = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+
+        let keyboardFrameInView = view.convert(keyboardFrame, from: nil)
+        let safeAreaFrame = view.safeAreaLayoutGuide.layoutFrame.insetBy(dx: 0, dy: -additionalSafeAreaInsets.bottom)
+        let intersection = safeAreaFrame.intersection(keyboardFrameInView)
+
+        let animationDuration: TimeInterval = (notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber)?.doubleValue ?? 0
+        let animationCurveRawNSN = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? NSNumber
+        let animationCurveRaw = animationCurveRawNSN?.uintValue ?? UIView.AnimationOptions.curveEaseInOut.rawValue
+        let animationCurve = UIView.AnimationOptions(rawValue: animationCurveRaw)
+        
+        self.additionalSafeAreaInsets.bottom = intersection.height
+
+        UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve)
+        {
+            self.view.layoutIfNeeded()
+        }
     }
 }

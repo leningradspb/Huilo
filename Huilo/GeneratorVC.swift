@@ -8,21 +8,74 @@
 import UIKit
 
 class GeneratorVC: GradientVC {
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let sendMessageButton = UIButton()
+    private let messageTextView = UITextView()
     private var filters: [GeneratorFilterModel.Filter] = []
     private var userSelectedFilters: [GeneratorFilterModel.Filter] = []
+    private let placeholder = "Enter your prompt"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar(with: "generator")
+        setupUI()
         loadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        startAvoidingKeyboard()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopAvoidingKeyboard()
+    }
+    
+    private func setupUI() {
+        setupTapRecognizer(for: view, action: #selector(hideKeyboard))
+        view.addSubviews([collectionView, messageTextView, sendMessageButton])
+  
+        collectionView.snp.makeConstraints {
+            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.leading.equalToSuperview()
+            $0.trailing.equalToSuperview()
+        }
+        
+        messageTextView.snp.makeConstraints {
+            $0.top.equalTo(collectionView.snp.bottom)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-10)
+        }
+        
+        sendMessageButton.snp.makeConstraints {
+            $0.width.height.equalTo(30)
+            $0.bottom.equalTo(messageTextView.snp.bottom).offset(-5)
+            $0.trailing.equalTo(messageTextView.snp.trailing).offset(-10)
+        }
+        let sendImage = UIImage(systemName: "arrow.up.circle.fill", withConfiguration: iconConfig)
+        sendMessageButton.setImage(sendImage, for: .normal)
+        sendMessageButton.tintColor = .scarlet
+        sendMessageButton.addTarget(self, action: #selector(sendTapped), for: .touchUpInside)
+        
+        messageTextView.delegate = self
+        messageTextView.backgroundColor = .black
+        messageTextView.layer.cornerRadius = 10
+        messageTextView.layer.borderWidth = 1
+        messageTextView.layer.borderColor = UIColor.darkGray.cgColor
+        messageTextView.text = placeholder
+        messageTextView.textColor = .darkGray
+        messageTextView.autocorrectionType = .no
+        messageTextView.keyboardAppearance = .dark
+        messageTextView.isScrollEnabled = false
+        messageTextView.font = UIFont.systemFont(ofSize: 14)
+        messageTextView.textContainerInset = UIEdgeInsets(top: 13, left: 10, bottom: 10, right: 40)
     }
     
     private func loadData() {
         FirebaseManager.shared.firestore.collection("Generator").document("filters").getDocument { [weak self] snapshot, error in
             guard let self = self else { return }
-//            print(snapshot?.data(), error)
-//            snapshot?.data()
-            
             guard let snapshotData = snapshot?.data() else { return }
             guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
             
@@ -40,7 +93,32 @@ class GeneratorVC: GradientVC {
             
         }
     }
+    
+    @objc private func hideKeyboard() {
+        print("hideKeyboard")
+        view.endEditing(true)
+    }
+    
+    @objc private func sendTapped() {
+        print("sendMessage()")
+    }
 
+}
+
+extension GeneratorVC: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == placeholder {
+            messageTextView.text = ""
+            messageTextView.textColor = .white
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.trimmingCharacters(in: .whitespaces).isEmpty {
+            messageTextView.text = placeholder
+            messageTextView.textColor = .darkGray
+        }
+    }
 }
 
 
