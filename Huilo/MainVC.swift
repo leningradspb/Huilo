@@ -19,6 +19,7 @@ class MainVC: GradientVC {
         setupNavigationBar(with: "main")
         setupTableView()
         loadData()
+        navigationHelperListener()
         
 //        for family in UIFont.familyNames {
 //            print("Family name " + family)
@@ -50,6 +51,16 @@ class MainVC: GradientVC {
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
+    }
+    
+    private func navigationHelperListener() {
+        NavigationHelper.shared.showFullScreenWallpaperVC = { [weak self] image in
+            guard let self = self else { return }
+            let vc = FullSizeWallpaperVC(image: image)
+            self.present(vc, animated: true)
+        }
+        
+    
     }
     
     private func loadData() {
@@ -121,11 +132,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
             let section = sections[indexPath.section]
             if let cells = section.cells, indexPath.row < cells.count {
                 cell.sectionCell = cells[indexPath.row]
-                cell.showFullScreenWallpaperVC = { [weak self] image in
-                    guard let self = self else { return }
-                    let vc = FullSizeWallpaperVC(image: image)
-                    self.present(vc, animated: true)
-                }
             }
             return cell
         } else {
@@ -143,7 +149,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section < sections.count, sections[indexPath.section].isRecommendation == true {
-            return 306 
+            return 306
         }
         return 286
     }
@@ -166,6 +172,8 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 class CategoryCell: UITableViewCell {
     private let collectionViewHeader = UILabel()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var isRecommendation: Bool = false
+    
     var sectionCell: MainScreenModel.Section.Cell? {
         didSet {
             collectionViewHeader.text = sectionCell?.cellName
@@ -239,7 +247,12 @@ extension CategoryCell: UICollectionViewDelegate, UICollectionViewDataSource, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("SLOT TAPPED IN collectionView")
+        print("SLOT TAPPED IN collectionView CategoryCell")
+        if let cell = collectionView.cellForItem(at: indexPath) as? FullContentViewImageCollectionViewCell {
+            if let image = cell.recommendationImageView.image {
+                NavigationHelper.shared.showFullScreenWallpaperVC?(image)
+            }
+        }
     }
 }
 
@@ -247,7 +260,7 @@ extension CategoryCell: UICollectionViewDelegate, UICollectionViewDataSource, UI
 class RecommendationCell: UITableViewCell {
     private let collectionViewHeader = UILabel()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    var showFullScreenWallpaperVC: ((UIImage)->())?
+    var isRecommendation: Bool = false
     
     var sectionCell: MainScreenModel.Section.Cell? {
         didSet {
@@ -312,10 +325,6 @@ extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSour
             let photo = photos[indexPath.row]
             if let url = URL(string: photo) {
                 cell.setImage(url: url)
-                cell.showFullScreenWallpaperVC = { [weak self] image in
-                    guard let self = self else { return }
-                    self.showFullScreenWallpaperVC?(image)
-                }
             }
         }
         
@@ -327,15 +336,18 @@ extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("SLOT TAPPED IN collectionView")
+        print("SLOT TAPPED IN collectionView RecommendationCell")
+        if let categoryName = sectionCell?.cellName {
+            NavigationHelper.shared.showCategoriesVC?(categoryName)
+        }
     }
 }
 
 
 class FullContentViewImageCollectionViewCell: UICollectionViewCell {
-    private let recommendationImageView = UIImageView()
+    let recommendationImageView = UIImageView()
     private let cornerRadius: CGFloat = 20
-    var showFullScreenWallpaperVC: ((UIImage)->())?
+    private var isRecommendation: Bool = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -366,14 +378,6 @@ class FullContentViewImageCollectionViewCell: UICollectionViewCell {
             $0.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
-        
-        addTapGesture(target: self, action: #selector(viewTapped))
-    }
-    
-    @objc private func viewTapped() {
-        if let image = recommendationImageView.image {
-            showFullScreenWallpaperVC?(image)
-        }
     }
 }
 
@@ -393,3 +397,9 @@ struct MainScreenModel: Codable {
     }
 }
 
+class NavigationHelper {
+    static let shared = NavigationHelper()
+    
+    var showFullScreenWallpaperVC: ((UIImage)->())?
+    var showCategoriesVC: ((String)->())?
+}
