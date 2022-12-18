@@ -60,7 +60,11 @@ class MainVC: GradientVC {
             self.present(vc, animated: true)
         }
         
-    
+        NavigationHelper.shared.showCategoriesVC = { [weak self] categoryName in
+            guard let self = self else { return }
+            let vc = CategoryVC(categoryName: categoryName)
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     private func loadData() {

@@ -19,6 +19,7 @@
 		264A1B0E294A54D100EA9092 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264A1B0D294A54D100EA9092 /* Extensions.swift */; };
 		264A1B10294A59C300EA9092 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264A1B0F294A59C300EA9092 /* FirebaseManager.swift */; };
 		265129DE294CE75200F70B91 /* SF-Pro-Display-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 265129DD294CE75200F70B91 /* SF-Pro-Display-Semibold.ttf */; };
+		265129E0294EF87A00F70B91 /* CategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265129DF294EF87A00F70B91 /* CategoryVC.swift */; };
 		26E1B901294C497A00DB62CB /* SF Pro - Semibold Rails.otf in Resources */ = {isa = PBXBuildFile; fileRef = 26E1B900294C497A00DB62CB /* SF Pro - Semibold Rails.otf */; };
 		884476C030F30B17E54D3780 /* Pods_Huilo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB21BDDDD55D83FB3F5E54AE /* Pods_Huilo.framework */; };
 /* End PBXBuildFile section */
@@ -38,6 +39,7 @@
 		264A1B0D294A54D100EA9092 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		264A1B0F294A59C300EA9092 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		265129DD294CE75200F70B91 /* SF-Pro-Display-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Semibold.ttf"; sourceTree = "<group>"; };
+		265129DF294EF87A00F70B91 /* CategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryVC.swift; sourceTree = "<group>"; };
 		26E1B900294C497A00DB62CB /* SF Pro - Semibold Rails.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF Pro - Semibold Rails.otf"; sourceTree = "<group>"; };
 		6DBEDE4D450BED5BFDC4D0B8 /* Pods-Huilo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Huilo.release.xcconfig"; path = "Target Support Files/Pods-Huilo/Pods-Huilo.release.xcconfig"; sourceTree = "<group>"; };
 		DB21BDDDD55D83FB3F5E54AE /* Pods_Huilo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Huilo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -90,6 +92,7 @@
 				264A1AF5294A4A7E00EA9092 /* SceneDelegate.swift */,
 				264A1B07294A4B1A00EA9092 /* TabBarVC.swift */,
 				264A1B09294A4B3200EA9092 /* MainVC.swift */,
+				265129DF294EF87A00F70B91 /* CategoryVC.swift */,
 				26498FE9294BBA1300F4772A /* FullSizeWallpaperVC.swift */,
 				264A1AF7294A4A7E00EA9092 /* GeneratorVC.swift */,
 				264A1B0F294A59C300EA9092 /* FirebaseManager.swift */,
@@ -232,6 +235,7 @@
 				264A1AF8294A4A7E00EA9092 /* GeneratorVC.swift in Sources */,
 				264A1B0E294A54D100EA9092 /* Extensions.swift in Sources */,
 				264A1B10294A59C300EA9092 /* FirebaseManager.swift in Sources */,
+				265129E0294EF87A00F70B91 /* CategoryVC.swift in Sources */,
 				26498FEA294BBA1300F4772A /* FullSizeWallpaperVC.swift in Sources */,
 				264A1B0A294A4B3300EA9092 /* MainVC.swift in Sources */,
 				264A1AF4294A4A7E00EA9092 /* AppDelegate.swift in Sources */,
