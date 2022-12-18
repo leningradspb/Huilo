@@ -385,7 +385,7 @@
 				DEVELOPMENT_TEAM = 9875BH6JL2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Huilo/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Huilo - AI Painter";
+				INFOPLIST_KEY_CFBundleDisplayName = Huilo;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -415,7 +415,7 @@
 				DEVELOPMENT_TEAM = 9875BH6JL2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Huilo/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Huilo - AI Painter";
+				INFOPLIST_KEY_CFBundleDisplayName = Huilo;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
