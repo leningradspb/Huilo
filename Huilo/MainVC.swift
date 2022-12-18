@@ -115,18 +115,16 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 //    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
+        if indexPath.section < sections.count, sections[indexPath.section].isRecommendation == true {
             let cell = tableView.dequeueReusableCell(withIdentifier: RecommendationCell.identifier, for: indexPath) as! RecommendationCell
             
-            if indexPath.section < sections.count {
-                let section = sections[indexPath.section]
-                if let cells = section.cells, indexPath.row < cells.count {
-                    cell.sectionCell = cells[indexPath.row]
-                    cell.showFullScreenWallpaperVC = { [weak self] image in
-                        guard let self = self else { return }
-                        let vc = FullSizeWallpaperVC(image: image)
-                        self.present(vc, animated: true)
-                    }
+            let section = sections[indexPath.section]
+            if let cells = section.cells, indexPath.row < cells.count {
+                cell.sectionCell = cells[indexPath.row]
+                cell.showFullScreenWallpaperVC = { [weak self] image in
+                    guard let self = self else { return }
+                    let vc = FullSizeWallpaperVC(image: image)
+                    self.present(vc, animated: true)
                 }
             }
             return cell
@@ -144,7 +142,10 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.section == 0 ? 306 : 286
+        if indexPath.section < sections.count, sections[indexPath.section].isRecommendation == true {
+            return 306 
+        }
+        return 286
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -383,6 +384,7 @@ struct MainScreenModel: Codable {
     struct Section: Codable {
         let name: String?
         let cells: [Cell]?
+        let isRecommendation: Bool?
         
         struct Cell: Codable {
             let cellName: String?
