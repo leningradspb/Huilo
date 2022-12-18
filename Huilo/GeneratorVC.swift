@@ -116,6 +116,27 @@ class GeneratorVC: GradientVC {
     
     @objc private func sendTapped() {
         print("sendMessage()")
+        let key = "BACIke21YSH6KHkQ77sZIZBNZVJZnR4PAdNYYLz4JITelaJj0HmKOfE1mV7C"
+        var prompts: [String] = []
+        var negativePrompts: [String] = []
+        userSelectedFilters.forEach {
+            if let prompt = $0.prompt {
+                prompts.append(prompt)
+            }
+            
+            if let negative = $0.negativePrompt {
+                negativePrompts.append(negative)
+            }
+        }
+
+        var filterPrompt = prompts.joined(separator: ", ")
+        var filterNegativePrompts = negativePrompts.joined(separator: ", ")
+        let prompt = messageTextView.text + " " + filterPrompt
+        let requestModel = StableDiffusionFilterRequest(key: key, prompt: prompt, negative_prompt: filterNegativePrompts)
+        
+        APIService.requestPhotoBy(filter: requestModel) { result, error in
+            print(result, error)
+        }
     }
 }
 
@@ -309,6 +330,7 @@ struct StableDiffusionFilterRequest: Codable {
     let num_inference_steps: Int = 25
     let width: Int = 400
     let height: Int = 840
+    let samples: Int = 1
 }
 
 extension Dictionary {
