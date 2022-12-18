@@ -26,7 +26,7 @@ class CategoryVC: GradientVC {
     private func setupUI() {
         gradientContentView.addSubview(collectionView)
         modalPresentationStyle = .fullScreen
-        setupNavigationBar(with: "category")
+        setupNavigationBar(with: categoryName)
         
         collectionView.backgroundColor = .clear
         collectionView.register(FullContentViewImageCollectionViewCell.self, forCellWithReuseIdentifier: FullContentViewImageCollectionViewCell.identifier)
