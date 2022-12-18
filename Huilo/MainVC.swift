@@ -161,8 +161,6 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section < sections.count, sections[indexPath.section].isRecommendation != true else { return }
         print("didSelectRowAt")
-//        guard conversations.count > 0 else { return }
-//        showChat(by: indexPath.row)
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

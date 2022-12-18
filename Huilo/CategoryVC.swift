@@ -53,7 +53,7 @@ extension CategoryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICo
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FullContentViewImageCollectionViewCell.identifier, for: indexPath) as! FullContentViewImageCollectionViewCell
 //        let photo = photos[indexPath.row]
-        if let url = URL(string: "https://a.storyblok.com/f/112937/568x464/82f66c3a21/all_the_english-_football_terms_you_need_to_know_blog-hero-low.jpg/m/620x0/filters:quality(70)/") {
+        if let url = URL(string: "https://d1okzptojspljx.cloudfront.net/generations/d95e6dc4-08bd-4b17-80e8-0d455d6517d0-0.png") {
             cell.setImage(url: url)
         }
         return cell
