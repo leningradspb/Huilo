@@ -19,7 +19,6 @@ class MainVC: GradientVC {
         setupNavigationBar(with: "main")
         setupTableView()
         loadData()
-        navigationHelperListener()
         
 //        for family in UIFont.familyNames {
 //            print("Family name " + family)
@@ -50,20 +49,6 @@ class MainVC: GradientVC {
         
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
-        }
-    }
-    
-    private func navigationHelperListener() {
-        NavigationHelper.shared.showFullScreenWallpaperVC = { [weak self] image in
-            guard let self = self else { return }
-            let vc = FullSizeWallpaperVC(image: image)
-            self.present(vc, animated: true)
-        }
-        
-        NavigationHelper.shared.showCategoriesVC = { [weak self] categoryName in
-            guard let self = self else { return }
-            let vc = CategoryVC(categoryName: categoryName)
-            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
@@ -136,6 +121,11 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
             let section = sections[indexPath.section]
             if let cells = section.cells, indexPath.row < cells.count {
                 cell.sectionCell = cells[indexPath.row]
+                cell.showCategoriesVCbyName = { [weak self] categoryName in
+                    guard let self = self else { return }
+                    let vc = CategoryVC(categoryName: categoryName)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
             }
             return cell
         } else {
@@ -145,6 +135,11 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
                 let section = sections[indexPath.section]
                 if let cells = section.cells, indexPath.row < cells.count {
                     cell.sectionCell = cells[indexPath.row]
+                    cell.showFullScreenWallpaperVC = { [weak self] image in
+                        guard let self = self else { return }
+                        let vc = FullSizeWallpaperVC(image: image)
+                        self.present(vc, animated: true)
+                    }
                 }
             }
             return cell
@@ -176,7 +171,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 class CategoryCell: UITableViewCell {
     private let collectionViewHeader = UILabel()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    var isRecommendation: Bool = false
+    var showFullScreenWallpaperVC: ((UIImage)->())?
     
     var sectionCell: MainScreenModel.Section.Cell? {
         didSet {
@@ -254,7 +249,7 @@ extension CategoryCell: UICollectionViewDelegate, UICollectionViewDataSource, UI
         print("SLOT TAPPED IN collectionView CategoryCell")
         if let cell = collectionView.cellForItem(at: indexPath) as? FullContentViewImageCollectionViewCell {
             if let image = cell.recommendationImageView.image {
-                NavigationHelper.shared.showFullScreenWallpaperVC?(image)
+                showFullScreenWallpaperVC?(image)
             }
         }
     }
@@ -264,7 +259,7 @@ extension CategoryCell: UICollectionViewDelegate, UICollectionViewDataSource, UI
 class RecommendationCell: UITableViewCell {
     private let collectionViewHeader = UILabel()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    var isRecommendation: Bool = false
+    var showCategoriesVCbyName: ((String)->())?
     
     var sectionCell: MainScreenModel.Section.Cell? {
         didSet {
@@ -342,7 +337,7 @@ extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("SLOT TAPPED IN collectionView RecommendationCell")
         if let categoryName = sectionCell?.cellName {
-            NavigationHelper.shared.showCategoriesVC?(categoryName)
+            showCategoriesVCbyName?(categoryName)
         }
     }
 }
@@ -399,11 +394,4 @@ struct MainScreenModel: Codable {
             let cellPhotos: [String]?
         }
     }
-}
-
-class NavigationHelper {
-    static let shared = NavigationHelper()
-    
-    var showFullScreenWallpaperVC: ((UIImage)->())?
-    var showCategoriesVC: ((String)->())?
 }
