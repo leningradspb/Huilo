@@ -159,6 +159,8 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section < sections.count, sections[indexPath.section].isRecommendation != true else { return }
+        print("didSelectRowAt")
 //        guard conversations.count > 0 else { return }
 //        showChat(by: indexPath.row)
     }
@@ -175,6 +177,7 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
 // MARK: - Ячейка категории, содержащая коллекцию
 class CategoryCell: UITableViewCell {
     private let collectionViewHeader = UILabel()
+    private let showMoreButton = UILabel()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     var showFullScreenWallpaperVC: ((UIImage)->())?
     
@@ -210,7 +213,7 @@ class CategoryCell: UITableViewCell {
             flowLayout.minimumLineSpacing = 10
         }
         
-        contentView.addSubviews([collectionViewHeader, collectionView])
+        contentView.addSubviews([collectionViewHeader, collectionView, showMoreButton])
         collectionViewHeader.textColor = .white
         collectionViewHeader.font = .futura(withSize: 18)
         
@@ -219,6 +222,14 @@ class CategoryCell: UITableViewCell {
             $0.leading.equalToSuperview().offset(Layout.leading)
             $0.trailing.equalToSuperview()
         }
+        
+        showMoreButton.snp.makeConstraints {
+            $0.centerY.equalTo(collectionViewHeader.snp.centerY)
+            $0.trailing.equalToSuperview().offset(-Layout.leading)
+        }
+        showMoreButton.font = .futura(withSize: 18)
+        showMoreButton.textColor = .violet
+        showMoreButton.text = "show more"
         
         collectionView.snp.makeConstraints {
             $0.top.equalTo(collectionViewHeader.snp.bottom).offset(10)
