@@ -24,12 +24,12 @@ class CategoryVC: GradientVC {
     }
     
     private func setupUI() {
+        gradientContentView.addSubview(collectionView)
         modalPresentationStyle = .fullScreen
         setupNavigationBar(with: "category")
-        view.addSubview(collectionView)
         
         collectionView.backgroundColor = .clear
-        collectionView.register(GeneratorFiltersCollectionViewCell.self, forCellWithReuseIdentifier: GeneratorFiltersCollectionViewCell.identifier)
+        collectionView.register(FullContentViewImageCollectionViewCell.self, forCellWithReuseIdentifier: FullContentViewImageCollectionViewCell.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.keyboardDismissMode = .onDrag
@@ -51,18 +51,16 @@ extension CategoryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return UICollectionViewCell()
-//        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GeneratorFiltersCollectionViewCell.identifier, for: indexPath) as! GeneratorFiltersCollectionViewCell
-//        if indexPath.row < filters.count {
-//            let filter = filters[indexPath.row]
-//            cell.updateWith(generatorFilterModel: filter, isSelected: userSelectedFilters.contains(where: {$0.name == filter.name}))
-//        }
-//
-//        return cell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FullContentViewImageCollectionViewCell.identifier, for: indexPath) as! FullContentViewImageCollectionViewCell
+//        let photo = photos[indexPath.row]
+        if let url = URL(string: "https://a.storyblok.com/f/112937/568x464/82f66c3a21/all_the_english-_football_terms_you_need_to_know_blog-hero-low.jpg/m/620x0/filters:quality(70)/") {
+            cell.setImage(url: url)
+        }
+        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (view.bounds.width - (Layout.leading * 2) - minimumInteritemSpacingForSection) / numberOfCollectionViewColumns, height: view.bounds.height / 8)
+        return CGSize(width: (view.bounds.width - (Layout.leading * 2) - minimumInteritemSpacingForSection) / numberOfCollectionViewColumns, height: view.bounds.height / 3)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -74,15 +72,12 @@ extension CategoryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if indexPath.row < filters.count {
-//            let filter = filters[indexPath.row]
-//            if userSelectedFilters.contains(where: { $0.name == filter.name }) {
-//                userSelectedFilters.removeAll(where: { $0.name == filter.name })
-//            } else {
-//                userSelectedFilters.append(filter)
-//            }
-//            collectionView.reloadItems(at: [indexPath])
-//        }
-        
+        print("TAPPED IN collectionView CategoryVC")
+        if let cell = collectionView.cellForItem(at: indexPath) as? FullContentViewImageCollectionViewCell {
+            if let image = cell.recommendationImageView.image {
+                let vc = FullSizeWallpaperVC(image: image)
+                self.present(vc, animated: true)
+            }
+        }
     }
 }
