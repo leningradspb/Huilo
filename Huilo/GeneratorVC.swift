@@ -134,8 +134,15 @@ class GeneratorVC: GradientVC {
         let prompt = messageTextView.text + " " + filterPrompt
         let requestModel = StableDiffusionFilterRequest(key: key, prompt: prompt, negative_prompt: filterNegativePrompts)
         
-        APIService.requestPhotoBy(filter: requestModel) { result, error in
+        APIService.requestPhotoBy(filter: requestModel) { [weak self] result, error in
+            guard let self = self else { return }
             print(result, error)
+            if let status = result?.status, status == "success", let output = result?.output?.first {
+                DispatchQueue.main.async {
+                    let vc = FullSizeWallpaperInitURLVC(urlString: output)
+                    self.present(vc, animated: true)
+                }
+            }
         }
     }
 }
