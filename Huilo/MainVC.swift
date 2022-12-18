@@ -85,8 +85,12 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section < sections.count {
-            let category = sections[section]
-            return category.cells?.count ?? 0
+            if sections[section].isRecommendation == true {
+                return 1
+            } else {
+                let category = sections[section]
+                return category.cells?.count ?? 0
+            }
         }
         return 0
     }
@@ -118,15 +122,17 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section < sections.count, sections[indexPath.section].isRecommendation == true {
             let cell = tableView.dequeueReusableCell(withIdentifier: RecommendationCell.identifier, for: indexPath) as! RecommendationCell
             
-            let section = sections[indexPath.section]
-            if let cells = section.cells, indexPath.row < cells.count {
-                cell.sectionCell = cells[indexPath.row]
-                cell.showCategoriesVCbyName = { [weak self] categoryName in
-                    guard let self = self else { return }
-                    let vc = CategoryVC(categoryName: categoryName)
-                    self.navigationController?.pushViewController(vc, animated: true)
+            if indexPath.section < sections.count {
+                if let recommendedCategories = sections[indexPath.section].recommendedCategories, indexPath.row < recommendedCategories.count {
+                    cell.sectionCell = recommendedCategories[indexPath.row]
+                    cell.showCategoriesVCbyName = { [weak self] categoryName in
+                        guard let self = self else { return }
+                        let vc = CategoryVC(categoryName: categoryName)
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
                 }
             }
+            
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: CategoryCell.identifier, for: indexPath) as! CategoryCell
@@ -261,9 +267,9 @@ class RecommendationCell: UITableViewCell {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     var showCategoriesVCbyName: ((String)->())?
     
-    var sectionCell: MainScreenModel.Section.Cell? {
+    var sectionCell: MainScreenModel.Section.RecommendedCategory? {
         didSet {
-            collectionViewHeader.text = sectionCell?.cellName
+            collectionViewHeader.text = sectionCell?.name
             collectionView.reloadData()
         }
     }
@@ -315,13 +321,16 @@ class RecommendationCell: UITableViewCell {
 // MARK: - Настойка коллекции для рекомендации
 extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        sectionCell?.cellPhotos?.count ?? 0
+        if let photo = sectionCell?.photo, !photo.isEmpty {
+            return 1
+        } else {
+            return 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FullContentViewImageCollectionViewCell.identifier, for: indexPath) as! FullContentViewImageCollectionViewCell
-        if let photos = sectionCell?.cellPhotos, indexPath.row < photos.count {
-            let photo = photos[indexPath.row]
+        if let photo = sectionCell?.photo, !photo.isEmpty {
             if let url = URL(string: photo) {
                 cell.setImage(url: url)
             }
@@ -336,7 +345,7 @@ extension RecommendationCell: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("SLOT TAPPED IN collectionView RecommendationCell")
-        if let categoryName = sectionCell?.cellName {
+        if let categoryName = sectionCell?.name {
             showCategoriesVCbyName?(categoryName)
         }
     }
@@ -380,11 +389,11 @@ class FullContentViewImageCollectionViewCell: UICollectionViewCell {
     }
 }
 
-//
 struct MainScreenModel: Codable {
     let sections: [Section]?
 
     struct Section: Codable {
+        let recommendedCategories: [RecommendedCategory]?
         let name: String?
         let cells: [Cell]?
         let isRecommendation: Bool?
@@ -392,6 +401,10 @@ struct MainScreenModel: Codable {
         struct Cell: Codable {
             let cellName: String?
             let cellPhotos: [String]?
+        }
+        
+        struct RecommendedCategory: Codable {
+            let name, photo: String?
         }
     }
 }
