@@ -346,13 +346,15 @@ class ActivityView: UIView {
         }
     }
     
-    func play() {
-        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self = self else { return }
-            self.updateLabel()
+    func play(isInitial: Bool = false) {
+        if isInitial {
+            countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                guard let self = self else { return }
+                self.updateLabel()
+            }
+            
+            countdownTimer?.fire()
         }
-        
-        countdownTimer?.fire()
         animationView.play { [weak self] isComplete in
             self?.play()
         }
@@ -391,7 +393,7 @@ extension UIViewController {
     
     func showActivity(animation: Animation?, withoutAppearAnimation: Bool = false) {
         let activityView = ActivityView(animation: animation, frame: window.bounds, withoutAppearAnimation: withoutAppearAnimation)
-        activityView.play()
+        activityView.play(isInitial: true)
         window.addSubview(activityView)
     }
     
