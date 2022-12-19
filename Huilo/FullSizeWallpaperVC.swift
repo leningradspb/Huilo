@@ -185,7 +185,14 @@ class FullSizeWallpaperInitURLVC: UIViewController {
         modalPresentationStyle = .fullScreen
         wallpaperImageView.kf.indicatorType = .activity
         (wallpaperImageView.kf.indicator?.view as? UIActivityIndicatorView)?.color = .white
-        wallpaperImageView.kf.setImage(with: URL(string: urlString)!, options: [.transition(.fade(0.2))])
+        wallpaperImageView.kf.setImage(with: URL(string: urlString)!, options: [.transition(.fade(0.2))]) { result in
+            switch result {
+            case .success(let response):
+                print(response)
+            case .failure(let error):
+                print(error)
+            }
+        }
 //        wallpaperImageView.contentMode = .scaleAspectFill
         
         view.addSubview(wallpaperImageView)
