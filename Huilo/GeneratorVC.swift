@@ -143,19 +143,21 @@ class GeneratorVC: GradientVC {
             DispatchQueue.main.async {
                 if let status = result?.status, status == "success", let output = result?.output?.first {
                     let cacheImageView = UIImageView()
-                    cacheImageView.kf.setImage(with: URL(string: output)!, options: [.transition(.fade(0.2))]) { [weak self] r in
-                        guard let self = self else { return }
-                        switch r {
-                        case .success(let response):
-                            print(response)
-                            let vc = FullSizeWallpaperVC(image: response.image)
-                            self.removeActivity { [weak self] in
-                                self?.present(vc, animated: true)
-                            }
-                        case .failure(let error):
-                            print(error)
-                            self.removeActivity {
-                                print("completion removeActivity")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        cacheImageView.kf.setImage(with: URL(string: output)!, options: [.transition(.fade(0.2))]) { [weak self] r in
+                            guard let self = self else { return }
+                            switch r {
+                            case .success(let response):
+                                print(response)
+                                let vc = FullSizeWallpaperVC(image: response.image)
+                                self.removeActivity { [weak self] in
+                                    self?.present(vc, animated: true)
+                                }
+                            case .failure(let error):
+                                print(error)
+                                self.removeActivity {
+                                    print("completion removeActivity")
+                                }
                             }
                         }
                     }
