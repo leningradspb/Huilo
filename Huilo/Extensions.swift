@@ -343,9 +343,7 @@ class ActivityView: UIView {
     }
     
     struct Animations {
-        static let girlWalk = Animation.named("girlWalk")
-        static let lurkingCat = Animation.named("lurkingCat")
-        static let cowEatingGrass = Animation.named("cowEatingGrass")
+        static let plane = Animation.named("plane")
     }
 }
 
@@ -358,11 +356,11 @@ extension UIViewController {
         window.addSubview(activityView)
     }
     
-    func removeActivity() {
+    func removeActivity(withoutAnimation: Bool = false) {
         DispatchQueue.main.async {
             let activity = self.window.subviews.first { $0 is ActivityView }
-
-            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseInOut) {
+            let duration: TimeInterval = withoutAnimation ? 0 : 1
+            UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
                 activity?.center.y += activity?.center.y ?? 0
                 activity?.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
             } completion: { _ in

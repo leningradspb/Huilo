@@ -116,6 +116,8 @@ class GeneratorVC: GradientVC {
     
     @objc private func sendTapped() {
         print("sendMessage()")
+        hideKeyboard()
+        showActivity(animation: ActivityView.Animations.plane)
         let key = "BACIke21YSH6KHkQ77sZIZBNZVJZnR4PAdNYYLz4JITelaJj0HmKOfE1mV7C"
         var prompts: [String] = []
         var negativePrompts: [String] = []
@@ -129,18 +131,21 @@ class GeneratorVC: GradientVC {
             }
         }
 
-        var filterPrompt = prompts.joined(separator: ", ")
-        var filterNegativePrompts = negativePrompts.joined(separator: ", ")
+        let filterPrompt = prompts.joined(separator: ", ")
+        let filterNegativePrompts = negativePrompts.joined(separator: ", ")
         let prompt = messageTextView.text + " " + filterPrompt
         let requestModel = StableDiffusionFilterRequest(key: key, prompt: prompt, negative_prompt: filterNegativePrompts)
         
         APIService.requestPhotoBy(filter: requestModel) { [weak self] result, error in
             guard let self = self else { return }
             print(result, error)
-            if let status = result?.status, status == "success", let output = result?.output?.first {
-                DispatchQueue.main.async {
+            DispatchQueue.main.async {
+                if let status = result?.status, status == "success", let output = result?.output?.first {
+                    self.removeActivity(withoutAnimation: true)
                     let vc = FullSizeWallpaperInitURLVC(urlString: output)
                     self.present(vc, animated: true)
+                } else {
+                    self.removeActivity(withoutAnimation: true)
                 }
             }
         }
