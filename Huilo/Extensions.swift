@@ -311,10 +311,25 @@ extension UIViewController
 
 class ActivityView: UIView {
     private let animationView = AnimationView()
+    private let timerLabel = UILabel()
+    private var estimatedTime: Int = 20
+    private var countdownTimer: Timer?
     
     init(animation: Animation?, frame: CGRect, withoutAppearAnimation: Bool) {
         super.init(frame: frame)
         addSubview(animationView)
+        addSubview(timerLabel)
+        
+        timerLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(90)
+            $0.leading.equalToSuperview().offset(Layout.leading)
+            $0.trailing.equalToSuperview().offset(-Layout.leading)
+        }
+        timerLabel.textColor = .white
+        timerLabel.textAlignment = .center
+        timerLabel.font = .futura(withSize: 30)
+        timerLabel.numberOfLines = 0
+        timerLabel.text = "estimated time \(estimatedTime) sec"
         
         animationView.animation = animation
         backgroundColor = .black
@@ -332,10 +347,30 @@ class ActivityView: UIView {
     }
     
     func play() {
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            self.updateLabel()
+        }
+        
+        countdownTimer?.fire()
         animationView.play { [weak self] isComplete in
-//            print("isComplete")
             self?.play()
         }
+    }
+    
+    func stopTimer() {
+        countdownTimer?.invalidate()
+        countdownTimer = nil
+    }
+    
+    private func updateLabel() {
+        estimatedTime -= 1
+        if estimatedTime > 0 {
+            timerLabel.text = "estimated time \(estimatedTime) sec"
+        } else {
+            timerLabel.text = "we need a little bit more time..."
+        }
+        
     }
     
     required init?(coder: NSCoder) {
@@ -344,6 +379,10 @@ class ActivityView: UIView {
     
     struct Animations {
         static let plane = Animation.named("plane")
+    }
+    
+    deinit {
+        stopTimer()
     }
 }
 
