@@ -241,6 +241,7 @@ class GeneratorFiltersCollectionViewCell: UICollectionViewCell {
     func updateWith(generatorFilterModel: GeneratorFilterModel.Filter, isSelected: Bool) {
         contentView.backgroundColor = isSelected ? .violet : .clear
         filterImageView.kf.indicatorType = .activity
+        (filterImageView.kf.indicator?.view as? UIActivityIndicatorView)?.color = .white
         if let urlString = generatorFilterModel.imageURL, let url = URL(string: urlString) {
             filterImageView.kf.setImage(with: url, options: [.transition(.fade(0.2))])
         }

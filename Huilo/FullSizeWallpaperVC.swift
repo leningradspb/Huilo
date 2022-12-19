@@ -184,6 +184,7 @@ class FullSizeWallpaperInitURLVC: UIViewController {
     private func setupUI() {
         modalPresentationStyle = .fullScreen
         wallpaperImageView.kf.indicatorType = .activity
+        (wallpaperImageView.kf.indicator?.view as? UIActivityIndicatorView)?.color = .white
         wallpaperImageView.kf.setImage(with: URL(string: urlString)!, options: [.transition(.fade(0.2))])
 //        wallpaperImageView.contentMode = .scaleAspectFill
         

@@ -226,7 +226,7 @@ class CategoryCell: UITableViewCell {
             $0.trailing.equalToSuperview().offset(-Layout.leading)
         }
         showMoreButton.font = .futura(withSize: 18)
-        showMoreButton.textColor = .violet
+        showMoreButton.textColor = .violetLight
         showMoreButton.text = "show more"
         
         collectionView.snp.makeConstraints {
@@ -378,6 +378,7 @@ class FullContentViewImageCollectionViewCell: UICollectionViewCell {
     
     func setImage(url: URL) {
         recommendationImageView.kf.indicatorType = .activity
+        (recommendationImageView.kf.indicator?.view as? UIActivityIndicatorView)?.color = .white
         recommendationImageView.kf.setImage(with: url, options: [.transition(.fade(0.2))])
     }
     

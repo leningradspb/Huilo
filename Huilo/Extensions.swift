@@ -97,6 +97,8 @@ extension UIColor {
     static let commonGrey = UIColor(hex: "#5b5b5b")
     /// 370258
     static let violet = UIColor(hex: "#370258")
+    /// #920CE5
+    static let violetLight = UIColor(hex: "#920CE5")
 }
 
 extension String {
@@ -302,6 +304,70 @@ extension UIViewController
         UIView.animate(withDuration: animationDuration, delay: 0, options: animationCurve)
         {
             self.view.layoutIfNeeded()
+        }
+    }
+}
+
+
+class ActivityView: UIView {
+    private let animationView = AnimationView()
+    
+    init(animation: Animation?, frame: CGRect, withoutAppearAnimation: Bool) {
+        super.init(frame: frame)
+        addSubview(animationView)
+        
+        animationView.animation = animation
+        backgroundColor = .black
+        animationView.frame = self.frame
+        animationView.center = center
+        let window = UIApplication.shared.keyWindow ?? UIWindow()
+//        let c = window.center
+        self.center.y += window.center.y
+        self.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
+        let duration: Double = withoutAppearAnimation ? 0 : 1
+        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
+            self.center.y -= window.center.y
+            self.transform = .identity
+        }
+    }
+    
+    func play() {
+        animationView.play { [weak self] isComplete in
+            print("isComplete")
+            self?.play()
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    struct Animations {
+        static let girlWalk = Animation.named("girlWalk")
+        static let lurkingCat = Animation.named("lurkingCat")
+        static let cowEatingGrass = Animation.named("cowEatingGrass")
+    }
+}
+
+extension UIViewController {
+    var window: UIWindow { UIApplication.shared.keyWindow ?? UIWindow() }
+    
+    func showActivity(animation: Animation?, withoutAppearAnimation: Bool = false) {
+        let activityView = ActivityView(animation: animation, frame: window.bounds, withoutAppearAnimation: withoutAppearAnimation)
+        activityView.play()
+        window.addSubview(activityView)
+    }
+    
+    func removeActivity() {
+        DispatchQueue.main.async {
+            let activity = self.window.subviews.first { $0 is ActivityView }
+
+            UIView.animate(withDuration: 1, delay: 0, options: .curveEaseInOut) {
+                activity?.center.y += activity?.center.y ?? 0
+                activity?.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
+            } completion: { _ in
+                activity?.removeFromSuperview()
+            }
         }
     }
 }
