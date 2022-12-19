@@ -169,6 +169,7 @@ class FullSizeWallpaperInitURLVC: UIViewController {
     private let saveButton = UIImageView()
     private let timeLabel = UILabel()
     private let dateLabel = UILabel()
+    var finishedWithSuccess: ((Bool)->())?
     
     private let urlString: String
     init(urlString: String) {
@@ -185,12 +186,15 @@ class FullSizeWallpaperInitURLVC: UIViewController {
         modalPresentationStyle = .fullScreen
         wallpaperImageView.kf.indicatorType = .activity
         (wallpaperImageView.kf.indicator?.view as? UIActivityIndicatorView)?.color = .white
-        wallpaperImageView.kf.setImage(with: URL(string: urlString)!, options: [.transition(.fade(0.2))]) { result in
+        wallpaperImageView.kf.setImage(with: URL(string: urlString)!, options: [.transition(.fade(0.2))]) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let response):
                 print(response)
+                self.finishedWithSuccess?(true)
             case .failure(let error):
                 print(error)
+                self.finishedWithSuccess?(false)
             }
         }
 //        wallpaperImageView.contentMode = .scaleAspectFill

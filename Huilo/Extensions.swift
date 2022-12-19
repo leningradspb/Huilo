@@ -333,7 +333,7 @@ class ActivityView: UIView {
     
     func play() {
         animationView.play { [weak self] isComplete in
-            print("isComplete")
+//            print("isComplete")
             self?.play()
         }
     }
@@ -356,7 +356,7 @@ extension UIViewController {
         window.addSubview(activityView)
     }
     
-    func removeActivity(withoutAnimation: Bool = false) {
+    func removeActivity(withoutAnimation: Bool = false, completion: (() -> Void)? = nil) {
         DispatchQueue.main.async {
             let activity = self.window.subviews.first { $0 is ActivityView }
             let duration: TimeInterval = withoutAnimation ? 0 : 1
@@ -365,6 +365,7 @@ extension UIViewController {
                 activity?.transform = CGAffineTransform.identity.scaledBy(x: 0.5, y: 0.5)
             } completion: { _ in
                 activity?.removeFromSuperview()
+                completion?()
             }
         }
     }
