@@ -15,6 +15,7 @@ class FullSizeWallpaperVC: UIViewController {
     private let saveButton = UIImageView()
     private let timeLabel = UILabel()
     private let dateLabel = UILabel()
+    var tooltip: EasyTipView!
     
     private let image: UIImage
     init(image: UIImage) {
@@ -25,6 +26,13 @@ class FullSizeWallpaperVC: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let _ = tooltip {
+            tooltip.dismiss()
+        }
     }
     
     private func setupUI() {
@@ -119,13 +127,13 @@ class FullSizeWallpaperVC: UIViewController {
         preferences.positioning.maxWidth = UIScreen.main.bounds.width - 64
         preferences.animating.dismissOnTap = true
         
-        let tooltip = EasyTipView(contentView: contentView, preferences: preferences)
+        tooltip = EasyTipView(contentView: contentView, preferences: preferences)
         
         DispatchQueue.main.async {
-            tooltip.show(animated: true, forView: forView, withinSuperview: nil)
+            self.tooltip.show(animated: true, forView: forView, withinSuperview: nil)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                tooltip.dismiss()
+                self.tooltip.dismiss()
             }
         }
     }
