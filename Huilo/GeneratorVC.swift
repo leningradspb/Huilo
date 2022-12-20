@@ -101,6 +101,7 @@ class GeneratorVC: GradientVC {
                 
                 DispatchQueue.main.async {
                     self.filters = model.filters
+                    self.filters.sort(by: {$0.name ?? "" < $1.name ?? ""})
                     self.collectionView.reloadData()
                 }
             } catch let error {
