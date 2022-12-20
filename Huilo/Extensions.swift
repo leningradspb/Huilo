@@ -436,6 +436,8 @@ class ErrorModal: UIView {
     private let cancelButton = UIButton()
     private let duration: Double = 0.7
     
+    var tryAgainCompletion: (()->())?
+    
     private let errorText: String
     init(errorText: String) {
         self.errorText = errorText
@@ -513,6 +515,16 @@ class ErrorModal: UIView {
     
     @objc private func tryAgainTapped() {
         print("tryAgainTapped")
+        let window = UIApplication.shared.keyWindow ?? UIWindow()
+        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
+            self.center.y += window.center.y
+            self.transform = CGAffineTransform.identity.scaledBy(x: 0.2, y: 0.2)
+        } completion: { [weak self] isFinished in
+            if isFinished {
+                self?.removeFromSuperview()
+                self?.tryAgainCompletion?()
+            }
+        }
     }
     
     @objc private func cancelTapped() {

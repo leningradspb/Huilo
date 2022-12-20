@@ -116,9 +116,6 @@ class GeneratorVC: GradientVC {
     }
     
     @objc private func sendTapped() {
-        let modal = ErrorModal(errorText: "something went wrong🤯 we are terrible sorry🥺 if you see that message at first time please try again. if you see few times in a row please try later or change your prompt🙏")
-        window.addSubview(modal)
-        return
         print("sendMessage()")
         hideKeyboard()
         showActivity(animation: ActivityView.Animations.plane)
@@ -158,15 +155,29 @@ class GeneratorVC: GradientVC {
                                 }
                             case .failure(let error):
                                 print(error)
-                                self.removeActivity {
-                                    print("completion removeActivity")
+                                self.removeActivity { [weak self] in
+                                    guard let self = self else { return }
+                                    print("completion removeActivity error in kingfisher")
+                                    let modal = ErrorModal(errorText: "something went wrong🤯 we are terrible sorry🥺 if you see that message at first time please try again. if you see few times in a row please try later or change your prompt🙏")
+                                    modal.tryAgainCompletion = { [weak self] in
+                                        guard let self = self else { return }
+                                        self.sendTapped()
+                                    }
+                                    self.window.addSubview(modal)
                                 }
                             }
                         }
                     }
                 } else {
-                    self.removeActivity {
+                    self.removeActivity { [weak self] in
+                        guard let self = self else { return }
                         print("completion removeActivity error")
+                        let modal = ErrorModal(errorText: "something went wrong🤯 we are terrible sorry🥺 if you see that message at first time please try again. if you see few times in a row please try later or change your prompt🙏")
+                        modal.tryAgainCompletion = { [weak self] in
+                            guard let self = self else { return }
+                            self.sendTapped()
+                        }
+                        self.window.addSubview(modal)
                     }
                 }
             }
