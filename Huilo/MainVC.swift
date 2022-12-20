@@ -387,7 +387,7 @@ class FullContentViewImageCollectionViewCell: UICollectionViewCell {
         contentView.layer.cornerRadius = cornerRadius
         recommendationImageView.layer.cornerRadius = cornerRadius
         recommendationImageView.clipsToBounds = true
-        recommendationImageView.contentMode = .scaleAspectFill
+//        recommendationImageView.contentMode = .scaleAspectFill
         
         contentView.addSubview(recommendationImageView)
         

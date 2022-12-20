@@ -11,12 +11,16 @@ class CategoryVC: GradientVC {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let minimumInteritemSpacingForSection: CGFloat = 12
     private let numberOfCollectionViewColumns: CGFloat = 2
+    private let limitIncreaser: Int = 20
+    private var limit: Int = 20
+    private var result: [CategoryModel.ResultCategory] = []
     
     private let categoryName: String
     init(categoryName: String) {
         self.categoryName = categoryName
         super.init(nibName: nil, bundle: nil)
         setupUI()
+        loadData(isInitial: true)
     }
     
     required init?(coder: NSCoder) {
@@ -43,18 +47,47 @@ class CategoryVC: GradientVC {
             $0.edges.equalToSuperview()
         }
     }
+    
+    private func loadData(isInitial: Bool) {
+        if isInitial {
+            limit = limitIncreaser
+        } else {
+            limit += limitIncreaser
+        }
+        
+        FirebaseManager.shared.firestore.collection("Category").document(categoryName).getDocument() { [weak self] snapshot, error in
+            guard let self = self else { return }
+            
+            guard let snapshotData = snapshot?.data() else { return }
+            guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+            
+            do {
+                let model = try JSONDecoder().decode(CategoryModel.self, from: data)
+                print(model)
+                
+                DispatchQueue.main.async {
+                    self.result = model.result ?? []
+                    self.collectionView.reloadData()
+                }
+            } catch let error {
+                print(error)
+            }
+        }
+    }
 }
 
 extension CategoryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        result.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FullContentViewImageCollectionViewCell.identifier, for: indexPath) as! FullContentViewImageCollectionViewCell
-//        let photo = photos[indexPath.row]
-        if let url = URL(string: "https://d1okzptojspljx.cloudfront.net/generations/d95e6dc4-08bd-4b17-80e8-0d455d6517d0-0.png") {
-            cell.setImage(url: url)
+        if indexPath.row < result.count {
+            let photo = result[indexPath.row].photo
+            if let url = URL(string: photo) {
+                cell.setImage(url: url)
+            }
         }
         return cell
     }
@@ -79,5 +112,14 @@ extension CategoryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICo
                 self.present(vc, animated: true)
             }
         }
+    }
+}
+
+struct CategoryModel: Codable {
+    let result: [ResultCategory]?
+    
+    struct ResultCategory: Codable {
+        let photo: String
+        let prompt, negative_prompt: String?
     }
 }
