@@ -12,7 +12,44 @@ class TabBarVC: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupTabBar()
+        checkForceUpdate()
+    }
+    
+    private func checkForceUpdate() {
+        guard let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String, let appVersionDouble = Double(appVersion) else {
+            setupTabBar()
+            return
+        }
+        
+        FirebaseManager.shared.firestore.collection("ForceUpdate").document("ForceUpdate").getDocument { [weak self] snapshot, error in
+            guard let self = self else {
+                self?.setupTabBar()
+                return
+            }
+            guard let snapshotData = snapshot?.data() else {
+                self.setupTabBar()
+                return
+            }
+            guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else {
+                self.setupTabBar()
+                return
+            }
+            
+            do {
+                let model = try JSONDecoder().decode(ForceUpdateModel.self, from: data)
+                if appVersionDouble < model.supportedVersion {
+                    DispatchQueue.main.async {
+                        let modal = ErrorModal(errorText: "force update required🤖 please update the app", isForceUpdate: true)
+                        self.window.addSubview(modal)
+                    }
+                } else {
+                    self.setupTabBar()
+                }
+            } catch let error {
+                print(error)
+                self.setupTabBar()
+            }
+        }
     }
     
     private func setupTabBar() {
@@ -43,4 +80,9 @@ class TabBarVC: UITabBarController {
         tabBarList = [mainNC, generatorNC]
         viewControllers = tabBarList
     }
+}
+
+
+struct ForceUpdateModel: Codable {
+    let supportedVersion: Double
 }
