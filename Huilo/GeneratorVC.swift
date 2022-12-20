@@ -116,6 +116,9 @@ class GeneratorVC: GradientVC {
     }
     
     @objc private func sendTapped() {
+        let modal = ErrorModal(errorText: "unfortunately something went wrong🤯 we are terrible sorry🥺 if you see that message at first time please try again. if you see few times in a row please try later or change your prompt🙏")
+        window.addSubview(modal)
+        return
         print("sendMessage()")
         hideKeyboard()
         showActivity(animation: ActivityView.Animations.plane)
@@ -162,7 +165,9 @@ class GeneratorVC: GradientVC {
                         }
                     }
                 } else {
-                    self.removeActivity(withoutAnimation: true)
+                    self.removeActivity {
+                        print("completion removeActivity error")
+                    }
                 }
             }
         }
@@ -338,7 +343,7 @@ extension APIService {
                 completion(history, nil)
             } catch {
                 print(error)
-                completion(nil, nil)
+                completion(nil, error)
             }
         }
         

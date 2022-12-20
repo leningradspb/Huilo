@@ -166,24 +166,39 @@ class InsetTextField: UITextField {
 }
 
 
-class ScarletButton: UIButton {
+class VioletButton: UIButton {
     override var isEnabled: Bool {
         didSet {
-            backgroundColor = isEnabled ? .scarlet : .grass
+            backgroundColor = isEnabled ? .violetLight : .commonGrey
         }
     }
     override init(frame: CGRect) {
         super.init(frame: frame)
-        layer.cornerRadius = 10
-        
-        setTitleColor(.white, for: .normal)
-        setTitleColor(.white, for: .selected)
-        titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
-        backgroundColor = .scarlet
+        setupUI(text: "")
+    }
+    
+    init(text: String) {
+        super.init(frame: .zero)
+        setupUI(text: text)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI(text: String) {
+        layer.cornerRadius = 10
+        
+        setTitleColor(.white, for: .normal)
+        setTitleColor(.white, for: .selected)
+        titleLabel?.font = .futura(withSize: 20)
+        backgroundColor = .violetLight
+        
+        self.snp.makeConstraints {
+            $0.height.equalTo(52)
+        }
+        setTitle(text, for: .normal)
+        setTitle(text, for: .selected)
     }
 }
 
@@ -409,5 +424,89 @@ extension UIViewController {
                 completion?()
             }
         }
+    }
+}
+
+class ErrorModal: UIView {
+    private let contentView = UIView()
+    private let headerLabel = FuturaLabel(text: "oooops!", fontSize: 35, numberOfLines: 1)
+    private let errorLabelText = FuturaLabel(text: "", fontSize: 20)
+    private let buttonsStack = VerticalStackView(spacing: 0)
+    private let tryAgainButton = VioletButton(text: "try again")
+    private let cancelButton = UIButton()
+    
+    private let errorText: String
+    init(errorText: String) {
+        self.errorText = errorText
+        super.init(frame: .zero)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        addSubview(contentView)
+        let window = UIApplication.shared.keyWindow ?? UIWindow()
+        self.center = window.center
+        contentView.addSubviews([headerLabel, errorLabelText, buttonsStack])
+        
+        contentView.backgroundColor = .white
+        contentView.layer.cornerRadius = 30
+        contentView.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.width.equalTo(window.bounds.width - 50)
+        }
+        
+        headerLabel.snp.makeConstraints {
+            $0.top.equalToSuperview().offset(30)
+            $0.centerX.equalToSuperview()
+        }
+        
+        errorLabelText.snp.makeConstraints {
+            $0.top.equalTo(headerLabel.snp.bottom).offset(20)
+            $0.leading.equalToSuperview().offset(Layout.leading)
+            $0.trailing.equalToSuperview().offset(-Layout.leading)
+        }
+        errorLabelText.text = errorText
+        
+        buttonsStack.snp.makeConstraints {
+            $0.top.equalTo(errorLabelText.snp.bottom)
+            $0.leading.equalToSuperview().offset(Layout.leading)
+            $0.trailing.equalToSuperview().offset(-Layout.leading)
+            $0.bottom.equalToSuperview().offset(0)
+        }
+        
+        buttonsStack.addArranged(subviews: [createSpacer(spacing: 12), tryAgainButton, createSpacer(spacing: 12), cancelButton, createSpacer(spacing: 20)])
+        
+        cancelButton.setTitle("cancel", for: .normal)
+        cancelButton.titleLabel?.font = .futura(withSize: 20)
+        cancelButton.snp.makeConstraints {
+            $0.height.equalTo(52)
+        }
+        cancelButton.setTitleColor(.black, for: .normal)
+    }
+    
+    private func createSpacer(spacing: Int) -> UIView {
+        let v = UIView()
+        v.snp.makeConstraints {
+            $0.height.equalTo(spacing)
+        }
+        return v
+    }
+}
+
+class FuturaLabel: UILabel {
+    init(text: String, fontSize: CGFloat, color: UIColor = .black, numberOfLines: Int = 0) {
+        super.init(frame: .zero)
+        self.font = .futura(withSize: fontSize)
+        self.text = text
+        self.textColor = color
+        self.numberOfLines = numberOfLines
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
