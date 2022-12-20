@@ -397,7 +397,7 @@
 				DEVELOPMENT_TEAM = 9875BH6JL2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Huilo/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Huilo;
+				INFOPLIST_KEY_CFBundleDisplayName = huilo;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Our application needs permission to write wallpaper in your iPhone";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -430,7 +430,7 @@
 				DEVELOPMENT_TEAM = 9875BH6JL2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Huilo/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Huilo;
+				INFOPLIST_KEY_CFBundleDisplayName = huilo;
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Our application needs permission to write wallpaper in your iPhone";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
