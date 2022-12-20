@@ -133,11 +133,13 @@ class GeneratorVC: GradientVC {
                 negativePrompts.append(negative)
             }
         }
-
+        
+        let isPaperCut = userSelectedFilters.contains(where: {$0.name == "paper cut"})
         let filterPrompt = prompts.joined(separator: ", ")
         let filterNegativePrompts = negativePrompts.joined(separator: ", ")
         let prompt = messageTextView.text + " " + filterPrompt
-        let requestModel = StableDiffusionFilterRequest(key: key, prompt: prompt, negative_prompt: filterNegativePrompts)
+        let model_id: String = isPaperCut ? "midjourney-papercut" : "midjourney"
+        let requestModel = StableDiffusionFilterRequest(key: key, prompt: prompt, negative_prompt: filterNegativePrompts, model_id: model_id)
         
         APIService.requestPhotoBy(filter: requestModel) { [weak self] result, error in
             guard let self = self else { return }
@@ -371,7 +373,7 @@ struct StableDiffusionFilterRequest: Codable {
     let key: String
     let prompt: String
     let negative_prompt: String?
-    let model_id: String = "midjourney"
+    var model_id: String = "midjourney"
     let guidance_scale: Int = 8
     let num_inference_steps: Int = 25
     let width: Int = 400
