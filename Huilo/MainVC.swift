@@ -161,6 +161,11 @@ extension MainVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section < sections.count, sections[indexPath.section].isRecommendation != true else { return }
         print("didSelectRowAt")
+        let section = sections[indexPath.section]
+        if let cells = section.cells, indexPath.row < cells.count, let name = cells[indexPath.row].cellName {
+            let vc = CategoryVC(categoryName: name)
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
