@@ -36,7 +36,7 @@ class GeneratorVC: GradientVC {
     }
     
     private func setupUI() {
-        view.addSubviews([collectionView, messageTextView, sendMessageButton])
+        gradientContentView.addSubviews([collectionView, messageTextView, sendMessageButton])
   
         collectionView.backgroundColor = .clear
         collectionView.register(GeneratorFiltersCollectionViewCell.self, forCellWithReuseIdentifier: GeneratorFiltersCollectionViewCell.identifier)
@@ -44,13 +44,13 @@ class GeneratorVC: GradientVC {
         collectionView.dataSource = self
         collectionView.keyboardDismissMode = .onDrag
         collectionView.showsVerticalScrollIndicator = false
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: Layout.leading, bottom: 0, right: Layout.leading)
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: Layout.leading, bottom: Layout.leading, right: Layout.leading)
         if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .vertical
             flowLayout.minimumLineSpacing = 10
         }
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            $0.top.equalToSuperview()
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
         }
