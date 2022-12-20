@@ -434,6 +434,7 @@ class ErrorModal: UIView {
     private let buttonsStack = VerticalStackView(spacing: 0)
     private let tryAgainButton = VioletButton(text: "try again")
     private let cancelButton = UIButton()
+    private let duration: Double = 0.7
     
     private let errorText: String
     init(errorText: String) {
@@ -449,7 +450,19 @@ class ErrorModal: UIView {
     private func setupUI() {
         addSubview(contentView)
         let window = UIApplication.shared.keyWindow ?? UIWindow()
-        self.center = window.center
+        self.center.y = window.bounds.height
+        self.center.x = window.center.x
+        self.transform = CGAffineTransform.identity.scaledBy(x: 0.3, y: 0.3)
+        
+        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
+            self.center.y = window.center.y
+            self.transform = .identity
+        } completion: { [weak self] isFinished in
+            guard let self = self else { return }
+            if isFinished {
+                self.frame = window.frame
+            }
+        }
         contentView.addSubviews([headerLabel, errorLabelText, buttonsStack])
         
         contentView.backgroundColor = .white
@@ -479,6 +492,7 @@ class ErrorModal: UIView {
         }
         
         buttonsStack.addArranged(subviews: [createSpacer(spacing: 12), tryAgainButton, createSpacer(spacing: 12), cancelButton, createSpacer(spacing: 20)])
+        tryAgainButton.addTarget(self, action: #selector(tryAgainTapped), for: .touchUpInside)
         
         cancelButton.setTitle("cancel", for: .normal)
         cancelButton.titleLabel?.font = .futura(withSize: 20)
@@ -486,6 +500,7 @@ class ErrorModal: UIView {
             $0.height.equalTo(52)
         }
         cancelButton.setTitleColor(.black, for: .normal)
+        cancelButton.addTarget(self, action: #selector(cancelTapped), for: .touchUpInside)
     }
     
     private func createSpacer(spacing: Int) -> UIView {
@@ -494,6 +509,22 @@ class ErrorModal: UIView {
             $0.height.equalTo(spacing)
         }
         return v
+    }
+    
+    @objc private func tryAgainTapped() {
+        print("tryAgainTapped")
+    }
+    
+    @objc private func cancelTapped() {
+        let window = UIApplication.shared.keyWindow ?? UIWindow()
+        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
+            self.center.y += window.center.y
+            self.transform = CGAffineTransform.identity.scaledBy(x: 0.2, y: 0.2)
+        } completion: { [weak self] isFinished in
+            if isFinished {
+                self?.removeFromSuperview()
+            }
+        }
     }
 }
 
