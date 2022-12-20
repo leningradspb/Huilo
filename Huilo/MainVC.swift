@@ -67,6 +67,11 @@ class MainVC: GradientVC {
                 
                 DispatchQueue.main.async {
                     self.sections = model.sections ?? []
+                    for index in 0..<self.sections.count {
+                        if let _ = self.sections[index].cells {
+                            self.sections[index].cells!.sort(by: {$0.cellName ?? "" < $1.cellName ?? ""})
+                        }
+                    }
                     self.tableView.reloadData()
                 }
             } catch let error {
@@ -410,7 +415,7 @@ struct MainScreenModel: Codable {
     struct Section: Codable {
         let recommendedCategories: [RecommendedCategory]?
         let name: String?
-        let cells: [Cell]?
+        var cells: [Cell]?
         let isRecommendation: Bool?
         
         struct Cell: Codable {
@@ -419,7 +424,7 @@ struct MainScreenModel: Codable {
         }
         
         struct CellPhoto: Codable {
-            let name, photo, negative_prompt, prompt: String?
+            let photo, negative_prompt, prompt: String?
         }
         
         struct RecommendedCategory: Codable {
