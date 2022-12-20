@@ -117,6 +117,7 @@ class GeneratorVC: GradientVC {
     
     @objc private func sendTapped() {
         print("sendMessage()")
+        guard messageTextView.text != placeholder && !messageTextView.text.isEmpty else {return}
         hideKeyboard()
         showActivity(animation: ActivityView.Animations.plane)
         let key = "BACIke21YSH6KHkQ77sZIZBNZVJZnR4PAdNYYLz4JITelaJj0HmKOfE1mV7C"
@@ -230,14 +231,12 @@ extension GeneratorVC: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.text == placeholder {
             messageTextView.text = ""
-            messageTextView.textColor = .white
         }
     }
     
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.trimmingCharacters(in: .whitespaces).isEmpty {
             messageTextView.text = placeholder
-            messageTextView.textColor = .darkGray
         }
     }
     
