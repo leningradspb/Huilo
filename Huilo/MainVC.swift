@@ -250,8 +250,7 @@ extension CategoryCell: UICollectionViewDelegate, UICollectionViewDataSource, UI
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FullContentViewImageCollectionViewCell.identifier, for: indexPath) as! FullContentViewImageCollectionViewCell
-        if let photos = sectionCell?.cellPhotos, indexPath.row < photos.count {
-            let photo = photos[indexPath.row]
+        if let photos = sectionCell?.cellPhotos, indexPath.row < photos.count, let photo = photos[indexPath.row].photo {
             if let url = URL(string: photo) {
                 cell.setImage(url: url)
             }
@@ -416,7 +415,11 @@ struct MainScreenModel: Codable {
         
         struct Cell: Codable {
             let cellName: String?
-            let cellPhotos: [String]?
+            let cellPhotos: [CellPhoto]?
+        }
+        
+        struct CellPhoto: Codable {
+            let name, photo, negative_prompt, prompt: String?
         }
         
         struct RecommendedCategory: Codable {
