@@ -439,8 +439,10 @@ class ErrorModal: UIView {
     var tryAgainCompletion: (()->())?
     
     private let errorText: String
-    init(errorText: String) {
+    private let isForceUpdate: Bool
+    init(errorText: String, isForceUpdate: Bool = false) {
         self.errorText = errorText
+        self.isForceUpdate = isForceUpdate
         super.init(frame: .zero)
         setupUI()
     }
@@ -493,7 +495,14 @@ class ErrorModal: UIView {
             $0.bottom.equalToSuperview().offset(0)
         }
         
-        buttonsStack.addArranged(subviews: [createSpacer(spacing: 12), tryAgainButton, createSpacer(spacing: 12), cancelButton, createSpacer(spacing: 20)])
+        if isForceUpdate {
+            tryAgainButton.setTitle("open app store", for: .normal)
+            tryAgainButton.setTitle("open app store", for: .selected)
+            buttonsStack.addArranged(subviews: [createSpacer(spacing: 12), tryAgainButton, createSpacer(spacing: 20)])
+        } else {
+            buttonsStack.addArranged(subviews: [createSpacer(spacing: 12), tryAgainButton, createSpacer(spacing: 12), cancelButton, createSpacer(spacing: 20)])
+        }
+        
         tryAgainButton.addTarget(self, action: #selector(tryAgainTapped), for: .touchUpInside)
         
         cancelButton.setTitle("cancel", for: .normal)
@@ -515,14 +524,22 @@ class ErrorModal: UIView {
     
     @objc private func tryAgainTapped() {
         print("tryAgainTapped")
-        let window = UIApplication.shared.keyWindow ?? UIWindow()
-        UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
-            self.center.y += window.center.y
-            self.transform = CGAffineTransform.identity.scaledBy(x: 0.2, y: 0.2)
-        } completion: { [weak self] isFinished in
-            if isFinished {
-                self?.removeFromSuperview()
-                self?.tryAgainCompletion?()
+        if isForceUpdate {
+            let appId = "id1659903529"
+
+            guard let url = URL(string : "itms-apps://itunes.apple.com/app/" + appId) else { return }
+
+            UIApplication.shared.open(url)
+        } else {
+            let window = UIApplication.shared.keyWindow ?? UIWindow()
+            UIView.animate(withDuration: duration, delay: 0, options: .curveEaseInOut) {
+                self.center.y += window.center.y
+                self.transform = CGAffineTransform.identity.scaledBy(x: 0.2, y: 0.2)
+            } completion: { [weak self] isFinished in
+                if isFinished {
+                    self?.removeFromSuperview()
+                    self?.tryAgainCompletion?()
+                }
             }
         }
     }

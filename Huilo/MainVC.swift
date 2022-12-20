@@ -53,6 +53,24 @@ class MainVC: GradientVC {
     }
     
     private func loadData() {
+        FirebaseManager.shared.firestore.collection("ForceUpdate").document("ForceUpdate").getDocument { [weak self] snapshot, error in
+            guard let self = self else { return }
+            guard let snapshotData = snapshot?.data() else { return }
+            guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+            do {
+                let model = try JSONDecoder().decode(ForceUpdateModel.self, from: data)
+                if model.isUpdateRequired {
+                    DispatchQueue.main.async {
+                        let modal = ErrorModal(errorText: "force update required🤖 please update the app", isForceUpdate: true)
+                        self.window.addSubview(modal)
+                    }
+                }
+            } catch let error {
+                print(error)
+            }
+        }
+        
+        
         FirebaseManager.shared.firestore.collection("Main").document("m").getDocument { [weak self] snapshot, error in
             guard let self = self else { return }
 //            print(snapshot?.data(), error)
@@ -424,3 +442,8 @@ struct MainScreenModel: Codable {
         }
     }
 }
+
+
+    struct ForceUpdateModel: Codable {
+        let isUpdateRequired: Bool
+    }
