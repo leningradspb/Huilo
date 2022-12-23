@@ -145,10 +145,10 @@ class GeneratorVC: GradientVC {
             guard let self = self else { return }
             print(result, error)
             DispatchQueue.main.async {
-                if let status = result?.status, status == "success", let output = result?.output?.first {
+                if let status = result?.status, status == "success", let output = result?.output?.first, let url = URL(string: output) {
                     let cacheImageView = UIImageView()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                        cacheImageView.kf.setImage(with: URL(string: output)!, options: [.transition(.fade(0.2))]) { [weak self] r in
+                        cacheImageView.kf.setImage(with: url, options: [.transition(.fade(0.2))]) { [weak self] r in
                             guard let self = self else { return }
                             switch r {
                             case .success(let response):
