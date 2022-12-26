@@ -35,5 +35,8 @@ struct ReferenceKeys {
     static let email = "email"
     static let usersHistory = "usersHistory"
     static let photos = "photos"
+    static let photo = "photo"
+    static let prompt = "prompt"
+    static let filter = "filter"
     static let results = "results"
 }

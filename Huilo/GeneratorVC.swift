@@ -209,13 +209,23 @@ class GeneratorVC: GradientVC {
 //                            }
                         } else {
                             if let url = url?.absoluteString {
-                                FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(id).getDocument { snapshot, error in
+                                FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(id).getDocument { [weak self] snapshot, error in
+                                    guard let self = self else { return }
                                     if let document = snapshot, document.exists {
+                                        let prompt: String = self.messageTextView.text
+                                        let filter: String = self.userSelectedFilters.compactMap {$0.name}.joined(separator: ", ")
+                                        let model = [ReferenceKeys.photo: url, ReferenceKeys.prompt: prompt, ReferenceKeys.filter: filter] as? Any
                                         FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(id).updateData([
-                                            ReferenceKeys.photos: FieldValue.arrayUnion([url])
+                                            ReferenceKeys.results: FieldValue.arrayUnion([model])
                                         ])
                                     } else {
-                                        FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(id).setData([ReferenceKeys.photos: [url]], merge: false)
+//                                        let v = [ReferenceKeys.photos: [url]] as? Any
+//                                        let v = [url] as? Any
+//                                        FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(id).setData([ReferenceKeys.photos: v])
+                                        let prompt: String = self.messageTextView.text
+                                        let filter: String = self.userSelectedFilters.compactMap {$0.name}.joined(separator: ", ")
+                                        let model = [ReferenceKeys.photo: url, ReferenceKeys.prompt: prompt, ReferenceKeys.filter: filter] as? Any
+                                        FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(id).setData([ReferenceKeys.results: [model]])
                                     }
                                 }
                             }
