@@ -30,6 +30,7 @@
 /* Begin PBXFileReference section */
 		261EBD242955D7F600C54486 /* AuthVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVC.swift; sourceTree = "<group>"; };
 		261EBD262955DCEB00C54486 /* CredentialsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsVC.swift; sourceTree = "<group>"; };
+		261EBD2929598CDD00C54486 /* Huilo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Huilo.entitlements; sourceTree = "<group>"; };
 		26498FE9294BBA1300F4772A /* FullSizeWallpaperVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullSizeWallpaperVC.swift; sourceTree = "<group>"; };
 		264A1AF0294A4A7E00EA9092 /* Huilo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Huilo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		264A1AF3294A4A7E00EA9092 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -103,6 +104,7 @@
 		264A1AF2294A4A7E00EA9092 /* Huilo */ = {
 			isa = PBXGroup;
 			children = (
+				261EBD2929598CDD00C54486 /* Huilo.entitlements */,
 				264A1AF3294A4A7E00EA9092 /* AppDelegate.swift */,
 				264A1AF5294A4A7E00EA9092 /* SceneDelegate.swift */,
 				264A1B07294A4B1A00EA9092 /* TabBarVC.swift */,
@@ -408,6 +410,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Huilo/Huilo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9875BH6JL2;
@@ -441,6 +444,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Huilo/Huilo.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9875BH6JL2;

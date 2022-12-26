@@ -7,17 +7,19 @@
 
 import Foundation
 import Firebase
+import FirebaseAuth
 
 final class FirebaseManager {
 //    let auth: Auth
     let storage: StorageReference
     let firestore: Firestore
+    let auth: Auth
     
     static let shared = FirebaseManager()
     
     init() {
 //        FirebaseApp.configure()
-//        auth = Auth.auth()
+        auth = Auth.auth()
         storage = Storage.storage().reference()
         firestore = Firestore.firestore()
     }

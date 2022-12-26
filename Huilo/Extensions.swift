@@ -240,6 +240,10 @@ final class GradientView: UIView {
 }
 
 extension UIViewController {
+    var myID: String? {
+        return FirebaseManager.shared.auth.currentUser?.uid
+    }
+    
     func shortVibrate() {
         AudioServicesPlaySystemSound(1519)
     }

@@ -17,8 +17,8 @@ class MainVC: GradientVC {
         super.viewDidLoad()
 
         setupNavigationBar(with: "main")
-        setupTableView()
-        loadData()
+        checkUserCredentialsAndShowRegistrationIfNeededOrSetupUI()
+        
         
 //        for family in UIFont.familyNames {
 //            print("Family name " + family)
@@ -28,6 +28,24 @@ class MainVC: GradientVC {
 //                print("    Font name: " + font)
 //            }
 //        }
+    }
+    
+    private func checkUserCredentialsAndShowRegistrationIfNeededOrSetupUI() {
+        print(FirebaseManager.shared.auth.currentUser?.uid)
+
+        if myID == nil {
+            let vc = AuthVC()
+            vc.setupMainUI = { [weak self] in
+                guard let self = self else { return }
+                self.setupTableView()
+                self.loadData()
+            }
+            vc.modalPresentationStyle = .fullScreen
+            self.present(vc, animated: false, completion: nil)
+        } else {
+            setupTableView()
+            loadData()
+        }
     }
     
     private func setupTableView() {
