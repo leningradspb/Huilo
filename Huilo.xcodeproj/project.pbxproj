@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		261EBD252955D7F600C54486 /* AuthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261EBD242955D7F600C54486 /* AuthVC.swift */; };
 		261EBD272955DCEB00C54486 /* CredentialsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261EBD262955DCEB00C54486 /* CredentialsVC.swift */; };
+		261EBD2B2959AEE700C54486 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261EBD2A2959AEE700C54486 /* ProfileVC.swift */; };
 		26498FEA294BBA1300F4772A /* FullSizeWallpaperVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26498FE9294BBA1300F4772A /* FullSizeWallpaperVC.swift */; };
 		264A1AF4294A4A7E00EA9092 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264A1AF3294A4A7E00EA9092 /* AppDelegate.swift */; };
 		264A1AF6294A4A7E00EA9092 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264A1AF5294A4A7E00EA9092 /* SceneDelegate.swift */; };
@@ -31,6 +32,7 @@
 		261EBD242955D7F600C54486 /* AuthVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVC.swift; sourceTree = "<group>"; };
 		261EBD262955DCEB00C54486 /* CredentialsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsVC.swift; sourceTree = "<group>"; };
 		261EBD2929598CDD00C54486 /* Huilo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Huilo.entitlements; sourceTree = "<group>"; };
+		261EBD2A2959AEE700C54486 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		26498FE9294BBA1300F4772A /* FullSizeWallpaperVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullSizeWallpaperVC.swift; sourceTree = "<group>"; };
 		264A1AF0294A4A7E00EA9092 /* Huilo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Huilo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		264A1AF3294A4A7E00EA9092 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +114,7 @@
 				265129DF294EF87A00F70B91 /* CategoryVC.swift */,
 				26498FE9294BBA1300F4772A /* FullSizeWallpaperVC.swift */,
 				264A1AF7294A4A7E00EA9092 /* GeneratorVC.swift */,
+				261EBD2A2959AEE700C54486 /* ProfileVC.swift */,
 				261EBD282955DCFC00C54486 /* Auth */,
 				264A1B0F294A59C300EA9092 /* FirebaseManager.swift */,
 				264A1B0D294A54D100EA9092 /* Extensions.swift */,
@@ -260,6 +263,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				261EBD2B2959AEE700C54486 /* ProfileVC.swift in Sources */,
 				261EBD252955D7F600C54486 /* AuthVC.swift in Sources */,
 				264A1AF8294A4A7E00EA9092 /* GeneratorVC.swift in Sources */,
 				264A1B0E294A54D100EA9092 /* Extensions.swift in Sources */,

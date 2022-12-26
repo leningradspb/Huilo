@@ -77,7 +77,17 @@ class TabBarVC: UITabBarController {
         generatorVC.tabBarItem.selectedImage = generatSelected
         generatorVC.tabBarItem.tag = 1
         
-        tabBarList = [mainNC, generatorNC]
+        let profileNC = UINavigationController()
+        let profileVC = ProfileVC()
+        profileNC.viewControllers = [profileVC]
+        let profile = UIImage(systemName: "person.circle", withConfiguration: iconConfig)
+        let profileSelected = UIImage(systemName: "person.circle.fill", withConfiguration: iconConfig)
+        profileVC.tabBarItem.title = "profile"
+        profileVC.tabBarItem.image = profile
+        profileVC.tabBarItem.selectedImage = profileSelected
+        profileVC.tabBarItem.tag = 2
+        
+        tabBarList = [mainNC, generatorNC, profileNC]
         viewControllers = tabBarList
     }
 }
