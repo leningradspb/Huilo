@@ -218,7 +218,6 @@ class GeneratorVC: GradientVC {
                                         FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(id).setData([ReferenceKeys.photos: [url]], merge: false)
                                     }
                                 }
-                                
                             }
                         }
                     }
