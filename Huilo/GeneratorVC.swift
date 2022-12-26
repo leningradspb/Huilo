@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import Firebase
 
 class GeneratorVC: GradientVC {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -153,6 +154,7 @@ class GeneratorVC: GradientVC {
                             switch r {
                             case .success(let response):
                                 print(response)
+                                self.writeInStorageAndUserHistory(with: cacheImageView.image)
                                 let vc = FullSizeWallpaperVC(image: response.image)
                                 self.removeActivity { [weak self] in
                                     self?.present(vc, animated: true)
@@ -182,6 +184,43 @@ class GeneratorVC: GradientVC {
                             self.sendTapped()
                         }
                         self.window.addSubview(modal)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func writeInStorageAndUserHistory(with image: UIImage?) {
+        if let uploadData = image?.pngData(), let id = myID {
+            let uniqPath = UUID().uuidString
+            FirebaseManager.shared.storage.child(ReferenceKeys.usersHistory).child(id).child(ReferenceKeys.photos).child(uniqPath).putData(uploadData, metadata: nil) { [weak self] metadata, error in
+                guard let self = self else { return }
+                
+                if let error = error {
+//                    DispatchQueue.main.async {
+//                        self.removeActivity()
+//                        self.view.showMessage(text: error.localizedDescription)
+//                    }
+                } else {
+                    FirebaseManager.shared.storage.child(ReferenceKeys.usersHistory).child(id).child(ReferenceKeys.photos).child(uniqPath).downloadURL { [weak self] url, error in
+                        if let error = error {
+//                            DispatchQueue.main.async {
+//                                self?.view.showMessage(text: error.localizedDescription)
+//                            }
+                        } else {
+                            if let url = url?.absoluteString {
+                                FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(id).getDocument { snapshot, error in
+                                    if let document = snapshot, document.exists {
+                                        FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(id).updateData([
+                                            ReferenceKeys.photos: FieldValue.arrayUnion([url])
+                                        ])
+                                    } else {
+                                        FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(id).setData([ReferenceKeys.photos: [url]], merge: false)
+                                    }
+                                }
+                                
+                            }
+                        }
                     }
                 }
             }
