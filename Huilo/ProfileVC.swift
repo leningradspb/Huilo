@@ -20,6 +20,7 @@ class ProfileVC: GradientVC {
     
     private func setupUI() {
         setupNavigationBar(with: "profile")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear", withConfiguration: iconConfig), style: .plain, target: self, action: #selector(settingsTapped))
         gradientContentView.addSubviews([collectionView])
   
         collectionView.backgroundColor = .clear
@@ -39,6 +40,10 @@ class ProfileVC: GradientVC {
             $0.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
         }
+    }
+                                                            
+    @objc private func settingsTapped() {
+        
     }
 }
 

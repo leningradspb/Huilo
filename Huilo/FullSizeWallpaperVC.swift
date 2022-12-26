@@ -38,7 +38,7 @@ class FullSizeWallpaperVC: UIViewController {
     private func setupUI() {
         modalPresentationStyle = .fullScreen
         wallpaperImageView.image = image
-//        wallpaperImageView.contentMode = .scaleAspectFill
+        wallpaperImageView.contentMode = .scaleAspectFill
         
         view.addSubview(wallpaperImageView)
         wallpaperImageView.snp.makeConstraints {
