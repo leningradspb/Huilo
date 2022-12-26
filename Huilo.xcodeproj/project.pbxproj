@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		261EBD252955D7F600C54486 /* AuthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261EBD242955D7F600C54486 /* AuthVC.swift */; };
+		261EBD272955DCEB00C54486 /* CredentialsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261EBD262955DCEB00C54486 /* CredentialsVC.swift */; };
 		26498FEA294BBA1300F4772A /* FullSizeWallpaperVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26498FE9294BBA1300F4772A /* FullSizeWallpaperVC.swift */; };
 		264A1AF4294A4A7E00EA9092 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264A1AF3294A4A7E00EA9092 /* AppDelegate.swift */; };
 		264A1AF6294A4A7E00EA9092 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264A1AF5294A4A7E00EA9092 /* SceneDelegate.swift */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		261EBD242955D7F600C54486 /* AuthVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthVC.swift; sourceTree = "<group>"; };
+		261EBD262955DCEB00C54486 /* CredentialsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsVC.swift; sourceTree = "<group>"; };
 		26498FE9294BBA1300F4772A /* FullSizeWallpaperVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullSizeWallpaperVC.swift; sourceTree = "<group>"; };
 		264A1AF0294A4A7E00EA9092 /* Huilo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Huilo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		264A1AF3294A4A7E00EA9092 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -71,6 +73,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		261EBD282955DCFC00C54486 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				261EBD242955D7F600C54486 /* AuthVC.swift */,
+				261EBD262955DCEB00C54486 /* CredentialsVC.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		264A1AE7294A4A7E00EA9092 = {
 			isa = PBXGroup;
 			children = (
@@ -99,7 +110,7 @@
 				265129DF294EF87A00F70B91 /* CategoryVC.swift */,
 				26498FE9294BBA1300F4772A /* FullSizeWallpaperVC.swift */,
 				264A1AF7294A4A7E00EA9092 /* GeneratorVC.swift */,
-				261EBD242955D7F600C54486 /* AuthVC.swift */,
+				261EBD282955DCFC00C54486 /* Auth */,
 				264A1B0F294A59C300EA9092 /* FirebaseManager.swift */,
 				264A1B0D294A54D100EA9092 /* Extensions.swift */,
 				265129E12950684400F70B91 /* Animations */,
@@ -253,6 +264,7 @@
 				264A1B10294A59C300EA9092 /* FirebaseManager.swift in Sources */,
 				265129E0294EF87A00F70B91 /* CategoryVC.swift in Sources */,
 				26498FEA294BBA1300F4772A /* FullSizeWallpaperVC.swift in Sources */,
+				261EBD272955DCEB00C54486 /* CredentialsVC.swift in Sources */,
 				264A1B0A294A4B3300EA9092 /* MainVC.swift in Sources */,
 				264A1AF4294A4A7E00EA9092 /* AppDelegate.swift in Sources */,
 				264A1B08294A4B1A00EA9092 /* TabBarVC.swift in Sources */,

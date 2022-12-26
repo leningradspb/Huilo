@@ -570,3 +570,132 @@ class FuturaLabel: UILabel {
         fatalError("init(coder:) has not been implemented")
     }
 }
+final class MessageView: UITextView {
+    private let cornerRadius:  CGFloat = 5
+    private let messageImageView = UIImageView()
+    
+    init() {
+        super.init(frame: CGRect(x: 0, y: 0, width: 0, height: 0), textContainer: nil)
+        setupLayout()
+        setupTheme()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override var text: String! {
+        didSet {
+            sizeToFit()
+        }
+    }
+    
+    var isError: Bool = true {
+        didSet {
+            backgroundColor = isError ? .scarlet : .grass
+            messageImageView.image = isError ? UIImage(named: "idontknow") : UIImage(named: "congratz")
+        }
+    }
+    
+    private func setupLayout() {
+        layer.cornerRadius = cornerRadius
+        font = UIFont.systemFont(ofSize: 20, weight: .medium)
+        isScrollEnabled = false
+        isEditable = false
+        textContainerInset.right = 40
+        
+        setupCloseIcon()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTap))
+        addGestureRecognizer(tapGesture)
+    }
+    
+    private func setupTheme() {
+        backgroundColor = .scarlet
+        textColor = .white
+    }
+    
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        return false
+    }
+    
+    @objc private func onTap() {
+        removeFromSuperview()
+    }
+    
+    private func setupCloseIcon() {
+//        let iconConfig = UIImage.SymbolConfiguration(scale: .large)
+//        let image = UIImage(systemName: "multiply", withConfiguration: iconConfig)
+        let image = UIImage(named: "idontknow")
+        messageImageView.image = image
+        messageImageView.contentMode = .scaleAspectFill
+        messageImageView.tintColor = .white
+        
+        addSubview(messageImageView)
+        
+        let guide = safeAreaLayoutGuide
+        
+        messageImageView.translatesAutoresizingMaskIntoConstraints = false
+        messageImageView.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -8).isActive = true
+        messageImageView.centerYAnchor.constraint(equalTo: guide.centerYAnchor).isActive = true
+        messageImageView.heightAnchor.constraint(equalToConstant: CGFloat(50)).isActive = true
+        messageImageView.widthAnchor.constraint(equalToConstant: CGFloat(50)).isActive = true
+    }
+}
+extension UIView {
+    
+    func showMessage(text: String?, onTop: Bool = false, isError: Bool = true) {
+        DispatchQueue.main.async {
+            guard let text = text else {
+                return
+            }
+            
+            let guide = self.safeAreaLayoutGuide
+            
+            let messageView = MessageView()
+            messageView.isError = isError
+            messageView.text = text
+            messageView.alpha = 0
+            
+            self.addSubview(messageView)
+            
+            messageView.translatesAutoresizingMaskIntoConstraints = false
+            messageView.leadingAnchor.constraint(equalTo: guide.leadingAnchor, constant: 12).isActive = true
+            messageView.trailingAnchor.constraint(equalTo: guide.trailingAnchor, constant: -12).isActive = true
+            
+            if onTop {
+                messageView.topAnchor.constraint(equalTo: guide.topAnchor, constant: 10).isActive = true
+            } else {
+                messageView.bottomAnchor.constraint(equalTo: guide.bottomAnchor, constant: -10).isActive = true
+            }
+            
+            UIView.animate(withDuration: 0.5) {
+                messageView.alpha = 1
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                messageView.removeFromSuperview()
+            }
+            
+        }
+    }
+}
+
+extension Character {
+    /// A simple emoji is one scalar and presented to the user as an Emoji
+    var isSimpleEmoji: Bool {
+        guard let firstScalar = unicodeScalars.first else { return false }
+        return firstScalar.properties.isEmoji && firstScalar.value > 0x238C
+    }
+
+    /// Checks if the scalars will be merged into an emoji
+    var isCombinedIntoEmoji: Bool { unicodeScalars.count > 1 && unicodeScalars.first?.properties.isEmoji ?? false }
+
+    var isEmoji: Bool { isSimpleEmoji || isCombinedIntoEmoji }
+}
+
+extension String {
+    var isSingleEmoji: Bool { count == 1 && containsEmoji }
+
+    var containsEmoji: Bool { contains { $0.isEmoji } }
+}
