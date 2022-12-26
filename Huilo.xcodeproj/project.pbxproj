@@ -24,6 +24,7 @@
 		265129DE294CE75200F70B91 /* SF-Pro-Display-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 265129DD294CE75200F70B91 /* SF-Pro-Display-Semibold.ttf */; };
 		265129E0294EF87A00F70B91 /* CategoryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265129DF294EF87A00F70B91 /* CategoryVC.swift */; };
 		265129E729506B1700F70B91 /* plane.json in Resources */ = {isa = PBXBuildFile; fileRef = 265129E629506B1700F70B91 /* plane.json */; };
+		267F08B22959B30B002ADA5B /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 267F08B12959B30B002ADA5B /* SettingsVC.swift */; };
 		26E1B901294C497A00DB62CB /* SF Pro - Semibold Rails.otf in Resources */ = {isa = PBXBuildFile; fileRef = 26E1B900294C497A00DB62CB /* SF Pro - Semibold Rails.otf */; };
 		884476C030F30B17E54D3780 /* Pods_Huilo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB21BDDDD55D83FB3F5E54AE /* Pods_Huilo.framework */; };
 /* End PBXBuildFile section */
@@ -49,6 +50,7 @@
 		265129DD294CE75200F70B91 /* SF-Pro-Display-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF-Pro-Display-Semibold.ttf"; sourceTree = "<group>"; };
 		265129DF294EF87A00F70B91 /* CategoryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryVC.swift; sourceTree = "<group>"; };
 		265129E629506B1700F70B91 /* plane.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = plane.json; sourceTree = "<group>"; };
+		267F08B12959B30B002ADA5B /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		26E1B900294C497A00DB62CB /* SF Pro - Semibold Rails.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SF Pro - Semibold Rails.otf"; sourceTree = "<group>"; };
 		6DBEDE4D450BED5BFDC4D0B8 /* Pods-Huilo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Huilo.release.xcconfig"; path = "Target Support Files/Pods-Huilo/Pods-Huilo.release.xcconfig"; sourceTree = "<group>"; };
 		DB21BDDDD55D83FB3F5E54AE /* Pods_Huilo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Huilo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +117,7 @@
 				26498FE9294BBA1300F4772A /* FullSizeWallpaperVC.swift */,
 				264A1AF7294A4A7E00EA9092 /* GeneratorVC.swift */,
 				261EBD2A2959AEE700C54486 /* ProfileVC.swift */,
+				267F08B12959B30B002ADA5B /* SettingsVC.swift */,
 				261EBD282955DCFC00C54486 /* Auth */,
 				264A1B0F294A59C300EA9092 /* FirebaseManager.swift */,
 				264A1B0D294A54D100EA9092 /* Extensions.swift */,
@@ -263,6 +266,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				267F08B22959B30B002ADA5B /* SettingsVC.swift in Sources */,
 				261EBD2B2959AEE700C54486 /* ProfileVC.swift in Sources */,
 				261EBD252955D7F600C54486 /* AuthVC.swift in Sources */,
 				264A1AF8294A4A7E00EA9092 /* GeneratorVC.swift in Sources */,

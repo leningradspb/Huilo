@@ -43,7 +43,8 @@ class ProfileVC: GradientVC {
     }
                                                             
     @objc private func settingsTapped() {
-        
+        let vc = SettingsVC()
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
 
