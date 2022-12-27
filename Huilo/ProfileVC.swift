@@ -22,7 +22,7 @@ class ProfileVC: GradientVC {
         super.viewDidLoad()
 
         setupUI()
-        loadData(isInitial: true)
+        loadData()
     }
     
     private func setupUI() {
@@ -50,46 +50,74 @@ class ProfileVC: GradientVC {
             $0.bottom.equalToSuperview()
         }
     }
-    
-    private func loadData(isInitial: Bool) {
+    /// здесь идет поиск по всем документам по полю, где userID равен моему ID. Так устроена паджинация в Firestore. первая версия была добавление в массив всех фото историй, но в масиве я не нашел паджинацию. начальный код внизу страницы.
+    /// Если есть lastDocument то делаем паджинацию
+    private func loadData() {
         guard let myID = myID else {return}
-        FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).whereField("userID", isEqualTo: myID).limit(to: 2).getDocuments { snap, er in
-            print(snap?.documents.count, er)
-        }
-        
-        
-        if isInitial {
+        if let lastDocument = self.lastDocument {
+            FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).whereField("userID", isEqualTo: myID).limit(to: limit).start(afterDocument: lastDocument).getDocuments { [weak self] snapshot, error in
+                guard let self = self else { return }
+                print(snapshot?.documents.count, error)
+                if let error = error {
+                    self.view.showMessage(text: error.localizedDescription, isError: true)
+                    return
+                }
+                guard let documents = snapshot?.documents, !documents.isEmpty else {
+                    self.isNeedFetch = false
+                    return
+                }
+
+                documents.forEach {
+                    let snapshotData = $0.data()
+                    guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+                    do {
+                        let model = try JSONDecoder().decode(UserHistory.self, from: data)
+                        print(model)
+                        
+                        DispatchQueue.main.async {
+                            self.usersHistory.append(model)
+                            self.lastDocument = documents.last
+                            self.collectionView.reloadData()
+                        }
+                    } catch let error {
+                    }
+                }
+            }
         } else {
+            FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).whereField("userID", isEqualTo: myID).limit(to: limit).getDocuments { [weak self] snapshot, error in
+                guard let self = self else { return }
+                print(snapshot?.documents.count, error)
+                if let error = error {
+                    self.view.showMessage(text: error.localizedDescription, isError: true)
+                    return
+                }
+                guard let documents = snapshot?.documents, !documents.isEmpty else {
+                    self.isNeedFetch = false
+                    return
+                }
+
+                documents.forEach {
+                    let snapshotData = $0.data()
+                    guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+                    do {
+                        let model = try JSONDecoder().decode(UserHistory.self, from: data)
+                        print(model)
+                        
+                        DispatchQueue.main.async {
+                            self.usersHistory.append(model)
+                            self.lastDocument = documents.last
+                            self.collectionView.reloadData()
+                        }
+                    } catch let error {
+                    }
+                }
+            }
         }
-       
-        
-//        FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(myID).getDocument { [weak self] snapshot, error in
-//            guard let self = self else { return }
-//            guard let snapshotData = snapshot?.data() else { return }
-//            guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
-//
-//            do {
-//                let model = try JSONDecoder().decode(UserHistoryResults.self, from: data)
-//                print(model)
-//
-//                DispatchQueue.main.async {
-//                    if isInitial {
-//                        self.usersHistory = model.results ?? []
-//                    } else {
-//                        model.results?.forEach {
-//                            self.usersHistory.append($0)
-//                        }
-//                    }
-//                    self.collectionView.reloadData()
-//                }
-//            } catch let error {
-//            }
-//
-//        }
     }
     
     @objc private func refresh() {
-        loadData(isInitial: true)
+        usersHistory.removeAll()
+        loadData()
         refreshControl.endRefreshing()
     }
                                                             
@@ -134,13 +162,8 @@ extension ProfileVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     }
 }
 
-
-struct UserHistoryResults: Codable {
-    let results: [UserHistory]?
-}
-
 struct UserHistory: Codable {
-    let filter, photo, prompt: String?
+    let filter, photo, prompt, userID: String?
 }
 
 
@@ -195,3 +218,27 @@ struct UserHistory: Codable {
 //        loadLeaderboard(limit: limit)
 //    }
 //}
+
+//        FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(myID).getDocument { [weak self] snapshot, error in
+//            guard let self = self else { return }
+//            guard let snapshotData = snapshot?.data() else { return }
+//            guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+//
+//            do {
+//                let model = try JSONDecoder().decode(UserHistoryResults.self, from: data)
+//                print(model)
+//
+//                DispatchQueue.main.async {
+//                    if isInitial {
+//                        self.usersHistory = model.results ?? []
+//                    } else {
+//                        model.results?.forEach {
+//                            self.usersHistory.append($0)
+//                        }
+//                    }
+//                    self.collectionView.reloadData()
+//                }
+//            } catch let error {
+//            }
+//
+//        }
