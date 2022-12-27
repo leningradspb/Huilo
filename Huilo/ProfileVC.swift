@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ProfileVC: GradientVC {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -13,6 +14,9 @@ class ProfileVC: GradientVC {
     private let numberOfCollectionViewColumns: CGFloat = 2
     private let refreshControl = UIRefreshControl()
     private var usersHistory: [UserHistory] = []
+    private var lastDocument: DocumentSnapshot?
+    private let limit = 20
+    private var isNeedFetch = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -141,57 +145,53 @@ struct UserHistory: Codable {
 
 
 
-private var lastDocument: DocumentSnapshot?
-private let limit = 20
-private var isNeedFetch = true
-
-private func loadLeaderboard(limit: Int) {
-    print(limit, lastDocument?.data())
-    if let lastDocument = self.lastDocument {
-        FirebaseManager.shared.firestore.collection(ReferenceKeys.users).order(by: ReferenceKeys.balance, descending: true).limit(to: limit).start(afterDocument: lastDocument).getDocuments { [weak self] snapshot, error in
-            guard let self = self else { return }
-            if let error = error {
-                self.view.showMessage(text: error.localizedDescription, isError: true)
-                return
-            }
-            guard let documents = snapshot?.documents, !documents.isEmpty else {
-                self.isNeedFetch = false
-                return
-            }
-            
-            documents.forEach {
-                let model = UserModel(from: $0.data())
-                self.leaderboard.append(model)
-            }
-            self.lastDocument = documents.last
-            self.tableView.reloadData()
-        }
-    } else {
-        FirebaseManager.shared.firestore.collection(ReferenceKeys.users).order(by: ReferenceKeys.balance, descending: true).limit(to: limit).getDocuments { [weak self] snapshot, error in
-            guard let self = self else { return }
-            if let error = error {
-                self.view.showMessage(text: error.localizedDescription, isError: true)
-                return
-            }
-//            guard let data = snapshot?.data() else { return }
-            guard let documents = snapshot?.documents, !documents.isEmpty else {
-                self.isNeedFetch = false
-                return
-            }
-            
-            documents.forEach {
-                let model = UserModel(from: $0.data())
-                self.leaderboard.append(model)
-            }
-            self.lastDocument = documents.last
-            self.tableView.reloadData()
-        }
-    }
-}
-
-func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-    guard leaderboard.count > 0, isNeedFetch else { return }
-    if indexPath.row == leaderboard.count - 1 {
-        loadLeaderboard(limit: limit)
-    }
-}
+//private func loadLeaderboard(limit: Int) {
+//    print(limit, lastDocument?.data())
+//    if let lastDocument = self.lastDocument {
+//        FirebaseManager.shared.firestore.collection(ReferenceKeys.users).order(by: ReferenceKeys.balance, descending: true).limit(to: limit).start(afterDocument: lastDocument).getDocuments { [weak self] snapshot, error in
+//            guard let self = self else { return }
+//            if let error = error {
+//                self.view.showMessage(text: error.localizedDescription, isError: true)
+//                return
+//            }
+//            guard let documents = snapshot?.documents, !documents.isEmpty else {
+//                self.isNeedFetch = false
+//                return
+//            }
+//
+//            documents.forEach {
+//                let model = UserModel(from: $0.data())
+//                self.leaderboard.append(model)
+//            }
+//            self.lastDocument = documents.last
+//            self.tableView.reloadData()
+//        }
+//    } else {
+//        FirebaseManager.shared.firestore.collection(ReferenceKeys.users).order(by: ReferenceKeys.balance, descending: true).limit(to: limit).getDocuments { [weak self] snapshot, error in
+//            guard let self = self else { return }
+//            if let error = error {
+//                self.view.showMessage(text: error.localizedDescription, isError: true)
+//                return
+//            }
+////            guard let data = snapshot?.data() else { return }
+//            guard let documents = snapshot?.documents, !documents.isEmpty else {
+//                self.isNeedFetch = false
+//                return
+//            }
+//
+//            documents.forEach {
+//                let model = UserModel(from: $0.data())
+//                self.leaderboard.append(model)
+//            }
+//            self.lastDocument = documents.last
+//            self.tableView.reloadData()
+//        }
+//    }
+//}
+//
+//func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//    guard leaderboard.count > 0, isNeedFetch else { return }
+//    if indexPath.row == leaderboard.count - 1 {
+//        loadLeaderboard(limit: limit)
+//    }
+//}
