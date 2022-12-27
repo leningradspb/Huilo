@@ -117,6 +117,8 @@ class ProfileVC: GradientVC {
     
     @objc private func refresh() {
         usersHistory.removeAll()
+        lastDocument = nil
+        isNeedFetch = true
         loadData()
         refreshControl.endRefreshing()
     }
@@ -159,6 +161,13 @@ extension ProfileVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
 //
 //        }
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard usersHistory.count > 0, isNeedFetch else { return }
+         if indexPath.row == usersHistory.count - 1 {
+             loadData()
+         }
     }
 }
 
