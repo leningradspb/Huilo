@@ -703,3 +703,9 @@ extension String {
 
     var containsEmoji: Bool { contains { $0.isEmoji } }
 }
+
+extension Date {
+    func currentTimeMillis() -> Int64 {
+        return Int64(self.timeIntervalSince1970 * 1000)
+    }
+}

@@ -39,4 +39,5 @@ struct ReferenceKeys {
     static let prompt = "prompt"
     static let filter = "filter"
     static let results = "results"
+    static let timeOfCreation = "timeOfCreation"
 }

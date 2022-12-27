@@ -215,7 +215,7 @@ class GeneratorVC: GradientVC {
                                     print(randomKey)
                                     let prompt: String = self.messageTextView.text
                                     let filter: String = self.userSelectedFilters.compactMap {$0.name}.joined(separator: ", ")
-                                    FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(randomKey).setData([ReferenceKeys.photo: url, ReferenceKeys.prompt: prompt, ReferenceKeys.filter: filter, ReferenceKeys.userID: id])
+                                    FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).document(randomKey).setData([ReferenceKeys.photo: url, ReferenceKeys.prompt: prompt, ReferenceKeys.filter: filter, ReferenceKeys.userID: id, ReferenceKeys.timeOfCreation: Date().currentTimeMillis()])
                                 }
                             }
                         }

@@ -55,7 +55,7 @@ class ProfileVC: GradientVC {
     private func loadData() {
         guard let myID = myID else {return}
         if let lastDocument = self.lastDocument {
-            FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).whereField("userID", isEqualTo: myID).limit(to: limit).start(afterDocument: lastDocument).getDocuments { [weak self] snapshot, error in
+            FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).whereField("userID", isEqualTo: myID).order(by: ReferenceKeys.timeOfCreation, descending: true).limit(to: limit).start(afterDocument: lastDocument).getDocuments { [weak self] snapshot, error in
                 guard let self = self else { return }
                 print(snapshot?.documents.count, error)
                 if let error = error {
@@ -84,7 +84,7 @@ class ProfileVC: GradientVC {
                 }
             }
         } else {
-            FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).whereField("userID", isEqualTo: myID).limit(to: limit).getDocuments { [weak self] snapshot, error in
+            FirebaseManager.shared.firestore.collection(ReferenceKeys.usersHistory).whereField("userID", isEqualTo: myID).order(by: ReferenceKeys.timeOfCreation, descending: true).limit(to: limit).getDocuments { [weak self] snapshot, error in
                 guard let self = self else { return }
                 print(snapshot?.documents.count, error)
                 if let error = error {
