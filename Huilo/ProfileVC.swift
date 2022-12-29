@@ -7,13 +7,16 @@
 
 import UIKit
 import Firebase
+import Kingfisher
 
 class ProfileVC: GradientVC {
+//    private let dispatchGroup = DispatchGroup()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let minimumInteritemSpacingForSection: CGFloat = 12
     private let numberOfCollectionViewColumns: CGFloat = 2
     private let refreshControl = UIRefreshControl()
     private var usersHistory: [UserHistory] = []
+    private var userModel: UserModel?
     private var lastDocument: DocumentSnapshot?
     private let limit = 20
     private var isNeedFetch = true
@@ -22,6 +25,7 @@ class ProfileVC: GradientVC {
         super.viewDidLoad()
 
         setupUI()
+        loadProfile()
         loadData()
     }
     
@@ -39,6 +43,7 @@ class ProfileVC: GradientVC {
         collectionView.refreshControl = refreshControl
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         collectionView.contentInset = UIEdgeInsets(top: 0, left: Layout.leading, bottom: Layout.leading, right: Layout.leading)
+        collectionView.register(ProfileHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ProfileHeader.identifier)
         if let flowLayout = self.collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .vertical
             flowLayout.minimumLineSpacing = 10
@@ -48,6 +53,33 @@ class ProfileVC: GradientVC {
             $0.leading.equalToSuperview()
             $0.trailing.equalToSuperview()
             $0.bottom.equalToSuperview()
+        }
+    }
+    
+    private func loadProfile() {
+        guard let myID = myID else {return}
+//        dispatchGroup.enter()
+        FirebaseManager.shared.firestore.collection(ReferenceKeys.users).document(myID).getDocument { [weak self] snapshot, error in
+            guard let self = self else { return }
+            guard let snapshotData = snapshot?.data() else {
+//                self.dispatchGroup.leave()
+                return }
+            guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else {
+//                self.dispatchGroup.leave()
+                return }
+            
+            do {
+                let model = try JSONDecoder().decode(UserModel.self, from: data)
+                print(model)
+                self.userModel = model
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+//                self.dispatchGroup.leave()
+            } catch let error {
+                print(error)
+//                self.dispatchGroup.leave()
+            }
         }
     }
     /// здесь идет поиск по всем документам по полю, где userID равен моему ID. Так устроена паджинация в Firestore. первая версия была добавление в массив всех фото историй, но в масиве я не нашел паджинацию. начальный код внизу страницы.
@@ -127,9 +159,30 @@ class ProfileVC: GradientVC {
         let vc = SettingsVC()
         navigationController?.pushViewController(vc, animated: true)
     }
+    
+    @objc private func headerTapped() {
+        print("headerTapped")
+    }
 }
 
 extension ProfileVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ProfileHeader.identifier, for: indexPath) as! ProfileHeader
+        if let urlString = userModel?.profileImageURL, let url = URL(string: urlString) {
+            header.configure(with: url)
+        }
+        
+        if header.gestureRecognizers == nil {
+            setupTapRecognizer(for: header, action: #selector(headerTapped))
+        }
+        
+        return header
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.bounds.width, height: 156)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         usersHistory.count
     }
@@ -173,6 +226,42 @@ extension ProfileVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
 
 struct UserHistory: Codable {
     let filter, photo, prompt, userID: String?
+}
+
+struct UserModel: Codable {
+    let email, nickName, profileImageURL, userID: String?
+}
+
+final class ProfileHeader: UICollectionReusableView {
+    private let imageView = UIImageView()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        backgroundColor = .clear
+        
+        addSubview(imageView)
+        
+        imageView.snp.makeConstraints {
+            $0.leading.equalToSuperview().offset(16)
+            $0.trailing.equalToSuperview().offset(-16)
+            $0.top.equalToSuperview()
+            $0.bottom.equalToSuperview().offset(-20)
+        }
+        imageView.layer.cornerRadius = 10
+//        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func configure(with url: URL) {
+        imageView.kf.indicatorType = .activity
+        (imageView.kf.indicator?.view as? UIActivityIndicatorView)?.color = .white
+        imageView.kf.setImage(with: url, options: [.transition(.fade(0.2))])
+    }
 }
 
 
