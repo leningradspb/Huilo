@@ -225,10 +225,13 @@ extension ProfileVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if indexPath.row < filters.count {
-//
-//        }
-        
+        print("TAPPED IN collectionView ProfileVC")
+        if let cell = collectionView.cellForItem(at: indexPath) as? FullContentViewImageCollectionViewCell {
+            if let image = cell.recommendationImageView.image {
+                let vc = FullSizeWallpaperVC(image: image)
+                self.present(vc, animated: true)
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
