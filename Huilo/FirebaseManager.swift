@@ -44,4 +44,5 @@ struct ReferenceKeys {
     static let results = "results"
     static let timeOfCreation = "timeOfCreation"
     static let admins = "admins"
+    static let likeCount = "likeCount"
 }
