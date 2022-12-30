@@ -76,7 +76,7 @@ class CredentialsVC: GradientVC {
     
     private func setupNameOrNick() {
         let nameOrNickLabel = UILabel()
-        nameOrNickLabel.text = "Name or nick"
+        nameOrNickLabel.text = "name or nick"
         nameOrNickLabel.textColor = .white
         nameOrNickLabel.font = .futura(withSize: 25)
         nameOrNickLabel.textAlignment = .center
@@ -94,7 +94,7 @@ class CredentialsVC: GradientVC {
             $0.trailing.trailing.equalToSuperview().offset(-20)
             $0.height.equalTo(50)
         }
-        nameOrNickTextField.backgroundColor = .commonGrey
+        nameOrNickTextField.backgroundColor = .commonGrey.withAlphaComponent(0.3)
         nameOrNickTextField.tintColor = .white
         nameOrNickTextField.textColor = .white
         nameOrNickTextField.layer.cornerRadius = 10

@@ -280,7 +280,7 @@ extension UIViewController {
 
         singleTapGestureRecognizer.numberOfTapsRequired = 1
         singleTapGestureRecognizer.isEnabled = true
-        singleTapGestureRecognizer.cancelsTouchesInView = false
+        singleTapGestureRecognizer.cancelsTouchesInView = true
 
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(singleTapGestureRecognizer)

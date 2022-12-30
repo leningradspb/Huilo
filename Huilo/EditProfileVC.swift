@@ -80,7 +80,7 @@ class EditProfileVC: GradientVC {
     
     private func setupNameOrNick() {
         let nameOrNickLabel = UILabel()
-        nameOrNickLabel.text = "Name or nick"
+        nameOrNickLabel.text = "name or nick"
         nameOrNickLabel.textColor = .white
         nameOrNickLabel.font = .futura(withSize: 25)
         nameOrNickLabel.textAlignment = .center
@@ -98,7 +98,7 @@ class EditProfileVC: GradientVC {
             $0.trailing.trailing.equalToSuperview().offset(-20)
             $0.height.equalTo(50)
         }
-        nameOrNickTextField.backgroundColor = .commonGrey
+        nameOrNickTextField.backgroundColor = .commonGrey.withAlphaComponent(0.3)
         nameOrNickTextField.tintColor = .white
         nameOrNickTextField.textColor = .white
         nameOrNickTextField.layer.cornerRadius = 10
@@ -107,12 +107,12 @@ class EditProfileVC: GradientVC {
         nameOrNickTextField.textAlignment = .center
         nameOrNickTextField.addTarget(self, action: #selector(textFieldDidChanged), for: .editingChanged)
         nameOrNickTextField.text = nickName
-        setupTapRecognizer(for: view, action: #selector(hideKeyboard))
+        setupTapRecognizer(for: gradientContentView, action: #selector(hideKeyboard))
     }
     
     
     private func setupEditUserButton() {
-        view.addSubview(editUserButton)
+        gradientContentView.addSubview(editUserButton)
         editUserButton.setTitle("edit 🪄", for: .normal)
         editUserButton.setTitle("edit 🪄", for: .selected)
         editUserButton.titleLabel?.font = .futura(withSize: 25)
@@ -147,6 +147,7 @@ class EditProfileVC: GradientVC {
     
     @objc private func createUser() {
         print("try edit user")
+        hideKeyboard()
         showActivity(animation: ActivityView.Animations.plane)
         uploadImage(completion: { [weak self] imageUrl in
             guard let self = self else { return }
