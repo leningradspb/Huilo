@@ -16,6 +16,7 @@ class FullSizeWallpaperVC: UIViewController {
     private let hideTimeButton = UIImageView()
     private let timeLabel = UILabel()
     private let dateLabel = UILabel()
+    private let backgroundIconColor: UIColor = .white.withAlphaComponent(0.5)
     var tooltip: EasyTipView!
     
     private let image: UIImage
@@ -53,7 +54,7 @@ class FullSizeWallpaperVC: UIViewController {
         let closeImage = UIImage(systemName: "chevron.backward.circle.fill", withConfiguration: iconConfig)
         closeButton.image = closeImage
         closeButton.tintColor = .black
-        closeButton.backgroundColor = .white.withAlphaComponent(0.5)
+        closeButton.backgroundColor = backgroundIconColor
         closeButton.layer.cornerRadius = 20
         closeButton.addTapGesture(target: self, action: #selector(closeTapped))
         
@@ -75,7 +76,7 @@ class FullSizeWallpaperVC: UIViewController {
         let eye = UIImage(systemName: "eye.circle", withConfiguration: iconConfig)
         hideTimeButton.image = eyeSlash
         hideTimeButton.highlightedImage = eye
-        hideTimeButton.tintColor = .white
+        hideTimeButton.tintColor = .white.withAlphaComponent(0.7)
         hideTimeButton.backgroundColor = .black
         hideTimeButton.layer.cornerRadius = 20
         hideTimeButton.addTapGesture(target: self, action: #selector(hideTapped))
@@ -85,7 +86,7 @@ class FullSizeWallpaperVC: UIViewController {
         let saveImage = UIImage(systemName: "arrow.down.circle.fill", withConfiguration: iconConfig)
         saveButton.image = saveImage
         saveButton.tintColor = .black
-        saveButton.backgroundColor = .white.withAlphaComponent(0.5)
+        saveButton.backgroundColor = backgroundIconColor
         saveButton.layer.cornerRadius = 24
         saveButton.addTapGesture(target: self, action: #selector(saveImageTapped))
         
@@ -207,6 +208,7 @@ class FullSizeWallpaperInitURLVC: UIViewController {
     private let hideTimeButton = UIImageView()
     private let timeLabel = UILabel()
     private let dateLabel = UILabel()
+    private let backgroundIconColor: UIColor = .white.withAlphaComponent(0.5)
     var finishedWithSuccess: ((Bool)->())?
     
     private let urlString: String
@@ -249,7 +251,7 @@ class FullSizeWallpaperInitURLVC: UIViewController {
         let closeImage = UIImage(systemName: "chevron.backward.circle.fill", withConfiguration: iconConfig)
         closeButton.image = closeImage
         closeButton.tintColor = .black
-        closeButton.backgroundColor = .white.withAlphaComponent(0.5)
+        closeButton.backgroundColor = backgroundIconColor
         closeButton.layer.cornerRadius = 20
         closeButton.addTapGesture(target: self, action: #selector(closeTapped))
         
@@ -271,7 +273,7 @@ class FullSizeWallpaperInitURLVC: UIViewController {
         let eye = UIImage(systemName: "eye.circle", withConfiguration: iconConfig)
         hideTimeButton.image = eyeSlash
         hideTimeButton.highlightedImage = eye
-        hideTimeButton.tintColor = .white
+        hideTimeButton.tintColor = .white.withAlphaComponent(0.7)
         hideTimeButton.backgroundColor = .black
         hideTimeButton.layer.cornerRadius = 20
         hideTimeButton.addTapGesture(target: self, action: #selector(hideTapped))
@@ -281,7 +283,7 @@ class FullSizeWallpaperInitURLVC: UIViewController {
         let saveImage = UIImage(systemName: "arrow.down.circle.fill", withConfiguration: iconConfig)
         saveButton.image = saveImage
         saveButton.tintColor = .black
-        saveButton.backgroundColor = .white.withAlphaComponent(0.5)
+        saveButton.backgroundColor = backgroundIconColor
         saveButton.layer.cornerRadius = 24
         saveButton.addTapGesture(target: self, action: #selector(saveImageTapped))
         
