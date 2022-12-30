@@ -32,6 +32,7 @@ struct ReferenceKeys {
     static let nickName = "nickName"
     static let profileImageURL = "profileImageURL"
     static let userID = "userID"
+    static let photoID = "photoID"
     static let email = "email"
     static let usersHistory = "usersHistory"
     static let photos = "photos"
