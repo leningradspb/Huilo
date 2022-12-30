@@ -13,6 +13,7 @@ class FullSizeWallpaperVC: UIViewController {
     private let iconConfig = UIImage.SymbolConfiguration(scale: .large)
     private let closeButton = UIImageView()
     private let saveButton = UIImageView()
+    private let hideTimeButton = UIImageView()
     private let timeLabel = UILabel()
     private let dateLabel = UILabel()
     var tooltip: EasyTipView!
@@ -48,7 +49,7 @@ class FullSizeWallpaperVC: UIViewController {
             $0.bottom.equalToSuperview()
         }
 
-        view.addSubviews([closeButton, saveButton, timeLabel, dateLabel])
+        view.addSubviews([closeButton, saveButton, timeLabel, dateLabel, hideTimeButton])
         let closeImage = UIImage(systemName: "chevron.backward.circle.fill", withConfiguration: iconConfig)
         closeButton.image = closeImage
         closeButton.tintColor = .black
@@ -62,6 +63,24 @@ class FullSizeWallpaperVC: UIViewController {
             $0.width.equalTo(40)
             $0.height.equalTo(35)
         }
+        
+        hideTimeButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-5)
+            $0.leading.equalToSuperview().offset(Layout.leading)
+            $0.width.equalTo(40)
+            $0.height.equalTo(35)
+        }
+        
+        let eyeSlash = UIImage(systemName: "eye.slash.circle", withConfiguration: iconConfig)
+        let eye = UIImage(systemName: "eye.circle", withConfiguration: iconConfig)
+        hideTimeButton.image = eyeSlash
+        hideTimeButton.highlightedImage = eye
+        hideTimeButton.tintColor = .white
+        hideTimeButton.backgroundColor = .black
+        hideTimeButton.layer.cornerRadius = 20
+        hideTimeButton.addTapGesture(target: self, action: #selector(hideTapped))
+        let isHighlighted = UserDefaults.standard.bool(forKey: "hideTimeButton")
+        hideTimeButton.isHighlighted = isHighlighted
         
         let saveImage = UIImage(systemName: "arrow.down.circle.fill", withConfiguration: iconConfig)
         saveButton.image = saveImage
@@ -85,7 +104,9 @@ class FullSizeWallpaperVC: UIViewController {
             $0.top.equalToSuperview().offset(130)
             $0.centerX.equalToSuperview()
         }
+        timeLabel.isHidden = isHighlighted
         
+        dateLabel.isHidden = isHighlighted
         dateLabel.textColor = .white
         dateLabel.text = "Friday, December 16"
         dateLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 22)
@@ -142,6 +163,14 @@ class FullSizeWallpaperVC: UIViewController {
         self.dismiss(animated: true)
     }
     
+    @objc private func hideTapped() {
+        let newValue = !hideTimeButton.isHighlighted
+        UserDefaults.standard.set(newValue, forKey: "hideTimeButton")
+        hideTimeButton.isHighlighted = newValue
+        timeLabel.isHidden = newValue
+        dateLabel.isHidden = newValue
+    }
+    
     @objc private func saveImageTapped() {
         self.shortVibrate()
         UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
@@ -175,6 +204,7 @@ class FullSizeWallpaperInitURLVC: UIViewController {
     private let iconConfig = UIImage.SymbolConfiguration(scale: .large)
     private let closeButton = UIImageView()
     private let saveButton = UIImageView()
+    private let hideTimeButton = UIImageView()
     private let timeLabel = UILabel()
     private let dateLabel = UILabel()
     var finishedWithSuccess: ((Bool)->())?
@@ -215,7 +245,7 @@ class FullSizeWallpaperInitURLVC: UIViewController {
             $0.bottom.equalToSuperview()
         }
 
-        view.addSubviews([closeButton, saveButton, timeLabel, dateLabel])
+        view.addSubviews([closeButton, saveButton, timeLabel, dateLabel, hideTimeButton])
         let closeImage = UIImage(systemName: "chevron.backward.circle.fill", withConfiguration: iconConfig)
         closeButton.image = closeImage
         closeButton.tintColor = .black
@@ -229,6 +259,24 @@ class FullSizeWallpaperInitURLVC: UIViewController {
             $0.width.equalTo(40)
             $0.height.equalTo(35)
         }
+        
+        hideTimeButton.snp.makeConstraints {
+            $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-5)
+            $0.leading.equalToSuperview().offset(Layout.leading)
+            $0.width.equalTo(40)
+            $0.height.equalTo(35)
+        }
+        
+        let eyeSlash = UIImage(systemName: "eye.slash.circle", withConfiguration: iconConfig)
+        let eye = UIImage(systemName: "eye.circle", withConfiguration: iconConfig)
+        hideTimeButton.image = eyeSlash
+        hideTimeButton.highlightedImage = eye
+        hideTimeButton.tintColor = .white
+        hideTimeButton.backgroundColor = .black
+        hideTimeButton.layer.cornerRadius = 20
+        hideTimeButton.addTapGesture(target: self, action: #selector(hideTapped))
+        let isHighlighted = UserDefaults.standard.bool(forKey: "hideTimeButton")
+        hideTimeButton.isHighlighted = isHighlighted
         
         let saveImage = UIImage(systemName: "arrow.down.circle.fill", withConfiguration: iconConfig)
         saveButton.image = saveImage
@@ -252,7 +300,9 @@ class FullSizeWallpaperInitURLVC: UIViewController {
             $0.top.equalToSuperview().offset(130)
             $0.centerX.equalToSuperview()
         }
+        timeLabel.isHidden = isHighlighted
         
+        dateLabel.isHidden = isHighlighted
         dateLabel.textColor = .white
         dateLabel.text = "Friday, December 16"
         dateLabel.font = UIFont(name: "SFProDisplay-Semibold", size: 22)
@@ -307,6 +357,14 @@ class FullSizeWallpaperInitURLVC: UIViewController {
     
     @objc private func closeTapped() {
         self.dismiss(animated: true)
+    }
+    
+    @objc private func hideTapped() {
+        let newValue = !hideTimeButton.isHighlighted
+        UserDefaults.standard.set(newValue, forKey: "hideTimeButton")
+        hideTimeButton.isHighlighted = newValue
+        timeLabel.isHidden = newValue
+        dateLabel.isHidden = newValue
     }
     
     @objc private func saveImageTapped() {
