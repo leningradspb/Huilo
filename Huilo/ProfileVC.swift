@@ -20,6 +20,7 @@ class ProfileVC: GradientVC {
     private var lastDocument: DocumentSnapshot?
     private let limit = 20
     private var isNeedFetch = true
+    private var headerImage: UIImage?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -162,6 +163,16 @@ class ProfileVC: GradientVC {
     
     @objc private func headerTapped() {
         print("headerTapped")
+        guard let userID = myID, let headerImage = headerImage else {return}
+        let vc = EditProfileVC(userID: userID, image: headerImage, nickName: userModel?.nickName)
+        vc.update = {  [weak self] in
+            guard let self = self else { return }
+            self.headerImage = nil
+            self.userModel = nil
+            self.loadProfile()
+            self.refresh()
+        }
+        present(vc, animated: true, completion: nil)
     }
 }
 
@@ -170,6 +181,10 @@ extension ProfileVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ProfileHeader.identifier, for: indexPath) as! ProfileHeader
         if let urlString = userModel?.profileImageURL, let url = URL(string: urlString) {
             header.configure(with: url, nickName: userModel?.nickName)
+            header.imageClosure = { [weak self] image in
+                guard let self = self else { return }
+                self.headerImage = image
+            }
         }
         
         if header.gestureRecognizers == nil {
@@ -236,6 +251,7 @@ final class ProfileHeader: UICollectionReusableView {
     private let imageView = UIImageView()
     private let nameOrNickLabel = UILabel()
     private let historyLabel = UILabel()
+    var imageClosure: ((UIImage)->())?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -279,7 +295,16 @@ final class ProfileHeader: UICollectionReusableView {
     func configure(with url: URL, nickName: String?) {
         imageView.kf.indicatorType = .activity
         (imageView.kf.indicator?.view as? UIActivityIndicatorView)?.color = .white
-        imageView.kf.setImage(with: url, options: [.transition(.fade(0.2))])
+        imageView.kf.setImage(with: url, options: [.transition(.fade(0.2))]) {[weak self] result in
+            switch result {
+            case .success(let r):
+                if let image = self?.imageView.image {
+                    self?.imageClosure?(image)
+                }
+            case .failure(_):
+                break
+            }
+        }
         nameOrNickLabel.text = nickName
     }
 }
