@@ -29,6 +29,7 @@ final class FirebaseManager {
 }
 
 struct ReferenceKeys {
+    static let categories = "categories"
     static let users = "users"
     static let nickName = "nickName"
     static let profileImageURL = "profileImageURL"

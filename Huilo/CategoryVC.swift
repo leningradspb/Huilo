@@ -55,7 +55,7 @@ class CategoryVC: GradientVC {
             limit += limitIncreaser
         }
         
-        FirebaseManager.shared.firestore.collection("Category").document(categoryName).getDocument() { [weak self] snapshot, error in
+        FirebaseManager.shared.firestore.collection(ReferenceKeys.categories).document(categoryName).getDocument() { [weak self] snapshot, error in
             guard let self = self else { return }
             
             guard let snapshotData = snapshot?.data() else { return }
