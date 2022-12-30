@@ -169,7 +169,7 @@ extension ProfileVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ProfileHeader.identifier, for: indexPath) as! ProfileHeader
         if let urlString = userModel?.profileImageURL, let url = URL(string: urlString) {
-            header.configure(with: url)
+            header.configure(with: url, nickName: userModel?.nickName)
         }
         
         if header.gestureRecognizers == nil {
@@ -180,7 +180,7 @@ extension ProfileVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.bounds.width, height: 156)
+        return CGSize(width: view.bounds.width, height: 280)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -234,33 +234,53 @@ struct UserModel: Codable {
 
 final class ProfileHeader: UICollectionReusableView {
     private let imageView = UIImageView()
+    private let nameOrNickLabel = UILabel()
+    private let historyLabel = UILabel()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         backgroundColor = .clear
         
-        addSubview(imageView)
+        addSubviews([imageView, nameOrNickLabel, historyLabel])
         
         imageView.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(16)
-            $0.trailing.equalToSuperview().offset(-16)
             $0.top.equalToSuperview()
-            $0.bottom.equalToSuperview().offset(-20)
+            $0.centerX.equalToSuperview()
+            $0.width.height.equalTo(180)
         }
-        imageView.layer.cornerRadius = 10
 //        imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
+        
+        nameOrNickLabel.snp.makeConstraints {
+            $0.top.equalTo(imageView.snp.bottom)
+            $0.leading.equalToSuperview().offset(20)
+            $0.trailing.equalToSuperview().offset(-20)
+            $0.height.equalTo(50)
+        }
+        
+        historyLabel.snp.makeConstraints {
+            $0.top.equalTo(nameOrNickLabel.snp.bottom).offset(12)
+            $0.leading.equalToSuperview()
+        }
+        historyLabel.text = "history"
+        historyLabel.font = .futura(withSize: 20)
+        historyLabel.textColor = .white
+       
+        nameOrNickLabel.font = .futura(withSize: 25)
+        nameOrNickLabel.textAlignment = .center
+        nameOrNickLabel.textColor = .white
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(with url: URL) {
+    func configure(with url: URL, nickName: String?) {
         imageView.kf.indicatorType = .activity
         (imageView.kf.indicator?.view as? UIActivityIndicatorView)?.color = .white
         imageView.kf.setImage(with: url, options: [.transition(.fade(0.2))])
+        nameOrNickLabel.text = nickName
     }
 }
 
