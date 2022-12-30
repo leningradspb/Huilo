@@ -114,14 +114,12 @@
 				264A1AF3294A4A7E00EA9092 /* AppDelegate.swift */,
 				264A1AF5294A4A7E00EA9092 /* SceneDelegate.swift */,
 				264A1B07294A4B1A00EA9092 /* TabBarVC.swift */,
+				261EBD282955DCFC00C54486 /* Auth */,
 				264A1B09294A4B3200EA9092 /* MainVC.swift */,
 				265129DF294EF87A00F70B91 /* CategoryVC.swift */,
 				26498FE9294BBA1300F4772A /* FullSizeWallpaperVC.swift */,
 				264A1AF7294A4A7E00EA9092 /* GeneratorVC.swift */,
-				261EBD2A2959AEE700C54486 /* ProfileVC.swift */,
-				F3106020295EF9280027BF19 /* EditProfileVC.swift */,
-				267F08B12959B30B002ADA5B /* SettingsVC.swift */,
-				261EBD282955DCFC00C54486 /* Auth */,
+				F3106022295F07E70027BF19 /* Profile */,
 				264A1B0F294A59C300EA9092 /* FirebaseManager.swift */,
 				264A1B0D294A54D100EA9092 /* Extensions.swift */,
 				265129E12950684400F70B91 /* Animations */,
@@ -149,6 +147,16 @@
 				DB21BDDDD55D83FB3F5E54AE /* Pods_Huilo.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F3106022295F07E70027BF19 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				261EBD2A2959AEE700C54486 /* ProfileVC.swift */,
+				F3106020295EF9280027BF19 /* EditProfileVC.swift */,
+				267F08B12959B30B002ADA5B /* SettingsVC.swift */,
+			);
+			path = Profile;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
