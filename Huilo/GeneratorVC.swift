@@ -378,16 +378,17 @@ extension APIService {
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             print("---------------------------------")
             print("Server response:")
-            print(String(data: data!, encoding: .utf8) as Any)
             if let error = error {
                 completion(nil, error)
                 return
             }
             
             guard let data = data else {
+                print("DATA NOT FOUND!!! 🤯")
                 completion(nil, error)
                 return
             }
+            print(String(data: data, encoding: .utf8) as Any)
 //            print("JSON String: \(String(data: data, encoding: .utf8))")
             do {
                 let history = try JSONDecoder().decode(StableDiffusionResponse.self, from: data)
