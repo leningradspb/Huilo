@@ -6,21 +6,23 @@
 //
 
 import UIKit
+import Firebase
 
 class CategoryVC: GradientVC {
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let minimumInteritemSpacingForSection: CGFloat = 12
     private let numberOfCollectionViewColumns: CGFloat = 2
-    private let limitIncreaser: Int = 20
-    private var limit: Int = 20
-    private var result: [CategoryModel.ResultCategory] = []
+    private var lastDocument: DocumentSnapshot?
+    private let limit = 20
+    private var isNeedFetch = true
+    private var result: [CategoryModel] = []
     
     private let categoryName: String
     init(categoryName: String) {
         self.categoryName = categoryName
         super.init(nibName: nil, bundle: nil)
         setupUI()
-        loadData(isInitial: true)
+        loadData()
     }
     
     required init?(coder: NSCoder) {
@@ -48,29 +50,64 @@ class CategoryVC: GradientVC {
         }
     }
     
-    private func loadData(isInitial: Bool) {
-        if isInitial {
-            limit = limitIncreaser
-        } else {
-            limit += limitIncreaser
-        }
-        
-        FirebaseManager.shared.firestore.collection(ReferenceKeys.categories).document(categoryName).getDocument() { [weak self] snapshot, error in
-            guard let self = self else { return }
-            
-            guard let snapshotData = snapshot?.data() else { return }
-            guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
-            
-            do {
-                let model = try JSONDecoder().decode(CategoryModel.self, from: data)
-                print(model)
-                
-                DispatchQueue.main.async {
-                    self.result = model.result ?? []
-                    self.collectionView.reloadData()
+    private func loadData() {
+        if let lastDocument = self.lastDocument {
+            FirebaseManager.shared.firestore.collection(ReferenceKeys.categories).whereField(ReferenceKeys.filter, isEqualTo: categoryName).order(by: ReferenceKeys.timeOfCreation, descending: true).limit(to: limit).start(afterDocument: lastDocument).getDocuments { [weak self] snapshot, error in
+                guard let self = self else { return }
+                print(snapshot?.documents.count, error)
+                if let error = error {
+                    self.view.showMessage(text: error.localizedDescription, isError: true)
+                    return
                 }
-            } catch let error {
-                print(error)
+                guard let documents = snapshot?.documents, !documents.isEmpty else {
+                    self.isNeedFetch = false
+                    return
+                }
+
+                documents.forEach {
+                    let snapshotData = $0.data()
+                    guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+                    do {
+                        let model = try JSONDecoder().decode(CategoryModel.self, from: data)
+                        print(model)
+                        
+                        DispatchQueue.main.async {
+                            self.result.append(model)
+                            self.lastDocument = documents.last
+                            self.collectionView.reloadData()
+                        }
+                    } catch let error {
+                    }
+                }
+            }
+        } else {
+            FirebaseManager.shared.firestore.collection(ReferenceKeys.categories).whereField(ReferenceKeys.filter, isEqualTo: categoryName).order(by: ReferenceKeys.timeOfCreation, descending: true).limit(to: limit).getDocuments { [weak self] snapshot, error in
+                guard let self = self else { return }
+                print(snapshot?.documents.count, error)
+                if let error = error {
+                    self.view.showMessage(text: error.localizedDescription, isError: true)
+                    return
+                }
+                guard let documents = snapshot?.documents, !documents.isEmpty else {
+                    self.isNeedFetch = false
+                    return
+                }
+
+                documents.forEach {
+                    let snapshotData = $0.data()
+                    guard let data = try? JSONSerialization.data(withJSONObject: snapshotData) else { return }
+                    do {
+                        let model = try JSONDecoder().decode(CategoryModel.self, from: data)
+                        print(model)
+                        
+                        DispatchQueue.main.async {
+                            self.result.append(model)
+                            self.lastDocument = documents.last
+                            self.collectionView.reloadData()
+                        }
+                    } catch let error {
+                    }
+                }
             }
         }
     }
@@ -113,13 +150,17 @@ extension CategoryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICo
             }
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard result.count > 0, isNeedFetch else { return }
+         if indexPath.row == result.count - 1 {
+             loadData()
+         }
+    }
 }
 
 struct CategoryModel: Codable {
-    let result: [ResultCategory]?
-    
-    struct ResultCategory: Codable {
-        let photo: String
-        let prompt, negative_prompt: String?
-    }
+    let photo, userID, photoID: String
+    let prompt, negative_prompt, filter: String?
+    let timeOfCreation: Double?
 }
