@@ -45,6 +45,7 @@ class MainVC: GradientVC {
         } else {
             setupTableView()
             loadData()
+            checkIsAdmin()
         }
     }
     
@@ -98,7 +99,14 @@ class MainVC: GradientVC {
             
         }
     }
-
+    private func checkIsAdmin() {
+        guard let myID = self.myID else { return }
+        FirebaseManager.shared.firestore.collection(ReferenceKeys.admins).document(myID).getDocument { snap, error in
+            if snap?.exists == true {
+                FirebaseManager.shared.isAdmin = true
+            }
+        }
+    }
 }
 
 extension MainVC: UITableViewDelegate, UITableViewDataSource {

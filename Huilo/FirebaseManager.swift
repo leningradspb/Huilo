@@ -15,6 +15,7 @@ final class FirebaseManager {
     let storage: StorageReference
     let firestore: Firestore
     let auth: Auth
+    var isAdmin = false
     
     static let shared = FirebaseManager()
     
@@ -41,4 +42,5 @@ struct ReferenceKeys {
     static let filter = "filter"
     static let results = "results"
     static let timeOfCreation = "timeOfCreation"
+    static let admins = "admins"
 }

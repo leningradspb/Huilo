@@ -14,6 +14,7 @@ class FullSizeWallpaperVC: UIViewController {
     private let closeButton = UIImageView()
     private let saveButton = UIImageView()
     private let hideTimeButton = UIImageView()
+    private let adminPanelButton = UIImageView()
     private let timeLabel = UILabel()
     private let dateLabel = UILabel()
     private let backgroundIconColor: UIColor = .white.withAlphaComponent(0.5)
@@ -97,6 +98,23 @@ class FullSizeWallpaperVC: UIViewController {
             $0.height.equalTo(40)
         }
         
+        if FirebaseManager.shared.isAdmin {
+            view.addSubview(adminPanelButton)
+            let saveImage = UIImage(systemName: "a.circle.fill", withConfiguration: iconConfig)
+            adminPanelButton.image = saveImage
+            adminPanelButton.tintColor = .black
+            adminPanelButton.backgroundColor = backgroundIconColor
+            adminPanelButton.layer.cornerRadius = 24
+            adminPanelButton.addTapGesture(target: self, action: #selector(adminPanelTapped))
+            
+            adminPanelButton.snp.makeConstraints {
+                $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-5)
+                $0.centerX.equalToSuperview()
+                $0.width.equalTo(46)
+                $0.height.equalTo(40)
+            }
+        }
+        
         timeLabel.textColor = .white
         timeLabel.text = "9:41"
         //SFProRailsRegular
@@ -164,6 +182,10 @@ class FullSizeWallpaperVC: UIViewController {
         self.dismiss(animated: true)
     }
     
+    @objc private func adminPanelTapped() {
+        
+    }
+    
     @objc private func hideTapped() {
         let newValue = !hideTimeButton.isHighlighted
         UserDefaults.standard.set(newValue, forKey: "hideTimeButton")
@@ -206,6 +228,7 @@ class FullSizeWallpaperInitURLVC: UIViewController {
     private let closeButton = UIImageView()
     private let saveButton = UIImageView()
     private let hideTimeButton = UIImageView()
+    private let adminPanelButton = UIImageView()
     private let timeLabel = UILabel()
     private let dateLabel = UILabel()
     private let backgroundIconColor: UIColor = .white.withAlphaComponent(0.5)
@@ -294,6 +317,23 @@ class FullSizeWallpaperInitURLVC: UIViewController {
             $0.height.equalTo(40)
         }
         
+        if FirebaseManager.shared.isAdmin {
+            view.addSubview(adminPanelButton)
+            let saveImage = UIImage(systemName: "a.circle.fill", withConfiguration: iconConfig)
+            adminPanelButton.image = saveImage
+            adminPanelButton.tintColor = .black
+            adminPanelButton.backgroundColor = backgroundIconColor
+            adminPanelButton.layer.cornerRadius = 24
+            adminPanelButton.addTapGesture(target: self, action: #selector(adminPanelTapped))
+            
+            adminPanelButton.snp.makeConstraints {
+                $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-5)
+                $0.centerX.equalToSuperview()
+                $0.width.equalTo(46)
+                $0.height.equalTo(40)
+            }
+        }
+        
         timeLabel.textColor = .white
         timeLabel.text = "9:41"
         //SFProRailsRegular
@@ -359,6 +399,10 @@ class FullSizeWallpaperInitURLVC: UIViewController {
     
     @objc private func closeTapped() {
         self.dismiss(animated: true)
+    }
+    
+    @objc private func adminPanelTapped() {
+        
     }
     
     @objc private func hideTapped() {
