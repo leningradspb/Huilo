@@ -6,8 +6,9 @@ import FirebaseAuth
 import SnapKit
 import FirebaseStorage
 
-class AuthVC: UIViewController {
+class AuthVC: GradientVC {
     private let girlImageView = UIImageView()
+    private let welcomeLabel = FuturaLabel(text: "star you diving into AI world\ncreate awesome pictures🤩", fontSize: 40, color: .white, numberOfLines: 0)
     private var userID: String?
     
     private var isNeedCredentialsVC = false
@@ -33,7 +34,7 @@ class AuthVC: UIViewController {
     }
     
     private func setupAuthUI() {
-        view.addSubviews([girlImageView])
+        gradientContentView.addSubviews([girlImageView, welcomeLabel])
         view.backgroundColor = .black
         
         girlImageView.snp.makeConstraints {
@@ -43,12 +44,19 @@ class AuthVC: UIViewController {
         }
         girlImageView.image = UIImage(named: "congratz")
         
+        welcomeLabel.snp.makeConstraints {
+            $0.top.equalTo(girlImageView.safeAreaLayoutGuide.snp.bottom).offset(20)
+            $0.leading.equalToSuperview().offset(Layout.leading)
+            $0.trailing.equalToSuperview().offset(-Layout.leading)
+        }
+        welcomeLabel.textAlignment = .center
+        
     }
     private func setupSignInButton() {
         let button = ASAuthorizationAppleIDButton(authorizationButtonType: .signIn, authorizationButtonStyle: .white)
         button.addTarget(self, action: #selector(authTapped), for: .touchUpInside)
 //        button.center = self.view.center
-        view.addSubview(button)
+        gradientContentView.addSubview(button)
         button.snp.makeConstraints { (make) in
             make.leading.equalToSuperview().offset(30)
             make.trailing.equalToSuperview().offset(-30)
