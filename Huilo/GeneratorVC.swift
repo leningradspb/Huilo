@@ -362,7 +362,7 @@ class APIService {
 extension APIService {
     static func requestPhotoBy(filter: StableDiffusionFilterRequest, completion: @escaping (_ paymentHistory: StableDiffusionResponse?, _ error: Error?) -> Void) {
         
-        var request = URLRequest(url: URL(string: "https://stablediffusionapi.com/api/v4/dreambooth")!)
+        var request = URLRequest(url: URL(string: "https://stablediffusionapi.com/api/v3/dreambooth")!)
         request.configure(.post)
         
         do {
